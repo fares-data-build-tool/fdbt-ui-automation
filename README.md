@@ -4,16 +4,16 @@ Selenium automation framework project, to prove key user journeys work.
 
 ## Getting Started
 
- ###Selenium
+ ### Selenium
 
 - Open Chrome (or install it if you dont have it) and check you have the latest version.
 - Go here: https://chromedriver.chromium.org/downloads and download the latest chromedriver.
 - Put the chromedriver you download (and unzip) into your /usr/local directory
 
- ###Maven
+ ### Maven
 - Download Maven from here: https://maven.apache.org/download.cgi
 
- ###Java
+ ### Java
  - Download Java 11 here : https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
  
 - You're all set!
