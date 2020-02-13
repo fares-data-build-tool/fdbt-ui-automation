@@ -4,19 +4,25 @@ Selenium automation framework project, to prove key user journeys work.
 
 ## Getting Started
 
- ### Selenium
+### Selenium
 
 - Open Chrome (or install it if you dont have it) and check you have the latest version.
 - Go here: https://chromedriver.chromium.org/downloads and download the latest chromedriver.
 - Put the chromedriver you download (and unzip) into your /usr/local directory
 
- ### Maven
-- Download Maven from here: https://maven.apache.org/download.cgi
+### Maven
+Download Maven from here: https://maven.apache.org/download.cgi
 
- ### Java
- - Download Java 11 here : https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
- 
-- You're all set!
+### Java
+Download and install OpenJDK 13. For Mac:
+```
+curl https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_osx-x64_bin.tar.gz | tar -xz
+mv jdk-13.0.2.jdk/ /Library/Java/JavaVirtualMachines/
+# Update JAVA_HOME environment variable. Assuming your .bash_profile has export JAVA_HOME=$(/usr/libexec/java_home) just do:
+source ~/.bash_profile
+```
+
+You're all set!
 
 
 ## Running the tests
