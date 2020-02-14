@@ -4,15 +4,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-
-import java.io.File;
-import java.net.MalformedURLException;
+import static uk.co.tfn.HelperMethods.setDriverService;
+import static uk.co.tfn.PageElements.startPageStartButton;
 import static uk.co.tfn.HelperMethods.getHomePage;
 import static uk.co.tfn.HelperMethods.makePageFullScreen;
 import static uk.co.tfn.HelperMethods.setCapabilities;
@@ -27,12 +25,7 @@ public class ChromeTestCase {
     public void chromeSetup() {
 
         DesiredCapabilities caps = setCapabilities();
-
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File("/usr/local/chromedriver"))
-                .usingAnyFreePort()
-                .build();
-
+        ChromeDriverService service = setDriverService();
         ChromeOptions options = setOptions();
 
         options.merge(caps);
@@ -40,16 +33,14 @@ public class ChromeTestCase {
         driver = new ChromeDriver(service, options);
 
         getHomePage(driver);
-
         waitForPageToLoad(driver);
-
         makePageFullScreen(driver);
     }
 
     @Test
     public void chromeTest() {
 
-        driver.findElement((By.linkText("Start now"))).click();
+        startPageStartButton(driver).click();
 
         waitForPageToLoad(driver);
 
