@@ -4,13 +4,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.Select;
 
+import static uk.co.tfn.HelperMethods.continueButtonClick;
+import static uk.co.tfn.HelperMethods.explicitWait;
 import static uk.co.tfn.HelperMethods.setDriverService;
-import static uk.co.tfn.PageElements.startPageStartButton;
+import static uk.co.tfn.HelperMethods.startPageButtonClick;
 import static uk.co.tfn.HelperMethods.getHomePage;
 import static uk.co.tfn.HelperMethods.makePageFullScreen;
 import static uk.co.tfn.HelperMethods.setCapabilities;
@@ -40,23 +46,37 @@ public class ChromeTestCase {
     @Test
     public void chromeTest() {
 
-        startPageStartButton(driver).click();
+        startPageButtonClick(driver);
 
-        waitForPageToLoad(driver);
+        driver.findElement((By.id("operator-name0"))).click();
 
-        driver.findElement((By.id("operator-name1"))).click();
-
-        driver.findElement(By.id("continue-button")).click();
-
-        waitForPageToLoad(driver);
+        continueButtonClick(driver);
 
         driver.findElement(By.id("faretype")).click();
 
-        driver.findElement(By.id("continue-button")).click();
+        continueButtonClick(driver);
 
-        assert(driver.findElement(By.id("page-heading")).isDisplayed());
+        driver.findElement(By.id("service")).click();
 
-        assert (driver.findElement(By.id("page-heading")).getText().equals("Please select your bus service"));
+        explicitWait(2000);
+
+        Select dropdown = new Select(driver.findElement(By.id("service")));
+
+        dropdown.selectByVisibleText("13 - Start date 04/12/2019");
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("csv-upload")).click();
+
+        continueButtonClick(driver);
+
+        WebElement upload = driver.findElement(By.id("file-upload-1"));
+
+        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
+
+        upload.sendKeys("/Users/robcatton/Downloads/testCsv.csv");
+
+        explicitWait(10000);
 
     }
 
