@@ -57,7 +57,7 @@ public class ChromeTestCase {
 
         driver.findElement(By.id("faretype")).click();
 
-        continueButtonClick(driver);
+            continueButtonClick(driver);
 
         driver.findElement(By.id("service")).click();
 
@@ -69,11 +69,13 @@ public class ChromeTestCase {
 
         serviceDropdown.selectByVisibleText("1 - Start date 02/01/2020");
 
-        continueButtonClick(driver);
+            continueButtonClick(driver);
 
-        driver.findElement(By.id("journeyPattern"));
+        driver.findElement(By.id("journeyPattern")).click();
 
-        explicitWait(1000);
+        waitForElement(driver,"journeyPattern");
+
+       // explicitWait(1000);
 
         Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
 
