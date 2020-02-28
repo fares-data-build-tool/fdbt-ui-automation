@@ -1,6 +1,7 @@
 package uk.co.tfn;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -13,18 +14,9 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import static uk.co.tfn.HelperMethods.continueButtonClick;
-import static uk.co.tfn.HelperMethods.explicitWait;
-import static uk.co.tfn.HelperMethods.fillInFareStageOptions;
-import static uk.co.tfn.HelperMethods.setDriverService;
-import static uk.co.tfn.HelperMethods.startPageButtonClick;
-import static uk.co.tfn.HelperMethods.getHomePage;
-import static uk.co.tfn.HelperMethods.makePageFullScreen;
-import static uk.co.tfn.HelperMethods.setCapabilities;
-import static uk.co.tfn.HelperMethods.setOptions;
-import static uk.co.tfn.HelperMethods.submitButtonClick;
-import static uk.co.tfn.HelperMethods.waitForElement;
-import static uk.co.tfn.HelperMethods.waitForPageToLoad;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static uk.co.tfn.HelperMethods.*;
 
 public class ChromeTestCase {
 
@@ -57,25 +49,21 @@ public class ChromeTestCase {
 
         driver.findElement(By.id("faretype")).click();
 
-            continueButtonClick(driver);
+        continueButtonClick(driver);
 
         driver.findElement(By.id("service")).click();
 
         waitForElement(driver,"service");
 
-        //explicitWait(1000);
-
         Select serviceDropdown = new Select(driver.findElement(By.id("service")));
 
         serviceDropdown.selectByVisibleText("1 - Start date 02/01/2020");
 
-            continueButtonClick(driver);
+        continueButtonClick(driver);
 
         driver.findElement(By.id("journeyPattern")).click();
 
         waitForElement(driver,"journeyPattern");
-
-       // explicitWait(1000);
 
         Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
 
@@ -83,17 +71,15 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
+        //waitForElement(driver, "csv-upload");
+
         explicitWait(1000);
 
         driver.findElement(By.id("csv-upload")).click();
 
         continueButtonClick(driver);
 
-        WebElement upload = driver.findElement(By.id("file-upload-1"));
-
-        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
-
-        upload.sendKeys("/Users/robcatton/Downloads/testCsv.csv");
+        uploadCsvFile(driver);
 
         submitButtonClick(driver);
 
@@ -101,7 +87,7 @@ public class ChromeTestCase {
 
         submitButtonClick(driver);
 
-
+        assertTrue(isUuidStringValid(driver));
 
     }
 

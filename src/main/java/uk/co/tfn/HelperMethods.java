@@ -10,6 +10,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -114,7 +116,33 @@ public class HelperMethods {
             Random random = new Random();
 
             dropdownOptions.get(random.nextInt(9)).click();
+
+            return;
         });
 
+    }
+
+    public static void uploadCsvFile(ChromeDriver driver){
+        WebElement upload = driver.findElement(By.id("file-upload-1"));
+
+        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
+
+        upload.sendKeys("/Users/dannydavies/Downloads/testcsv.csv");
+    }
+
+    public static boolean isUuidStringValid(ChromeDriver driver){
+        String rawUuid = driver.findElement(By.id("uuid-ref-number")).getText();
+
+        String[] uuidParts = rawUuid.replace("Your reference number\n", "").split("-");
+
+        if (uuidParts[0].length() == 8
+            && uuidParts[1].length() == 4
+            && uuidParts[2].length() == 4
+            && uuidParts[3].length() == 4
+            && uuidParts[4].length() == 12)
+        {
+            return true;
+        }
+        return false;
     }
 }
