@@ -2,20 +2,30 @@ package uk.co.tfn;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 
 public class HelperMethods {
 
     public static void waitForPageToLoad(ChromeDriver driver) {
+        explicitWait(500);
         new WebDriverWait(driver, 10).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
@@ -67,8 +77,44 @@ public class HelperMethods {
         waitForPageToLoad(driver);
     }
 
+    public static void submitButtonClick(ChromeDriver driver){
+        driver.findElement(By.id("submit-button")).click();
+        waitForPageToLoad(driver);
+    }
+
     public static void startPageButtonClick(ChromeDriver driver){
         driver.findElement((By.id("start-now-button"))).click();
         waitForPageToLoad(driver);
+    }
+
+    public static void waitForElement(ChromeDriver driver, String elementId){
+        FluentWait<ChromeDriver> fluentWait = new FluentWait<>(driver)
+                .pollingEvery(Duration.ofMillis(200))
+                .ignoring(NoSuchElementException.class)
+                .withTimeout(Duration.ofSeconds(30));
+
+        fluentWait.until((Function<WebDriver, WebElement>) driver1 -> driver1.findElement(By.id(elementId)));
+    }
+
+    public static void fillInFareStageOptions(ChromeDriver driver){
+
+        List<WebElement> dropdowns = driver.findElements(By.className("farestage-select-wrapper"));
+
+        final AtomicInteger counter = new AtomicInteger(0);
+
+        dropdowns.forEach(dropdown -> {
+            WebElement chosenDropdown = driver.findElement(By.id(String.format("option%s", counter.getAndIncrement())));
+
+            chosenDropdown.click();
+
+            Select select = new Select(chosenDropdown);
+
+            List<WebElement> dropdownOptions = select.getOptions();
+
+            Random random = new Random();
+
+            dropdownOptions.get(random.nextInt(9)).click();
+        });
+
     }
 }
