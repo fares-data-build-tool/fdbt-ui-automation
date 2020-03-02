@@ -57,7 +57,7 @@ public class ChromeTestCase {
 
         Select serviceDropdown = new Select(driver.findElement(By.id("service")));
 
-        serviceDropdown.selectByVisibleText("1 - Start date 02/01/2020");
+        serviceDropdown.selectByValue("1#02/01/2020");
 
         continueButtonClick(driver);
 
@@ -67,13 +67,11 @@ public class ChromeTestCase {
 
         Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
 
-        directionDropdown.selectByVisibleText("Freeport Village, Freeport TO Starr Gate, Squires Gate");
+        directionDropdown.selectByValue("2500BTA01076#2590B1003");
 
         continueButtonClick(driver);
 
-        //waitForElement(driver, "csv-upload");
-
-        explicitWait(1000);
+        waitForElement(driver, "csv-upload");
 
         driver.findElement(By.id("csv-upload")).click();
 

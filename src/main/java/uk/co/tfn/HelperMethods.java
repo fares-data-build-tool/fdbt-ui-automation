@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,8 +28,7 @@ import java.util.function.Function;
 public class HelperMethods {
 
     public static void waitForPageToLoad(ChromeDriver driver) {
-        explicitWait(500);
-        new WebDriverWait(driver, 10).until(
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
 
@@ -123,11 +123,13 @@ public class HelperMethods {
     }
 
     public static void uploadCsvFile(ChromeDriver driver){
+        waitForElement(driver, "file-upload-1");
+
         WebElement upload = driver.findElement(By.id("file-upload-1"));
 
         ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
 
-        upload.sendKeys("/Users/dannydavies/Downloads/testcsv.csv");
+        upload.sendKeys("../../../testData/testcsv.csv");
     }
 
     public static boolean isUuidStringValid(ChromeDriver driver){
