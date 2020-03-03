@@ -1,7 +1,6 @@
 package uk.co.tfn;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -10,17 +9,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 import static uk.co.tfn.HelperMethods.*;
 
 public class ChromeTestCase {
 
     private ChromeDriver driver;
+    String filepath = System.getProperty("user.dir")+"/src/test/testData/testcsv.csv";
 
     @Before
     public void chromeSetup() {
@@ -47,37 +46,35 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        driver.findElement(By.id("faretype")).click();
+        driver.findElement(By.id("faretype-single")).click();
 
         continueButtonClick(driver);
 
         driver.findElement(By.id("service")).click();
 
-        waitForElement(driver,"service");
-
         Select serviceDropdown = new Select(driver.findElement(By.id("service")));
 
-        serviceDropdown.selectByValue("1#02/01/2020");
+        List<WebElement> serviceDropdownOptions = serviceDropdown.getOptions();
+
+        serviceDropdownOptions.get(1).click();
 
         continueButtonClick(driver);
 
         driver.findElement(By.id("journeyPattern")).click();
 
-        waitForElement(driver,"journeyPattern");
-
         Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
 
-        directionDropdown.selectByValue("2500BTA01076#2590B1003");
+        List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
+
+        directionDropdownOptions.get(1).click();
 
         continueButtonClick(driver);
-
-        waitForElement(driver, "csv-upload");
 
         driver.findElement(By.id("csv-upload")).click();
 
         continueButtonClick(driver);
 
-        uploadCsvFile(driver);
+        uploadCsvFile(driver, filepath);
 
         submitButtonClick(driver);
 

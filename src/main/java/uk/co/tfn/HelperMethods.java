@@ -66,14 +66,6 @@ public class HelperMethods {
                 .build();
     }
 
-    public static void explicitWait(int timeInMs){
-        try {
-            Thread.sleep(timeInMs);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void continueButtonClick(ChromeDriver driver){
         driver.findElement(By.id("continue-button")).click();
         waitForPageToLoad(driver);
@@ -91,11 +83,20 @@ public class HelperMethods {
 
     public static void waitForElement(ChromeDriver driver, String elementId){
         FluentWait<ChromeDriver> fluentWait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(200))
-                .ignoring(NoSuchElementException.class)
-                .withTimeout(Duration.ofSeconds(30));
+                .ignoring(NoSuchElementException.class);
 
         fluentWait.until((Function<WebDriver, WebElement>) driver1 -> driver1.findElement(By.id(elementId)));
+    }
+
+    public static void waitForElementToBeClickable(ChromeDriver driver, String elementId){
+        FluentWait<ChromeDriver> fluentWait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofMillis(200))
+                .ignoring(NoSuchElementException.class);
+
+        fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
     }
 
     public static void fillInFareStageOptions(ChromeDriver driver){
@@ -122,17 +123,19 @@ public class HelperMethods {
 
     }
 
-    public static void uploadCsvFile(ChromeDriver driver){
-        waitForElement(driver, "file-upload-1");
+    public static void uploadCsvFile(ChromeDriver driver, String filepath){
+        waitForElementToBeClickable(driver, "csv-upload");
 
-        WebElement upload = driver.findElement(By.id("file-upload-1"));
+        WebElement upload = driver.findElement(By.id("csv-upload"));
 
         ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
 
-        upload.sendKeys("../../../testData/testcsv.csv");
+        upload.sendKeys(filepath);
     }
 
     public static boolean isUuidStringValid(ChromeDriver driver){
+        waitForElement(driver, "uuid-ref-number");
+
         String rawUuid = driver.findElement(By.id("uuid-ref-number")).getText();
 
         String[] uuidParts = rawUuid.replace("Your reference number\n", "").split("-");
