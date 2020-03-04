@@ -4,35 +4,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import static uk.co.tfn.HelperMethods.getHomePage;
-import static uk.co.tfn.HelperMethods.makePageFullScreen;
-import static uk.co.tfn.HelperMethods.setCapabilities;
-import static uk.co.tfn.HelperMethods.setOptions;
-import static uk.co.tfn.HelperMethods.waitForPageToLoad;
+import static org.junit.Assert.assertTrue;
+import static uk.co.tfn.HelperMethods.*;
 
 public class ChromeTestCase {
 
     private ChromeDriver driver;
+    String filepath = System.getProperty("user.dir")+"/src/test/testData/testcsv.csv";
 
     @Before
     public void chromeSetup() {
 
         DesiredCapabilities caps = setCapabilities();
-
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File("/usr/local/chromedriver"))
-                .usingAnyFreePort()
-                .build();
-
+        ChromeDriverService service = setDriverService();
         ChromeOptions options = setOptions();
 
         options.merge(caps);
@@ -40,32 +33,56 @@ public class ChromeTestCase {
         driver = new ChromeDriver(service, options);
 
         getHomePage(driver);
-
         waitForPageToLoad(driver);
-
         makePageFullScreen(driver);
     }
 
     @Test
     public void chromeTest() {
 
-        driver.findElement((By.linkText("Start now"))).click();
+        startPageButtonClick(driver);
 
-        waitForPageToLoad(driver);
+        driver.findElement((By.id("operator-name0"))).click();
 
-        driver.findElement((By.id("operator-name1"))).click();
+        continueButtonClick(driver);
 
-        driver.findElement(By.id("continue-button")).click();
+        driver.findElement(By.id("faretype-single")).click();
 
-        waitForPageToLoad(driver);
+        continueButtonClick(driver);
 
-        driver.findElement(By.id("faretype")).click();
+        driver.findElement(By.id("service")).click();
 
-        driver.findElement(By.id("continue-button")).click();
+        Select serviceDropdown = new Select(driver.findElement(By.id("service")));
 
-        assert(driver.findElement(By.id("page-heading")).isDisplayed());
+        List<WebElement> serviceDropdownOptions = serviceDropdown.getOptions();
 
-        assert (driver.findElement(By.id("page-heading")).getText().equals("Please select your bus service"));
+        serviceDropdownOptions.get(1).click();
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("journeyPattern")).click();
+
+        Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
+
+        List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
+
+        directionDropdownOptions.get(1).click();
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("csv-upload")).click();
+
+        continueButtonClick(driver);
+
+        uploadCsvFile(driver, filepath);
+
+        submitButtonClick(driver);
+
+        fillInFareStageOptions(driver);
+
+        submitButtonClick(driver);
+
+        assertTrue(isUuidStringValid(driver));
 
     }
 
