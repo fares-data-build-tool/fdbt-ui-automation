@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
 import java.io.File;
 import java.time.Duration;
 import java.util.List;
@@ -138,16 +139,9 @@ public class HelperMethods {
 
         String rawUuid = driver.findElement(By.id("uuid-ref-number")).getText();
 
-        String[] uuidParts = rawUuid.replace("Your reference number\n", "").split("-");
+        String uuid = rawUuid.replace("Your reference number\n", "");
 
-        if (uuidParts[0].length() == 8
-            && uuidParts[1].length() == 4
-            && uuidParts[2].length() == 4
-            && uuidParts[3].length() == 4
-            && uuidParts[4].length() == 12)
-        {
-            return true;
-        }
-        return false;
+        return uuid.matches("[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
+
     }
 }
