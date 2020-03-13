@@ -10,10 +10,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
 import java.io.File;
 import java.time.Duration;
 import java.util.List;
@@ -25,8 +29,7 @@ import java.util.function.Function;
 public class HelperMethods {
 
     public static void waitForPageToLoad(ChromeDriver driver) {
-        explicitWait(500);
-        new WebDriverWait(driver, 10).until(
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
 
@@ -64,14 +67,6 @@ public class HelperMethods {
                 .build();
     }
 
-    public static void explicitWait(int timeInMs){
-        try {
-            Thread.sleep(timeInMs);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void continueButtonClick(ChromeDriver driver){
         driver.findElement(By.id("continue-button")).click();
         waitForPageToLoad(driver);
@@ -89,14 +84,23 @@ public class HelperMethods {
 
     public static void waitForElement(ChromeDriver driver, String elementId){
         FluentWait<ChromeDriver> fluentWait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(200))
-                .ignoring(NoSuchElementException.class)
-                .withTimeout(Duration.ofSeconds(30));
+                .ignoring(NoSuchElementException.class);
 
         fluentWait.until((Function<WebDriver, WebElement>) driver1 -> driver1.findElement(By.id(elementId)));
     }
 
-    public static void fillInFareStageOptions(ChromeDriver driver){
+    public static void waitForElementToBeClickable(ChromeDriver driver, String elementId){
+        FluentWait<ChromeDriver> fluentWait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofMillis(200))
+                .ignoring(NoSuchElementException.class);
+
+        fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
+    }
+
+    public static void fillInFareStageOptions(ChromeDriver driver, int range){
 
         List<WebElement> dropdowns = driver.findElements(By.className("farestage-select-wrapper"));
 
@@ -113,8 +117,31 @@ public class HelperMethods {
 
             Random random = new Random();
 
-            dropdownOptions.get(random.nextInt(9)).click();
+            dropdownOptions.get(random.nextInt(range)).click();
+
+            return;
         });
+
+    }
+
+    public static void uploadCsvFile(ChromeDriver driver, String filepath){
+        waitForElementToBeClickable(driver, "csv-upload");
+
+        WebElement upload = driver.findElement(By.id("csv-upload"));
+
+        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
+
+        upload.sendKeys(filepath);
+    }
+
+    public static boolean isUuidStringValid(ChromeDriver driver){
+        waitForElement(driver, "uuid-ref-number");
+
+        String rawUuid = driver.findElement(By.id("uuid-ref-number")).getText();
+
+        String uuid = rawUuid.replace("Your reference number\n", "");
+
+        return uuid.matches("[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
 
     }
 }

@@ -9,26 +9,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import static uk.co.tfn.HelperMethods.continueButtonClick;
-import static uk.co.tfn.HelperMethods.explicitWait;
-import static uk.co.tfn.HelperMethods.fillInFareStageOptions;
-import static uk.co.tfn.HelperMethods.setDriverService;
-import static uk.co.tfn.HelperMethods.startPageButtonClick;
-import static uk.co.tfn.HelperMethods.getHomePage;
-import static uk.co.tfn.HelperMethods.makePageFullScreen;
-import static uk.co.tfn.HelperMethods.setCapabilities;
-import static uk.co.tfn.HelperMethods.setOptions;
-import static uk.co.tfn.HelperMethods.submitButtonClick;
-import static uk.co.tfn.HelperMethods.waitForElement;
-import static uk.co.tfn.HelperMethods.waitForPageToLoad;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+import static uk.co.tfn.HelperMethods.*;
+import static uk.co.tfn.StepMethods.*;
 
 public class ChromeTestCase {
 
     private ChromeDriver driver;
+    String filepath = System.getProperty("user.dir")+"/src/test/testData/testcsv.csv";
 
     @Before
     public void chromeSetup() {
@@ -43,62 +35,48 @@ public class ChromeTestCase {
 
         getHomePage(driver);
         waitForPageToLoad(driver);
-        makePageFullScreen(driver);
+//        makePageFullScreen(driver);
     }
 
     @Test
-    public void chromeTest() {
+    public void chromeUploadCSVTest() {
 
-        startPageButtonClick(driver);
-
-        driver.findElement((By.id("operator-name0"))).click();
-
-        continueButtonClick(driver);
-
-        driver.findElement(By.id("faretype-single")).click();
-
-        continueButtonClick(driver);
-
-        driver.findElement(By.id("service")).click();
-
-        waitForElement(driver,"service");
-
-        Select serviceDropdown = new Select(driver.findElement(By.id("service")));
-
-        serviceDropdown.selectByVisibleText("1 - Start date 02/01/2020");
-
-        continueButtonClick(driver);
-
-        driver.findElement(By.id("journeyPattern")).click();
-
-        waitForElement(driver,"journeyPattern");
-
-        Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
-
-        directionDropdown.selectByVisibleText("Freeport Village, Freeport TO Starr Gate, Squires Gate");
-
-        continueButtonClick(driver);
-
-        explicitWait(1000);
+        stepsToInputMethod(driver);
 
         driver.findElement(By.id("csv-upload")).click();
 
         continueButtonClick(driver);
 
-        WebElement upload = driver.findElement(By.id("file-upload-1"));
-
-        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
-
-        upload.sendKeys("/Users/robcatton/Downloads/testCsv.csv");
+        uploadCsvFile(driver, filepath);
 
         submitButtonClick(driver);
 
-        fillInFareStageOptions(driver);
+        fillInFareStageOptions(driver, 8);
 
         submitButtonClick(driver);
 
+        assertTrue(isUuidStringValid(driver));
 
+    }
 
+    @Test
+    public void chromeManualTriangle() {
+
+        stepsToInputMethod(driver);
+        driver.findElement(By.id("manual-entry")).click();
+        continueButtonClick(driver);
+        driver.findElement(By.id("lessThan20FareStages")).click();
+        continueButtonClick(driver);
+        WebElement fareStages = driver.findElement(By.id("fareStages"));
+        fareStages.sendKeys("7");
+        continueButtonClick(driver);
+        fillInManualFareStages(driver);
+        continueButtonClick(driver);
+        fillInFareStageTriangle(driver);
+        continueButtonClick(driver);
+        fillInFareStageOptions(driver, 6);
+        submitButtonClick(driver);
+        assertTrue(isUuidStringValid(driver));
     }
 
     @After
