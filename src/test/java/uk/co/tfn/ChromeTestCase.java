@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static uk.co.tfn.HelperMethods.*;
+import static uk.co.tfn.StepMethods.*;
 
 public class ChromeTestCase {
 
@@ -34,41 +35,13 @@ public class ChromeTestCase {
 
         getHomePage(driver);
         waitForPageToLoad(driver);
-        makePageFullScreen(driver);
+//        makePageFullScreen(driver);
     }
 
     @Test
-    public void chromeTest() {
+    public void chromeUploadCSVTest() {
 
-        startPageButtonClick(driver);
-
-        driver.findElement((By.id("operator-name0"))).click();
-
-        continueButtonClick(driver);
-
-        driver.findElement(By.id("faretype-single")).click();
-
-        continueButtonClick(driver);
-
-        driver.findElement(By.id("service")).click();
-
-        Select serviceDropdown = new Select(driver.findElement(By.id("service")));
-
-        List<WebElement> serviceDropdownOptions = serviceDropdown.getOptions();
-
-        serviceDropdownOptions.get(1).click();
-
-        continueButtonClick(driver);
-
-        driver.findElement(By.id("journeyPattern")).click();
-
-        Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
-
-        List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
-
-        directionDropdownOptions.get(1).click();
-
-        continueButtonClick(driver);
+        stepsToInputMethod(driver);
 
         driver.findElement(By.id("csv-upload")).click();
 
@@ -78,12 +51,32 @@ public class ChromeTestCase {
 
         submitButtonClick(driver);
 
-        fillInFareStageOptions(driver);
+        fillInFareStageOptions(driver, 8);
 
         submitButtonClick(driver);
 
         assertTrue(isUuidStringValid(driver));
 
+    }
+
+    @Test
+    public void chromeManualTriangle() {
+
+        stepsToInputMethod(driver);
+        driver.findElement(By.id("manual-entry")).click();
+        continueButtonClick(driver);
+        driver.findElement(By.id("lessThan20FareStages")).click();
+        continueButtonClick(driver);
+        WebElement fareStages = driver.findElement(By.id("fareStages"));
+        fareStages.sendKeys("7");
+        continueButtonClick(driver);
+        fillInManualFareStages(driver);
+        continueButtonClick(driver);
+        fillInFareStageTriangle(driver);
+        continueButtonClick(driver);
+        fillInFareStageOptions(driver, 6);
+        submitButtonClick(driver);
+        assertTrue(isUuidStringValid(driver));
     }
 
     @After

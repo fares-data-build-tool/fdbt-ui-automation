@@ -100,7 +100,7 @@ public class HelperMethods {
         fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
     }
 
-    public static void fillInFareStageOptions(ChromeDriver driver){
+    public static void fillInFareStageOptions(ChromeDriver driver, int range){
 
         List<WebElement> dropdowns = driver.findElements(By.className("farestage-select-wrapper"));
 
@@ -117,7 +117,7 @@ public class HelperMethods {
 
             Random random = new Random();
 
-            dropdownOptions.get(random.nextInt(9)).click();
+            dropdownOptions.get(random.nextInt(range)).click();
 
             return;
         });
