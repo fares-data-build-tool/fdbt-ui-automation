@@ -16,8 +16,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.awt.*;
 import java.io.File;
 import java.time.Duration;
 import java.util.List;
@@ -28,7 +26,7 @@ import java.util.function.Function;
 
 public class HelperMethods {
 
-    public static void waitForPageToLoad(ChromeDriver driver) {
+    public static void waitForPageToLoad(WebDriver driver) {
         new WebDriverWait(driver, Duration.ofSeconds(10)).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
@@ -67,23 +65,23 @@ public class HelperMethods {
                 .build();
     }
 
-    public static void continueButtonClick(ChromeDriver driver){
+    public static void continueButtonClick(WebDriver driver){
         driver.findElement(By.id("continue-button")).click();
         waitForPageToLoad(driver);
     }
 
-    public static void submitButtonClick(ChromeDriver driver){
+    public static void submitButtonClick(WebDriver driver){
         driver.findElement(By.id("submit-button")).click();
         waitForPageToLoad(driver);
     }
 
-    public static void startPageButtonClick(ChromeDriver driver){
+    public static void startPageButtonClick(WebDriver driver){
         driver.findElement((By.id("start-now-button"))).click();
         waitForPageToLoad(driver);
     }
 
-    public static void waitForElement(ChromeDriver driver, String elementId){
-        FluentWait<ChromeDriver> fluentWait = new FluentWait<>(driver)
+    public static void waitForElement(WebDriver driver, String elementId){
+        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
@@ -91,8 +89,8 @@ public class HelperMethods {
         fluentWait.until((Function<WebDriver, WebElement>) driver1 -> driver1.findElement(By.id(elementId)));
     }
 
-    public static void waitForElementToBeClickable(ChromeDriver driver, String elementId){
-        FluentWait<ChromeDriver> fluentWait = new FluentWait<>(driver)
+    public static void waitForElementToBeClickable(WebDriver driver, String elementId){
+        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
@@ -100,7 +98,7 @@ public class HelperMethods {
         fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
     }
 
-    public static void fillInFareStageOptions(ChromeDriver driver, int range){
+    public static void fillInFareStageOptions(WebDriver driver, int range){
 
         List<WebElement> dropdowns = driver.findElements(By.className("farestage-select-wrapper"));
 
@@ -124,7 +122,7 @@ public class HelperMethods {
 
     }
 
-    public static void uploadCsvFile(ChromeDriver driver, String filepath){
+    public static void uploadCsvFile(WebDriver driver, String filepath){
         waitForElementToBeClickable(driver, "csv-upload");
 
         WebElement upload = driver.findElement(By.id("csv-upload"));
@@ -134,7 +132,7 @@ public class HelperMethods {
         upload.sendKeys(filepath);
     }
 
-    public static boolean isUuidStringValid(ChromeDriver driver){
+    public static boolean isUuidStringValid(WebDriver driver){
         waitForElement(driver, "uuid-ref-number");
 
         String rawUuid = driver.findElement(By.id("uuid-ref-number")).getText();

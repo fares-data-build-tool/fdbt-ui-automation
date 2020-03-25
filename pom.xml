@@ -29,6 +29,17 @@
     </build>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/devicefarm -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>devicefarm</artifactId>
+            <version>2.10.91</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>aws-sdk-java</artifactId>
+            <version>2.10.39</version>
+        </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>selenium-jupiter</artifactId>
@@ -58,6 +69,24 @@
             <artifactId>selenium-chrome-driver</artifactId>
             <version>4.0.0-alpha-2</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
