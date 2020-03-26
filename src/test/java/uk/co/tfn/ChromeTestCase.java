@@ -14,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.io.IOException;
 import java.net.URL;
 
 import java.util.List;
@@ -77,7 +79,7 @@ public class ChromeTestCase {
     }
 
     @Test
-    public void chromeUploadCSVTest() {
+    public void chromeUploadCSVTest() throws IOException {
 
         getHomePage(driver);
 
@@ -89,7 +91,7 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        uploadCsvFile(driver, filepath);
+        uploadCsvFile(driver);
 
         submitButtonClick(driver);
 

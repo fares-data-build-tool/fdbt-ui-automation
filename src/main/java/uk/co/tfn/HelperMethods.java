@@ -1,5 +1,6 @@
 package uk.co.tfn;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -16,7 +17,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
@@ -122,14 +129,24 @@ public class HelperMethods {
 
     }
 
-    public static void uploadCsvFile(WebDriver driver, String filepath){
+    public static void uploadCsvFile(WebDriver driver) throws IOException {
+        URL url = new URL("https://fdbt-test-upload.s3.eu-west-2.amazonaws.com/Fare-Zone-Example.csv");
+
+        File a = new File("../test.csv");
+
+        FileUtils.copyURLToFile(url, a);
+
+        BufferedReader csvReader = new BufferedReader(new FileReader(a));
+        System.out.println(csvReader.readLine());
+        csvReader.close();
+
         waitForElementToBeClickable(driver, "csv-upload");
 
         WebElement upload = driver.findElement(By.id("csv-upload"));
 
         ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
 
-        upload.sendKeys(filepath);
+        upload.sendKeys(new String(String.valueOf(a)));
     }
 
     public static boolean isUuidStringValid(WebDriver driver){
