@@ -24,6 +24,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
@@ -130,15 +132,11 @@ public class HelperMethods {
     }
 
     public static void uploadCsvFile(WebDriver driver) throws IOException {
-        URL url = new URL("https://fdbt-test-upload.s3.eu-west-2.amazonaws.com/Fare-Zone-Example.csv");
+        URL url = new URL("https://fdbt-test-upload.s3.eu-west-2.amazonaws.com/Fares-Triangle-Example.csv");
 
-        File a = new File("../test.csv");
+        File a = new File("../Fares-Triangle-Example.csv");
 
         FileUtils.copyURLToFile(url, a);
-
-        BufferedReader csvReader = new BufferedReader(new FileReader(a));
-        System.out.println(csvReader.readLine());
-        csvReader.close();
 
         waitForElementToBeClickable(driver, "csv-upload");
 
@@ -146,7 +144,8 @@ public class HelperMethods {
 
         ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
 
-        upload.sendKeys(new String(String.valueOf(a)));
+        upload.sendKeys("../Fares-Triangle-Example.csv");
+
     }
 
     public static boolean isUuidStringValid(WebDriver driver){
