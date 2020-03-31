@@ -8,9 +8,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.chrome.ChromeDriverService;
-//import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -43,22 +40,18 @@ public class ChromeTestCase {
 
     private static RemoteWebDriver driver;
 
-
-//    private ChromeDriver driver;
-//    String filepath = System.getProperty("user.dir")+"/src/test/testData/testcsv.csv";
-
     @Before
     public void chromeSetup() throws IOException {
 
 
-            File file = new File("src/test/properties/env.properties");
-            FileInputStream fileInput = new FileInputStream(file);
-            Properties properties = new Properties();
-            properties.load(fileInput);
-            fileInput.close();
-            String browser = properties.getProperty("browser");
-            String host = properties.getProperty("host");
-            System.out.println(browser + host);
+        File file = new File("src/test/properties/env.properties");
+        FileInputStream fileInput = new FileInputStream(file);
+        Properties properties = new Properties();
+        properties.load(fileInput);
+        fileInput.close();
+        String browser = properties.getProperty("browser");
+        String host = properties.getProperty("host");
+        System.out.println(browser + host);
 
         if (host.equals("local")) {
             DesiredCapabilities caps = setCapabilities();
@@ -70,12 +63,6 @@ public class ChromeTestCase {
         driver = new ChromeDriver(service, options);
 
         } else {
-            String accessKey = System.getenv("AWS_ACCESS_KEY_ID2");
-            String secretAccessKey = System.getenv("AWS_SECRET_ACCESS_KEY2");
-            System.out.println("hello" + secretAccessKey);
-            System.out.println("hello" + accessKey);
-//            System.setProperty("aws.accessKeyId", accessKey);
-//            System.setProperty("aws.secretAccessKey", secretAccessKey);
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
             DeviceFarmClient client  = DeviceFarmClient.builder().region(Region.US_WEST_2)
                     .build();

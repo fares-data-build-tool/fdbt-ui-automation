@@ -149,7 +149,6 @@
                 <host>local</host>
             </properties>
         </profile>
-
         <profile>
             <id>remote-chrome</id>
             <properties>
