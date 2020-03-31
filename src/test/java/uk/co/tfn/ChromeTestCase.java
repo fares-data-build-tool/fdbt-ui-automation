@@ -11,14 +11,19 @@ import org.openqa.selenium.WebElement;
 //import org.openqa.selenium.chrome.ChromeDriver;
 //import org.openqa.selenium.chrome.ChromeDriverService;
 //import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
 import static uk.co.tfn.HelperMethods.*;
@@ -26,6 +31,7 @@ import static uk.co.tfn.StepMethods.*;
 
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.codepipeline.model.AWSSessionCredentials;
 import software.amazon.awssdk.services.devicefarm.*;
 import software.amazon.awssdk.services.devicefarm.model.*;
 import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
@@ -39,43 +45,56 @@ public class ChromeTestCase {
 
 
 //    private ChromeDriver driver;
-    String filepath = System.getProperty("user.dir")+"/src/test/testData/testcsv.csv";
+//    String filepath = System.getProperty("user.dir")+"/src/test/testData/testcsv.csv";
 
     @Before
-    public void chromeSetup() {
+    public void chromeSetup() throws IOException {
 
-//        DesiredCapabilities caps = setCapabilities();
-//        ChromeDriverService service = setDriverService();
-//        ChromeOptions options = setOptions();
-//
-//        options.merge(caps);
-//
-//        driver = new ChromeDriver(service, options);
-//
-//        getHomePage(driver);
-//        waitForPageToLoad(driver);
-////        makePageFullScreen(driver);
-        System.setProperty("aws.accessKeyId", "AKIAWOA6II4MXYBBUSNA");
-        System.setProperty("aws.secretAccessKey", "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");
-        String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
-        DeviceFarmClient client  = DeviceFarmClient.builder().region(Region.US_WEST_2)
-//                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
-                .build();
-        CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
-                .expiresInSeconds(300)        // 5 minutes
-                .projectArn("arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee")
-                .build();
-        URL testGridUrl = null;
-        try {
-            CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-            testGridUrl = new URL(response.url());
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            File file = new File("src/test/properties/env.properties");
+            FileInputStream fileInput = new FileInputStream(file);
+            Properties properties = new Properties();
+            properties.load(fileInput);
+            fileInput.close();
+            String browser = properties.getProperty("browser");
+            String host = properties.getProperty("host");
+            System.out.println(browser + host);
+
+        if (host.equals("local")) {
+            DesiredCapabilities caps = setCapabilities();
+        ChromeDriverService service = setDriverService();
+        ChromeOptions options = setOptions();
+
+        options.merge(caps);
+
+        driver = new ChromeDriver(service, options);
+
+        } else {
+            String accessKey = System.getenv("AWS_ACCESS_KEY_ID2");
+            String secretAccessKey = System.getenv("AWS_SECRET_ACCESS_KEY2");
+            System.out.println("hello" + secretAccessKey);
+            System.out.println("hello" + accessKey);
+//            System.setProperty("aws.accessKeyId", accessKey);
+//            System.setProperty("aws.secretAccessKey", secretAccessKey);
+            String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
+            DeviceFarmClient client  = DeviceFarmClient.builder().region(Region.US_WEST_2)
+                    .build();
+            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
+                    .expiresInSeconds(300)        // 5 minutes
+                    .projectArn(myProjectARN)
+                    .build();
+            URL testGridUrl = null;
+            try {
+                CreateTestGridUrlResponse response = client.createTestGridUrl(request);
+                testGridUrl = new URL(response.url());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // You can now pass this URL into RemoteWebDriver.
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setBrowserName(browser);
+            driver = new RemoteWebDriver(testGridUrl, capabilities);
         }
-        // You can now pass this URL into RemoteWebDriver.
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName("chrome");
-        driver = new RemoteWebDriver(testGridUrl, capabilities);
     }
 
     @Test
