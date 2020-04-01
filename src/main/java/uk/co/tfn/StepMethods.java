@@ -6,30 +6,15 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.awt.desktop.SystemSleepEvent;
-import java.io.File;
-import java.time.Duration;
+import org.openqa.selenium.support.ui.Select;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 import static uk.co.tfn.HelperMethods.*;
 
 public class StepMethods {
 
-    public static void stepsToInputMethod(ChromeDriver driver) {
+    public static void stepsToInputMethod(WebDriver driver) {
         startPageButtonClick(driver);
 
         driver.findElement((By.id("operator-name0"))).click();
@@ -60,7 +45,7 @@ public class StepMethods {
         continueButtonClick(driver);
     }
 
-    public static void fillInManualFareStages(ChromeDriver driver) {
+    public static void fillInManualFareStages(WebDriver driver) {
         String stageArray[] = new String[]{"1", "2", "3", "4", "5", "6", "7"};
 
         int i;
@@ -72,7 +57,7 @@ public class StepMethods {
         }
     }
 
-    public static void fillInFareStageTriangle(ChromeDriver driver) {
+    public static void fillInFareStageTriangle(WebDriver driver) {
         String columnArray[] = new String[]{"100", "100", "50", "100", "250", "300", "450"};
 
 
