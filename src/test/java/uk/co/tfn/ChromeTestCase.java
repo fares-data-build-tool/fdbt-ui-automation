@@ -26,9 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static uk.co.tfn.HelperMethods.*;
 import static uk.co.tfn.StepMethods.*;
 
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.codepipeline.model.AWSSessionCredentials;
 import software.amazon.awssdk.services.devicefarm.*;
 import software.amazon.awssdk.services.devicefarm.model.*;
 import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
@@ -64,7 +62,7 @@ public class ChromeTestCase {
 
         } else {
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
-            DeviceFarmClient client  = DeviceFarmClient.builder().region(Region.US_WEST_2)
+            DeviceFarmClient client  = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
                     .build();
             CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
                     .expiresInSeconds(300)        // 5 minutes
@@ -77,7 +75,6 @@ public class ChromeTestCase {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // You can now pass this URL into RemoteWebDriver.
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setBrowserName(browser);
             driver = new RemoteWebDriver(testGridUrl, capabilities);
