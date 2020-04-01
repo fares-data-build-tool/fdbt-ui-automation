@@ -1,31 +1,15 @@
 package uk.co.tfn;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.PageLoadStrategy;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.awt.desktop.SystemSleepEvent;
-import java.io.File;
-import java.time.Duration;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
-import static uk.co.tfn.HelperMethods.*;
+import static uk.co.tfn.HelperMethods.continueButtonClick;
+import static uk.co.tfn.HelperMethods.startPageButtonClick;
+import static uk.co.tfn.HelperMethods.waitForElement;
 
 public class StepMethods {
 
@@ -56,6 +40,18 @@ public class StepMethods {
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
 
         directionDropdownOptions.get(1).click();
+
+        continueButtonClick(driver);
+    }
+
+    public static void stepsToPeriodPage(ChromeDriver driver){
+        startPageButtonClick(driver);
+
+        driver.findElement((By.id("operator-name0"))).click();
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("faretype-period")).click();
 
         continueButtonClick(driver);
     }

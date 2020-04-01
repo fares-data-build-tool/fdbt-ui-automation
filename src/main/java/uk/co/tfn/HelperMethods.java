@@ -17,7 +17,6 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.awt.*;
 import java.io.File;
 import java.time.Duration;
 import java.util.List;
@@ -35,10 +34,6 @@ public class HelperMethods {
 
     public static void getHomePage(WebDriver driver) {
         driver.get("https://tfn-test.infinityworks.com/");
-    }
-
-    public static void makePageFullScreen(WebDriver driver) {
-        driver.manage().window().fullscreen();
     }
 
     public static DesiredCapabilities setCapabilities() {
