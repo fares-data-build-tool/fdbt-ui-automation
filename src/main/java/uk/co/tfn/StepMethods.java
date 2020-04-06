@@ -1,16 +1,15 @@
 package uk.co.tfn;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import org.openqa.selenium.support.ui.Select;
+
 import java.util.List;
 
-import static uk.co.tfn.HelperMethods.*;
+import static uk.co.tfn.HelperMethods.continueButtonClick;
+import static uk.co.tfn.HelperMethods.startPageButtonClick;
+import static uk.co.tfn.HelperMethods.waitForElement;
 
 public class StepMethods {
 
@@ -20,6 +19,8 @@ public class StepMethods {
         driver.findElement((By.id("operator-name0"))).click();
 
         continueButtonClick(driver);
+
+        waitForElement(driver, "faretype-single");
 
         driver.findElement(By.id("faretype-single")).click();
 

@@ -1,45 +1,49 @@
 package uk.co.tfn;
 
-import org.apache.tools.ant.types.Assertions;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.io.*;
-import java.net.URL;
-
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Properties;
-
-import static org.junit.Assert.assertTrue;
-import static uk.co.tfn.HelperMethods.*;
-import static uk.co.tfn.StepMethods.*;
-
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.devicefarm.*;
-import software.amazon.awssdk.services.devicefarm.model.*;
 import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+
+import static org.junit.Assert.assertTrue;
+import static uk.co.tfn.HelperMethods.continueButtonClick;
+import static uk.co.tfn.HelperMethods.fillInFareStageOptions;
+import static uk.co.tfn.HelperMethods.getHomePage;
+import static uk.co.tfn.HelperMethods.isUuidStringValid;
+import static uk.co.tfn.HelperMethods.setCapabilities;
+import static uk.co.tfn.HelperMethods.setDriverService;
+import static uk.co.tfn.HelperMethods.setOptions;
+import static uk.co.tfn.HelperMethods.submitButtonClick;
+import static uk.co.tfn.HelperMethods.uploadCsvFile;
+import static uk.co.tfn.HelperMethods.waitForElement;
+import static uk.co.tfn.HelperMethods.waitForPageToLoad;
+import static uk.co.tfn.StepMethods.fillInFareStageTriangle;
+import static uk.co.tfn.StepMethods.fillInManualFareStages;
+import static uk.co.tfn.StepMethods.stepsToInputMethod;
 
 
 public class ChromeTestCase {
 
     private static RemoteWebDriver driver;
 
-    @Before
-    public void chromeSetup() throws IOException {
+    @BeforeAll
+    public static void chromeSetup() throws IOException {
 
 
         File file = new File("src/test/properties/env.properties");
@@ -114,6 +118,7 @@ public class ChromeTestCase {
         stepsToInputMethod(driver);
         driver.findElement(By.id("manual-entry")).click();
         continueButtonClick(driver);
+        waitForElement(driver, "lessThan20FareStages");
         driver.findElement(By.id("lessThan20FareStages")).click();
         continueButtonClick(driver);
         WebElement fareStages = driver.findElement(By.id("fareStages"));
