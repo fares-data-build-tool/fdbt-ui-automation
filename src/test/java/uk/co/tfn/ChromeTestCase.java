@@ -3,8 +3,11 @@ package uk.co.tfn;
 import org.apache.tools.ant.types.Assertions;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+//import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,8 +41,8 @@ public class ChromeTestCase {
 
     private static RemoteWebDriver driver;
 
-    @Before
-    public void chromeSetup() throws IOException {
+    @BeforeAll
+    public static void chromeSetup() throws IOException {
 
 
         File file = new File("src/test/properties/env.properties");
@@ -114,6 +117,7 @@ public class ChromeTestCase {
         stepsToInputMethod(driver);
         driver.findElement(By.id("manual-entry")).click();
         continueButtonClick(driver);
+        waitForElement(driver, "lessThan20FareStages");
         driver.findElement(By.id("lessThan20FareStages")).click();
         continueButtonClick(driver);
         WebElement fareStages = driver.findElement(By.id("fareStages"));

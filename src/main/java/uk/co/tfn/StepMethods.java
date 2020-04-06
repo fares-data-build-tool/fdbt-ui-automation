@@ -21,6 +21,8 @@ public class StepMethods {
 
         continueButtonClick(driver);
 
+        waitForElement(driver, "faretype-single");
+
         driver.findElement(By.id("faretype-single")).click();
 
         continueButtonClick(driver);
