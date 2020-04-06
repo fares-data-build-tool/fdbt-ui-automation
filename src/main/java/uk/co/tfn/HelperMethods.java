@@ -38,10 +38,6 @@ public class HelperMethods {
         driver.get("https://tfn-test.infinityworks.com/");
     }
 
-    public static void makePageFullScreen(WebDriver driver) {
-        driver.manage().window().fullscreen();
-    }
-
     public static DesiredCapabilities setCapabilities() {
 
         DesiredCapabilities caps = new DesiredCapabilities();
@@ -125,7 +121,7 @@ public class HelperMethods {
 
     }
 
-    public static void uploadCsvFile(WebDriver driver) throws IOException {
+    public static void uploadFaresTriangleCsvFile(WebDriver driver) throws IOException {
         URL url = new URL("https://fdbt-test-upload.s3.eu-west-2.amazonaws.com/Fares-Triangle-Example.csv");
 
         File a = new File("../Fares-Triangle-Example.csv");
@@ -139,6 +135,23 @@ public class HelperMethods {
         ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
 
         upload.sendKeys("../Fares-Triangle-Example.csv");
+
+    }
+
+    public static void uploadFareZoneCsvFile(WebDriver driver) throws IOException {
+        URL url = new URL("https://fdbt-test-upload.s3.eu-west-2.amazonaws.com/Fare-Zone-Example.csv");
+
+        File a = new File("../Fare-Zone-Example.csv");
+
+        FileUtils.copyURLToFile(url, a);
+
+        waitForElementToBeClickable(driver, "csv-upload");
+
+        WebElement upload = driver.findElement(By.id("csv-upload"));
+
+        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
+
+        upload.sendKeys("../Fare-Zone-Example.csv");
 
     }
 

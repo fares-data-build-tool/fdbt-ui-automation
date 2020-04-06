@@ -46,6 +46,18 @@ public class StepMethods {
         continueButtonClick(driver);
     }
 
+    public static void stepsToPeriodPage(WebDriver driver){
+        startPageButtonClick(driver);
+
+        driver.findElement((By.id("operator-name0"))).click();
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("faretype-period")).click();
+
+        continueButtonClick(driver);
+    }
+
     public static void fillInManualFareStages(WebDriver driver) {
         String stageArray[] = new String[]{"1", "2", "3", "4", "5", "6", "7"};
 

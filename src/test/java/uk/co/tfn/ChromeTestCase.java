@@ -1,8 +1,8 @@
 package uk.co.tfn;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.After;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 import static uk.co.tfn.HelperMethods.continueButtonClick;
@@ -30,12 +31,14 @@ import static uk.co.tfn.HelperMethods.setCapabilities;
 import static uk.co.tfn.HelperMethods.setDriverService;
 import static uk.co.tfn.HelperMethods.setOptions;
 import static uk.co.tfn.HelperMethods.submitButtonClick;
-import static uk.co.tfn.HelperMethods.uploadCsvFile;
-import static uk.co.tfn.HelperMethods.waitForElement;
+import static uk.co.tfn.HelperMethods.uploadFareZoneCsvFile;
+import static uk.co.tfn.HelperMethods.uploadFaresTriangleCsvFile;
 import static uk.co.tfn.HelperMethods.waitForPageToLoad;
 import static uk.co.tfn.StepMethods.fillInFareStageTriangle;
 import static uk.co.tfn.StepMethods.fillInManualFareStages;
 import static uk.co.tfn.StepMethods.stepsToInputMethod;
+import static uk.co.tfn.StepMethods.stepsToPeriodPage;
+import static uk.co.tfn.HelperMethods.waitForElement;
 
 
 public class ChromeTestCase {
@@ -57,16 +60,16 @@ public class ChromeTestCase {
 
         if (host.equals("local")) {
             DesiredCapabilities caps = setCapabilities();
-        ChromeDriverService service = setDriverService();
-        ChromeOptions options = setOptions();
+            ChromeDriverService service = setDriverService();
+            ChromeOptions options = setOptions();
 
-        options.merge(caps);
+            options.merge(caps);
 
-        driver = new ChromeDriver(service, options);
+            driver = new ChromeDriver(service, options);
 
         } else {
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
-            DeviceFarmClient client  = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
+            DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
                     .build();
             CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
                     .expiresInSeconds(300)        // 5 minutes
@@ -98,7 +101,7 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        uploadCsvFile(driver);
+        uploadFaresTriangleCsvFile(driver);
 
         submitButtonClick(driver);
 
@@ -133,8 +136,55 @@ public class ChromeTestCase {
         assertTrue(isUuidStringValid(driver));
     }
 
-    @AfterAll
-    public static void tearDown() {
+    @Test
+    public void chromePeriodGeoZone() throws IOException {
+
+        getHomePage(driver);
+
+        waitForPageToLoad(driver);
+
+        stepsToPeriodPage(driver);
+
+        driver.findElement(By.id("periodtype-geo-zone")).click();
+
+        continueButtonClick(driver);
+
+        uploadFareZoneCsvFile(driver);
+
+        submitButtonClick(driver);
+
+        driver.findElement(By.id("periodProductName")).sendKeys("Selenium Test Product");
+
+        driver.findElement(By.id("periodProductPrice")).sendKeys("10.50");
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id(("validity"))).sendKeys("1");
+
+        continueButtonClick(driver);
+
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+
+        Random random = new Random();
+        String chosenSelector;
+        int number = random.nextInt(2) + 1;
+
+        if (number == 2) {
+            chosenSelector = endOfCalendarOption;
+        } else {
+            chosenSelector = endOfTwentyFourHoursOption;
+        }
+
+        driver.findElement(By.id((chosenSelector))).click();
+
+        continueButtonClick(driver);
+
+        assertTrue(isUuidStringValid(driver));
+    }
+
+    @After
+    public void tearDown() {
         driver.quit();
     }
 
