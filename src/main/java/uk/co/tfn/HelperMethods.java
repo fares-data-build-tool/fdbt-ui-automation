@@ -151,7 +151,7 @@ public class HelperMethods {
 
         ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
 
-        upload.sendKeys("../Fares-Triangle-Example.csv");
+        upload.sendKeys("../Fare-Zone-Example.csv");
 
     }
 

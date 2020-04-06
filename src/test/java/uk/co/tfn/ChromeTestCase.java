@@ -1,8 +1,8 @@
 package uk.co.tfn;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -38,14 +38,15 @@ import static uk.co.tfn.StepMethods.fillInFareStageTriangle;
 import static uk.co.tfn.StepMethods.fillInManualFareStages;
 import static uk.co.tfn.StepMethods.stepsToInputMethod;
 import static uk.co.tfn.StepMethods.stepsToPeriodPage;
+import static uk.co.tfn.HelperMethods.waitForElement;
 
 
 public class ChromeTestCase {
 
     private static RemoteWebDriver driver;
 
-    @Before
-    public void chromeSetup() throws IOException {
+    @BeforeAll
+    public static void chromeSetup() throws IOException {
 
 
         File file = new File("src/test/properties/env.properties");
@@ -68,7 +69,7 @@ public class ChromeTestCase {
 
         } else {
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
-            DeviceFarmClient client  = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
+            DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
                     .build();
             CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
                     .expiresInSeconds(300)        // 5 minutes
@@ -120,6 +121,7 @@ public class ChromeTestCase {
         stepsToInputMethod(driver);
         driver.findElement(By.id("manual-entry")).click();
         continueButtonClick(driver);
+        waitForElement(driver, "lessThan20FareStages");
         driver.findElement(By.id("lessThan20FareStages")).click();
         continueButtonClick(driver);
         WebElement fareStages = driver.findElement(By.id("fareStages"));
@@ -183,7 +185,6 @@ public class ChromeTestCase {
 
     @After
     public void tearDown() {
-        driver.manage().deleteAllCookies();
         driver.quit();
     }
 
