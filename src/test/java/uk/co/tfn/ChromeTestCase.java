@@ -68,6 +68,10 @@ public class ChromeTestCase {
             driver = new ChromeDriver(service, options);
 
         } else {
+            String aws_secret_access_key = System.getenv("AWS_SECRET_ACCESS_KEY");
+            String aws_access_key = System.getenv("AWS_ACCESS_KEY");
+            System.setProperty("AWS_SECRET_ACCESS_KEY", aws_secret_access_key);
+            System.setProperty("AWS_ACCESS_KEY", aws_access_key);
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
             DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
                     .build();
