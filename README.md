@@ -33,6 +33,9 @@ To change to hit your local version of the site, change the homepage URL to your
 
 This will run the tests on your local machine
 
+Change browser by either editing the browser in properties to one of firefox or chrome (<- actual names)
+Or running mvn -P local-firefox or local-chrome
+
 
 ## Running the tests remotely
 
@@ -40,7 +43,7 @@ To run the tests on AWS device farm you must put the awstfn-mfa script from the 
 
 From your IDE terminal run 'source awstfn-mfa tfn-test <AWS_USERNAME>' and login with your MFA code
 
-The pack can then be run remotely using 'mvn test -P remote-chrome' or by editing the host within /src/test/properties/env.properties to remote
+The pack can then be run remotely using 'mvn test -P remote-<browser>' or by editing the host within /src/test/properties/env.properties to remote
 
  
 ### Aim
