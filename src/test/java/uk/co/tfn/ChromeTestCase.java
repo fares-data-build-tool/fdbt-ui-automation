@@ -1,5 +1,6 @@
 package uk.co.tfn;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.After;
@@ -8,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import software.amazon.awssdk.regions.Region;
@@ -56,21 +59,24 @@ public class ChromeTestCase {
         fileInput.close();
         String browser = properties.getProperty("browser");
         String host = properties.getProperty("host");
-        System.out.println(browser + host);
 
         if (host.equals("local")) {
             DesiredCapabilities caps = setCapabilities();
-            ChromeDriverService service = setDriverService();
-            ChromeOptions options = setOptions();
+            if (browser.equals("chrome")) {
+                ChromeDriverService service = setDriverService();
+                ChromeOptions options = setOptions();
+                options.merge(caps);
 
-            options.merge(caps);
-
-            driver = new ChromeDriver(service, options);
-
+                driver = new ChromeDriver(service, options);
+            } else if (browser.equals("firefox")) {
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.setCapability("marionette", true);
+                driver = new FirefoxDriver(firefoxOptions);
+            }
         } else {
             String aws_secret_access_key = System.getenv("AWS_SECRET_ACCESS_KEY");
             String aws_access_key = System.getenv("AWS_ACCESS_KEY");
-            System.setProperty("aws.secretAccessKey", aws_secret_access_key);
+            System.setProperty("aws.secretAccessKey", aws_secret_access_key); //if attempting to run on AWS From local machine, comment these two lines out, and assume role using awstfn-mfa script
             System.setProperty("aws.accessKeyId", aws_access_key);
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
             DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
@@ -105,7 +111,7 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        uploadFaresTriangleCsvFile(driver);
+        uploadFaresTriangleCsvFile(driver); //TODO fixing for firefox
 
         submitButtonClick(driver);
 
@@ -153,7 +159,7 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        uploadFareZoneCsvFile(driver);
+        uploadFareZoneCsvFile(driver); //TODO needs fixing for firefox
 
         submitButtonClick(driver);
 
@@ -187,8 +193,8 @@ public class ChromeTestCase {
         assertTrue(isUuidStringValid(driver));
     }
 
-    @After
-    public void tearDown() {
+    @AfterAll
+    public static void tearDown() {
         driver.quit();
     }
 
