@@ -155,6 +155,18 @@ public class HelperMethods {
 
     }
 
+    public static String makeRandomDecisionBetweenTwoElements(String firstElementId, String secondElementId) {
+        Random random = new Random();
+        String chosenSelector;
+        int number = random.nextInt(2) + 1;
+        if (number == 2) {
+            chosenSelector = secondElementId;
+        } else {
+            chosenSelector = firstElementId;
+        }
+        return chosenSelector;
+    }
+
     public static boolean isUuidStringValid(WebDriver driver){
         waitForElement(driver, "uuid-ref-number");
 

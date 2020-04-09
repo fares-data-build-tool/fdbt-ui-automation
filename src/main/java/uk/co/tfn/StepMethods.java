@@ -10,6 +10,7 @@ import java.util.List;
 import static uk.co.tfn.HelperMethods.continueButtonClick;
 import static uk.co.tfn.HelperMethods.startPageButtonClick;
 import static uk.co.tfn.HelperMethods.waitForElement;
+import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoElements;
 
 public class StepMethods {
 
@@ -73,8 +74,6 @@ public class StepMethods {
     public static void fillInFareStageTriangle(WebDriver driver) {
         String columnArray[] = new String[]{"100", "100", "50", "100", "250", "300", "450"};
 
-
-        String x;
         for (int row = 1; row < 7; row++) {
             for (int column = 0; column < row; column++) {
                 WebElement fareStage = driver.findElement(By.id("cell-" + row + "-" + column));
@@ -82,5 +81,12 @@ public class StepMethods {
             }
 
         }
+    }
+
+    public static void selectAllServicesForASingleOperator(WebDriver driver) {
+        String selectAllButton = "select-all-button";
+        
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoElements(firstElementId, secondElementId)
     }
 }

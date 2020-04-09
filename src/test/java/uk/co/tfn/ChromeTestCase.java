@@ -39,6 +39,7 @@ import static uk.co.tfn.StepMethods.fillInManualFareStages;
 import static uk.co.tfn.StepMethods.stepsToInputMethod;
 import static uk.co.tfn.StepMethods.stepsToPeriodPage;
 import static uk.co.tfn.HelperMethods.waitForElement;
+import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoElements;
 
 
 public class ChromeTestCase {
@@ -170,15 +171,76 @@ public class ChromeTestCase {
         String endOfCalendarOption = "period-end-calendar";
         String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
-        Random random = new Random();
         String chosenSelector;
-        int number = random.nextInt(2) + 1;
+        chosenSelector = makeRandomDecisionBetweenTwoElements(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-        if (number == 2) {
-            chosenSelector = endOfCalendarOption;
-        } else {
-            chosenSelector = endOfTwentyFourHoursOption;
+        driver.findElement(By.id((chosenSelector))).click();
+
+        continueButtonClick(driver);
+
+        assertTrue(isUuidStringValid(driver));
+    }
+
+    @Test
+    public void chromePeriodMultipleServices() throws IOException {
+
+        getHomePage(driver);
+
+        waitForPageToLoad(driver);
+
+        stepsToPeriodPage(driver);
+
+        driver.findElement(By.id("periodtype-single-set-service")).click();
+
+        continueButtonClick(driver);
+
+        Random random = new Random();
+        int randomSelector = random.nextInt(4) + 1;
+        switch(randomSelector) {
+            case 1:
+                // 1. Click Select All button and continue
+                break;
+            case 2:
+                // 2. Loop through checkboxes and click all, then continue
+                break;
+            case 3:
+                // 3. Loop through checkboxes and click random ones, then continue.
+                break;
+            case 4:
+                // 4. Click Select All button and then click random checkboxes to deselect, then continue
+                break;
+            case 5:
+                // 5. Loop through checkboxes and click all and then click random checkboxes to deselect, then continue.
+                break;
         }
+
+        // Need to create functions for:
+            // - Looping through checkboxes and clicking all
+            // - Looping through checkboxes and clicking random number (given either a lower or upper limit)
+            // - Clicking Select All?
+
+        // Steps for selecting ALL or MULTIPLE SERVICES
+            // - Check if there are multiple checkboxes
+            // - Use a random int generator to decide whether to click Select All or click checkboxes
+            // - If clicking checkboxes, need to loop through the list of checkboxes and click a randon number (n) of them where: if total=1, n=1; if total>1, 1<n<total
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("periodProductName")).sendKeys("Selenium Test Product");
+
+        driver.findElement(By.id("periodProductPrice")).sendKeys("10.50");
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id(("validity"))).sendKeys("1");
+
+        continueButtonClick(driver);
+
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoElements(endOfCalendarOption, endOfTwentyFourHoursOption);
 
         driver.findElement(By.id((chosenSelector))).click();
 
