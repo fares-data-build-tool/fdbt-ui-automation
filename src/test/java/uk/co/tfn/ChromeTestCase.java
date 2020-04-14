@@ -133,7 +133,7 @@ public class ChromeTestCase {
         continueButtonClick(driver);
         fillInFareStageTriangle(driver);
         continueButtonClick(driver);
-        fillInFareStageOptions(driver, 6);
+        fillInFareStageOptions(driver, 7);
         submitButtonClick(driver);
         assertTrue(isUuidStringValid(driver));
     }

@@ -90,14 +90,16 @@ public class HelperMethods {
         fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
     }
 
-    public static void fillInFareStageOptions(WebDriver driver, int range) {
+    public static void fillInFareStageOptions(WebDriver driver, int numberOfFareStages) {
 
         List<WebElement> dropdowns = driver.findElements(By.className("farestage-select-wrapper"));
 
-        final AtomicInteger counter = new AtomicInteger(0);
+        final AtomicInteger dropdownCounter = new AtomicInteger(0);
+        final AtomicInteger fareStageCounter = new AtomicInteger(0);
 
         dropdowns.forEach(dropdown -> {
-            WebElement chosenDropdown = driver.findElement(By.id(String.format("option%s", counter.getAndIncrement())));
+            WebElement chosenDropdown = driver
+                    .findElement(By.id(String.format("option%s", dropdownCounter.getAndIncrement())));
 
             chosenDropdown.click();
 
@@ -105,9 +107,11 @@ public class HelperMethods {
 
             List<WebElement> dropdownOptions = select.getOptions();
 
-            Random random = new Random();
+            dropdownOptions.get(fareStageCounter.getAndIncrement()).click();
 
-            dropdownOptions.get(random.nextInt(range)).click();
+            if (fareStageCounter.get() == (numberOfFareStages + 1)) {
+                fareStageCounter.set(0);
+            }
 
             return;
         });
@@ -168,8 +172,10 @@ public class HelperMethods {
         for (int i = 0; i < numberOfCheckboxes; i++) {
             WebElement chosenCheckbox = driver.findElement(By.id(String.format("checkbox-%s", i)));
             chosenCheckbox.click();
-            if (selectAll == true) {
-                i++;
+            if (selectAll == false) {
+                Random random = new Random();
+                int iterator = random.nextInt((numberOfCheckboxes - i)) + 1;
+                i += iterator;
             }
         }
         return;

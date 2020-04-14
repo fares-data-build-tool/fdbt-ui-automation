@@ -82,11 +82,4 @@ public class StepMethods {
 
         }
     }
-
-    public static void selectAllServicesForASingleOperator(WebDriver driver) {
-        String selectAllButton = "select-all-button";
-        
-        String chosenSelector;
-        chosenSelector = makeRandomDecisionBetweenTwoElements(firstElementId, secondElementId)
-    }
 }
