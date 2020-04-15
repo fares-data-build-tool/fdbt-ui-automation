@@ -39,7 +39,8 @@ import static uk.co.tfn.StepMethods.fillInManualFareStages;
 import static uk.co.tfn.StepMethods.stepsToInputMethod;
 import static uk.co.tfn.StepMethods.stepsToPeriodPage;
 import static uk.co.tfn.HelperMethods.waitForElement;
-
+import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoElements;
+import static uk.co.tfn.HelperMethods.clickSelectedNumberOfCheckboxes;
 
 public class ChromeTestCase {
 
@@ -47,7 +48,6 @@ public class ChromeTestCase {
 
     @BeforeAll
     public static void chromeSetup() throws IOException {
-
 
         File file = new File("src/test/properties/env.properties");
         FileInputStream fileInput = new FileInputStream(file);
@@ -73,12 +73,10 @@ public class ChromeTestCase {
             System.setProperty("aws.secretAccessKey", aws_secret_access_key);
             System.setProperty("aws.accessKeyId", aws_access_key);
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
-            DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) //Device farm is in US_WEST_2
+            DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) // Device farm is in US_WEST_2
                     .build();
-            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
-                    .expiresInSeconds(300)        // 5 minutes
-                    .projectArn(myProjectARN)
-                    .build();
+            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder().expiresInSeconds(300) // 5 minutes
+                    .projectArn(myProjectARN).build();
             URL testGridUrl = null;
             try {
                 CreateTestGridUrlResponse response = client.createTestGridUrl(request);
@@ -135,7 +133,7 @@ public class ChromeTestCase {
         continueButtonClick(driver);
         fillInFareStageTriangle(driver);
         continueButtonClick(driver);
-        fillInFareStageOptions(driver, 6);
+        fillInFareStageOptions(driver, 7);
         submitButtonClick(driver);
         assertTrue(isUuidStringValid(driver));
     }
@@ -170,15 +168,81 @@ public class ChromeTestCase {
         String endOfCalendarOption = "period-end-calendar";
         String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
-        Random random = new Random();
         String chosenSelector;
-        int number = random.nextInt(2) + 1;
+        chosenSelector = makeRandomDecisionBetweenTwoElements(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-        if (number == 2) {
-            chosenSelector = endOfCalendarOption;
-        } else {
-            chosenSelector = endOfTwentyFourHoursOption;
+        driver.findElement(By.id((chosenSelector))).click();
+
+        continueButtonClick(driver);
+
+        assertTrue(isUuidStringValid(driver));
+    }
+
+    @Test
+    public void chromePeriodMultipleServices() throws IOException {
+
+        getHomePage(driver);
+
+        waitForPageToLoad(driver);
+
+        stepsToPeriodPage(driver);
+
+        driver.findElement(By.id("periodtype-single-set-service")).click();
+
+        continueButtonClick(driver);
+
+        Random random = new Random();
+        int randomSelector = random.nextInt(4) + 1;
+        switch (randomSelector) {
+            case 1:
+                // 1. Click Select All button and continue
+                driver.findElement(By.id("select-all-button")).click();
+                waitForPageToLoad(driver);
+                break;
+            case 2:
+                // 2. Loop through checkboxes and click all, then continue
+                boolean selectAll = true;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 3:
+                // 3. Loop through checkboxes and click random ones, then continue.
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 4:
+                // 4. Click Select All button and then click random checkboxes to deselect, then continue
+                driver.findElement(By.id("select-all-button")).click();
+                waitForPageToLoad(driver);
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 5:
+                // 5. Loop through checkboxes and click all and then click random checkboxes to
+                // deselect, then continue.
+                selectAll = true;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
         }
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("periodProductName")).sendKeys("Selenium Test Product");
+
+        driver.findElement(By.id("periodProductPrice")).sendKeys("10.50");
+
+        continueButtonClick(driver);
+
+        driver.findElement(By.id(("validity"))).sendKeys("1");
+
+        continueButtonClick(driver);
+
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoElements(endOfCalendarOption, endOfTwentyFourHoursOption);
 
         driver.findElement(By.id((chosenSelector))).click();
 
