@@ -75,7 +75,7 @@ public class ChromeTestCase {
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
             DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) // Device farm is in US_WEST_2
                     .build();
-            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder().expiresInSeconds(300) // 5 minutes
+            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder().expiresInSeconds(600) // 10 minutes
                     .projectArn(myProjectARN).build();
             URL testGridUrl = null;
             try {
@@ -210,7 +210,8 @@ public class ChromeTestCase {
                 clickSelectedNumberOfCheckboxes(driver, selectAll);
                 break;
             case 4:
-                // 4. Click Select All button and then click random checkboxes to deselect, then continue
+                // 4. Click Select All button and then click random checkboxes to deselect, then
+                // continue
                 driver.findElement(By.id("select-all-button")).click();
                 waitForPageToLoad(driver);
                 selectAll = false;
