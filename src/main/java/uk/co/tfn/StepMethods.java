@@ -10,7 +10,6 @@ import java.util.List;
 import static uk.co.tfn.HelperMethods.continueButtonClick;
 import static uk.co.tfn.HelperMethods.startPageButtonClick;
 import static uk.co.tfn.HelperMethods.waitForElement;
-import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoElements;
 
 public class StepMethods {
 
@@ -21,15 +20,15 @@ public class StepMethods {
 
         continueButtonClick(driver);
 
-        waitForElement(driver, "faretype-single");
+        waitForElement(driver, "fareType-single");
 
-        driver.findElement(By.id("faretype-single")).click();
+        driver.findElement(By.id("fareType-single")).click();
 
         continueButtonClick(driver);
 
         driver.findElement(By.id("service")).click();
 
-        waitForElement(driver,"service");
+        waitForElement(driver, "service");
 
         Select serviceDropdown = new Select(driver.findElement(By.id("service")));
 
@@ -47,20 +46,20 @@ public class StepMethods {
         continueButtonClick(driver);
     }
 
-    public static void stepsToPeriodPage(WebDriver driver){
+    public static void stepsToPeriodPage(WebDriver driver) {
         startPageButtonClick(driver);
 
         driver.findElement((By.id("operator-name0"))).click();
 
         continueButtonClick(driver);
 
-        driver.findElement(By.id("faretype-period")).click();
+        driver.findElement(By.id("fareType-period")).click();
 
         continueButtonClick(driver);
     }
 
     public static void fillInManualFareStages(WebDriver driver) {
-        String stageArray[] = new String[]{"1", "2", "3", "4", "5", "6", "7"};
+        String stageArray[] = new String[] { "1", "2", "3", "4", "5", "6", "7" };
 
         int i;
         String x;
@@ -72,7 +71,7 @@ public class StepMethods {
     }
 
     public static void fillInFareStageTriangle(WebDriver driver) {
-        String columnArray[] = new String[]{"100", "100", "50", "100", "250", "300", "450"};
+        String columnArray[] = new String[] { "100", "100", "50", "100", "250", "300", "450" };
 
         for (int row = 1; row < 7; row++) {
             for (int column = 0; column < row; column++) {
