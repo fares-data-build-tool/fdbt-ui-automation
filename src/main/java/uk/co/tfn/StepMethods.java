@@ -32,7 +32,7 @@ public class StepMethods {
 
         Select serviceDropdown = new Select(driver.findElement(By.id("service")));
 
-        serviceDropdown.selectByVisibleText("11 - Start date 02/01/2020");
+        serviceDropdown.selectByVisibleText("11 - Start date 05/04/2020");
 
         continueButtonClick(driver);
 
