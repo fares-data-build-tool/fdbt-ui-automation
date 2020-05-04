@@ -20,7 +20,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 import static uk.co.tfn.HelperMethods.continueButtonClick;
@@ -116,7 +115,7 @@ public class ChromeTestCase {
 
     }
 
-    // @Test
+    @Test
     public void chromeManualTriangle() {
 
         getHomePage(driver);
@@ -139,7 +138,7 @@ public class ChromeTestCase {
         assertTrue(isUuidStringValid(driver));
     }
 
-    // @Test
+    @Test
     public void chromePeriodGeoZone() throws IOException {
 
         getHomePage(driver);
@@ -183,7 +182,7 @@ public class ChromeTestCase {
         assertTrue(isUuidStringValid(driver));
     }
 
-    // @Test
+    @Test
     public void chromePeriodMultipleServices() throws IOException {
 
         getHomePage(driver);
@@ -227,8 +226,9 @@ public class ChromeTestCase {
         assertTrue(isUuidStringValid(driver));
     }
 
-    // @Test
+    @Test
     public void chromePeriodMultipleProducts() throws IOException {
+        
         getHomePage(driver);
 
         waitForPageToLoad(driver);
