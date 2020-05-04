@@ -10,6 +10,7 @@ import java.util.List;
 import static uk.co.tfn.HelperMethods.continueButtonClick;
 import static uk.co.tfn.HelperMethods.startPageButtonClick;
 import static uk.co.tfn.HelperMethods.waitForElement;
+import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoChoices;
 
 public class StepMethods {
 
@@ -36,8 +37,8 @@ public class StepMethods {
 
         continueButtonClick(driver);
 
-        driver.findElement(By.id("journeyPattern")).click();
-        Select directionDropdown = new Select(driver.findElement(By.id("journeyPattern")));
+        driver.findElement(By.id("directionJourneyPattern")).click();
+        Select directionDropdown = new Select(driver.findElement(By.id("directionJourneyPattern")));
 
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
 
@@ -80,5 +81,24 @@ public class StepMethods {
             }
 
         }
+    }
+
+    public static void enterDetailsAndSelectValidityForMultipleProducts(WebDriver driver, Integer numberOfProducts) {
+        for (int i = 0; i < numberOfProducts; i++) {
+            driver.findElement(By.id(String.format("multipleProductName%s", i)))
+                    .sendKeys(String.format("Product %s", i));
+            driver.findElement(By.id(String.format("multipleProductPrice%s", i))).sendKeys("3.67");
+            driver.findElement(By.id(String.format("multipleProductDuration%s", i))).sendKeys("7");
+        }
+        continueButtonClick(driver);
+
+        for (int i = 0; i < numberOfProducts; i++) {
+            String twentyFourHourId = String.format("twenty-four-hours-row%s", i);
+            String calendayDayId = String.format("calendar-day-row%s", i);
+            String validitySelectionId = makeRandomDecisionBetweenTwoChoices(twentyFourHourId, calendayDayId);
+            driver.findElement(By.id(validitySelectionId)).click();
+        }
+
+        continueButtonClick(driver);
     }
 }
