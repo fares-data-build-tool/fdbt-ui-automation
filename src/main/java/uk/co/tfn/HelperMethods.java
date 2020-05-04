@@ -34,7 +34,7 @@ public class HelperMethods {
     }
 
     public static void getHomePage(WebDriver driver) {
-        driver.get("https://tfn-test.infinityworks.com/");
+        driver.get("https://tfn-test.infinityworks.com");
     }
 
     public static DesiredCapabilities setCapabilities() {
@@ -101,6 +101,10 @@ public class HelperMethods {
             WebElement chosenDropdown = driver
                     .findElement(By.id(String.format("option%s", dropdownCounter.getAndIncrement())));
 
+            if (dropdownCounter.get() > (numberOfFareStages + 1)) {
+                return;
+            }
+
             chosenDropdown.click();
 
             Select select = new Select(chosenDropdown);
@@ -152,7 +156,7 @@ public class HelperMethods {
 
     }
 
-    public static String makeRandomDecisionBetweenTwoElements(String firstElementId, String secondElementId) {
+    public static String makeRandomDecisionBetweenTwoChoices(String firstElementId, String secondElementId) {
         Random random = new Random();
         String chosenSelector;
         int number = random.nextInt(2) + 1;
@@ -179,6 +183,45 @@ public class HelperMethods {
             }
         }
         return;
+    }
+
+    public static void randomlyChooseAndSelectServices(WebDriver driver) {
+        Random random = new Random();
+        int randomSelector = random.nextInt(4) + 1;
+        switch (randomSelector) {
+            case 1:
+                // 1. Click Select All button and continue
+                driver.findElement(By.id("select-all-button")).click();
+                waitForPageToLoad(driver);
+                break;
+            case 2:
+                // 2. Loop through checkboxes and click all, then continue
+                boolean selectAll = true;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 3:
+                // 3. Loop through checkboxes and click random ones, then continue.
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 4:
+                // 4. Click Select All button and then click random checkboxes to deselect, then
+                // continue
+                driver.findElement(By.id("select-all-button")).click();
+                waitForPageToLoad(driver);
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 5:
+                // 5. Loop through checkboxes and click all and then click random checkboxes to
+                // deselect, then continue.
+                selectAll = true;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+        }
+
     }
 
     public static boolean isUuidStringValid(WebDriver driver) {

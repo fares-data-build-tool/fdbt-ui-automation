@@ -20,7 +20,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 import static uk.co.tfn.HelperMethods.continueButtonClick;
@@ -39,8 +38,9 @@ import static uk.co.tfn.StepMethods.fillInManualFareStages;
 import static uk.co.tfn.StepMethods.stepsToInputMethod;
 import static uk.co.tfn.StepMethods.stepsToPeriodPage;
 import static uk.co.tfn.HelperMethods.waitForElement;
-import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoElements;
-import static uk.co.tfn.HelperMethods.clickSelectedNumberOfCheckboxes;
+import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoChoices;
+import static uk.co.tfn.HelperMethods.randomlyChooseAndSelectServices;
+import static uk.co.tfn.StepMethods.enterDetailsAndSelectValidityForMultipleProducts;
 
 public class ChromeTestCase {
 
@@ -155,6 +155,10 @@ public class ChromeTestCase {
 
         submitButtonClick(driver);
 
+        driver.findElement(By.id("numberOfProducts")).sendKeys("1");
+        
+        continueButtonClick(driver);
+
         driver.findElement(By.id("periodProductName")).sendKeys("Selenium Test Product");
 
         driver.findElement(By.id("periodProductPrice")).sendKeys("10.50");
@@ -169,7 +173,7 @@ public class ChromeTestCase {
         String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
         String chosenSelector;
-        chosenSelector = makeRandomDecisionBetweenTwoElements(endOfCalendarOption, endOfTwentyFourHoursOption);
+        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
         driver.findElement(By.id((chosenSelector))).click();
 
@@ -191,42 +195,12 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        Random random = new Random();
-        int randomSelector = random.nextInt(4) + 1;
-        switch (randomSelector) {
-            case 1:
-                // 1. Click Select All button and continue
-                driver.findElement(By.id("select-all-button")).click();
-                waitForPageToLoad(driver);
-                break;
-            case 2:
-                // 2. Loop through checkboxes and click all, then continue
-                boolean selectAll = true;
-                clickSelectedNumberOfCheckboxes(driver, selectAll);
-                break;
-            case 3:
-                // 3. Loop through checkboxes and click random ones, then continue.
-                selectAll = false;
-                clickSelectedNumberOfCheckboxes(driver, selectAll);
-                break;
-            case 4:
-                // 4. Click Select All button and then click random checkboxes to deselect, then
-                // continue
-                driver.findElement(By.id("select-all-button")).click();
-                waitForPageToLoad(driver);
-                selectAll = false;
-                clickSelectedNumberOfCheckboxes(driver, selectAll);
-                break;
-            case 5:
-                // 5. Loop through checkboxes and click all and then click random checkboxes to
-                // deselect, then continue.
-                selectAll = true;
-                clickSelectedNumberOfCheckboxes(driver, selectAll);
-                selectAll = false;
-                clickSelectedNumberOfCheckboxes(driver, selectAll);
-                break;
-        }
+        randomlyChooseAndSelectServices(driver);
 
+        continueButtonClick(driver);
+
+        driver.findElement(By.id("numberOfProducts")).sendKeys("1");
+        
         continueButtonClick(driver);
 
         driver.findElement(By.id("periodProductName")).sendKeys("Selenium Test Product");
@@ -243,11 +217,39 @@ public class ChromeTestCase {
         String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
         String chosenSelector;
-        chosenSelector = makeRandomDecisionBetweenTwoElements(endOfCalendarOption, endOfTwentyFourHoursOption);
+        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
         driver.findElement(By.id((chosenSelector))).click();
 
         continueButtonClick(driver);
+
+        assertTrue(isUuidStringValid(driver));
+    }
+
+    @Test
+    public void chromePeriodMultipleProducts() throws IOException {
+        
+        getHomePage(driver);
+
+        waitForPageToLoad(driver);
+
+        stepsToPeriodPage(driver);
+
+        driver.findElement(By.id("periodtype-single-set-service")).click();
+
+        continueButtonClick(driver);
+
+        randomlyChooseAndSelectServices(driver);
+
+        continueButtonClick(driver);
+
+        int numberOfProducts = 4;
+
+        driver.findElement(By.id("numberOfProducts")).sendKeys(Integer.toString(numberOfProducts));
+
+        continueButtonClick(driver);
+
+        enterDetailsAndSelectValidityForMultipleProducts(driver, numberOfProducts);
 
         assertTrue(isUuidStringValid(driver));
     }
