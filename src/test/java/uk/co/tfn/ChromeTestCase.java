@@ -243,7 +243,7 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        Integer numberOfProducts = 4;
+        int numberOfProducts = 4;
 
         driver.findElement(By.id("numberOfProducts")).sendKeys(Integer.toString(numberOfProducts));
 

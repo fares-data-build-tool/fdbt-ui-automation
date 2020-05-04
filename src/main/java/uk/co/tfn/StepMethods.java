@@ -83,7 +83,7 @@ public class StepMethods {
         }
     }
 
-    public static void enterDetailsAndSelectValidityForMultipleProducts(WebDriver driver, Integer numberOfProducts) {
+    public static void enterDetailsAndSelectValidityForMultipleProducts(WebDriver driver, int numberOfProducts) {
         for (int i = 0; i < numberOfProducts; i++) {
             driver.findElement(By.id(String.format("multipleProductName%s", i)))
                     .sendKeys(String.format("Product %s", i));

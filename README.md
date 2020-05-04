@@ -11,7 +11,7 @@ Selenium automation framework project, to prove key user journeys work.
 - Put the chromedriver you download (and unzip) into your /usr/local directory
 
 - On MacOS:
-    - When you first run the UI tests on your machine, you might receive an error telling you that '“chromedriver” cannot be opened because the developer cannot be verified'. If you receive this error, open System Preferences > Security & Privacy > General and select 'Allow Anyway' alongside the messaege about chromdriver.
+    - When you first run the UI tests on your machine, you might receive an error telling you that '“chromedriver” cannot be opened because the developer cannot be verified'. If you receive this error, open **System Preferences** > **Security & Privacy** > **General** and select 'Allow Anyway' alongside the message about chromedriver.
     - The next time you receive an error window, click through to allow chromedriver to run.
 
 ### Maven
