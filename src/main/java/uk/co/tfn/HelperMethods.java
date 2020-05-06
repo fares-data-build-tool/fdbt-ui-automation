@@ -34,7 +34,7 @@ public class HelperMethods {
     }
 
     public static void getHomePage(WebDriver driver) {
-        driver.get("https://tfn-test.infinityworks.com");
+        driver.get("http://localhost:5555");
     }
 
     public static DesiredCapabilities setCapabilities() {
