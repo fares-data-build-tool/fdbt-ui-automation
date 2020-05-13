@@ -26,16 +26,15 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-
 public class HelperMethods {
 
     public static void waitForPageToLoad(WebDriver driver) {
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(
-                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(webDriver -> ((JavascriptExecutor) webDriver)
+                .executeScript("return document.readyState").equals("complete"));
     }
 
     public static void getHomePage(WebDriver driver) {
-        driver.get("https://tfn-test.infinityworks.com/");
+        driver.get("https://tfn-test.infinityworks.com");
     }
 
     public static DesiredCapabilities setCapabilities() {
@@ -47,7 +46,7 @@ public class HelperMethods {
         return caps;
     }
 
-    public static ChromeOptions setOptions(){
+    public static ChromeOptions setOptions() {
         ChromeOptions options = new ChromeOptions();
 
         options.setPageLoadStrategy(PageLoadStrategy.NONE);
@@ -57,54 +56,54 @@ public class HelperMethods {
         return options;
     }
 
-    public static ChromeDriverService setDriverService(){
-        return new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File("/usr/local/chromedriver"))
-                .usingAnyFreePort()
-                .build();
+    public static ChromeDriverService setDriverService() {
+        return new ChromeDriverService.Builder().usingDriverExecutable(new File("/usr/local/chromedriver"))
+                .usingAnyFreePort().build();
     }
 
-    public static void continueButtonClick(WebDriver driver){
+    public static void continueButtonClick(WebDriver driver) {
         driver.findElement(By.id("continue-button")).click();
         waitForPageToLoad(driver);
     }
 
-    public static void submitButtonClick(WebDriver driver){
+    public static void submitButtonClick(WebDriver driver) {
         driver.findElement(By.id("submit-button")).click();
         waitForPageToLoad(driver);
     }
 
-    public static void startPageButtonClick(WebDriver driver){
+    public static void startPageButtonClick(WebDriver driver) {
         driver.findElement((By.id("start-now-button"))).click();
         waitForPageToLoad(driver);
     }
 
-    public static void waitForElement(WebDriver driver, String elementId){
-        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofMillis(200))
-                .ignoring(NoSuchElementException.class);
+    public static void waitForElement(WebDriver driver, String elementId) {
+        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofMillis(200)).ignoring(NoSuchElementException.class);
 
         fluentWait.until((Function<WebDriver, WebElement>) driver1 -> driver1.findElement(By.id(elementId)));
     }
 
-    public static void waitForElementToBeClickable(WebDriver driver, String elementId){
-        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofMillis(200))
-                .ignoring(NoSuchElementException.class);
+    public static void waitForElementToBeClickable(WebDriver driver, String elementId) {
+        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofMillis(200)).ignoring(NoSuchElementException.class);
 
         fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
     }
 
-    public static void fillInFareStageOptions(WebDriver driver, int range){
+    public static void fillInFareStageOptions(WebDriver driver, int numberOfFareStages) {
 
         List<WebElement> dropdowns = driver.findElements(By.className("farestage-select-wrapper"));
 
-        final AtomicInteger counter = new AtomicInteger(0);
+        final AtomicInteger dropdownCounter = new AtomicInteger(0);
+        final AtomicInteger fareStageCounter = new AtomicInteger(0);
 
         dropdowns.forEach(dropdown -> {
-            WebElement chosenDropdown = driver.findElement(By.id(String.format("option%s", counter.getAndIncrement())));
+            WebElement chosenDropdown = driver
+                    .findElement(By.id(String.format("option%s", dropdownCounter.getAndIncrement())));
+
+            if (dropdownCounter.get() > (numberOfFareStages + 1)) {
+                return;
+            }
 
             chosenDropdown.click();
 
@@ -112,9 +111,11 @@ public class HelperMethods {
 
             List<WebElement> dropdownOptions = select.getOptions();
 
-            Random random = new Random();
+            dropdownOptions.get(fareStageCounter.getAndIncrement()).click();
 
-            dropdownOptions.get(random.nextInt(range)).click();
+            if (fareStageCounter.get() == (numberOfFareStages + 1)) {
+                fareStageCounter.set(0);
+            }
 
             return;
         });
@@ -132,7 +133,7 @@ public class HelperMethods {
 
         WebElement upload = driver.findElement(By.id("csv-upload"));
 
-        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
+        ((RemoteWebElement) upload).setFileDetector(new LocalFileDetector());
 
         upload.sendKeys("../Fares-Triangle-Example.csv");
 
@@ -149,13 +150,81 @@ public class HelperMethods {
 
         WebElement upload = driver.findElement(By.id("csv-upload"));
 
-        ((RemoteWebElement) upload ).setFileDetector(new LocalFileDetector());
+        ((RemoteWebElement) upload).setFileDetector(new LocalFileDetector());
 
         upload.sendKeys("../Fare-Zone-Example.csv");
 
     }
 
-    public static boolean isUuidStringValid(WebDriver driver){
+    public static String makeRandomDecisionBetweenTwoChoices(String firstElementId, String secondElementId) {
+        Random random = new Random();
+        String chosenSelector;
+        int number = random.nextInt(2) + 1;
+        if (number == 2) {
+            chosenSelector = secondElementId;
+        } else {
+            chosenSelector = firstElementId;
+        }
+        return chosenSelector;
+    }
+
+    public static void clickSelectedNumberOfCheckboxes(WebDriver driver, boolean selectAll) {
+
+        List<WebElement> checkboxes = driver.findElements(By.className("govuk-checkboxes__item"));
+        int numberOfCheckboxes = checkboxes.size();
+
+        for (int i = 0; i < numberOfCheckboxes; i++) {
+            WebElement chosenCheckbox = driver.findElement(By.id(String.format("checkbox-%s", i)));
+            chosenCheckbox.click();
+            if (selectAll == false) {
+                Random random = new Random();
+                int iterator = random.nextInt((numberOfCheckboxes - i)) + 1;
+                i += iterator;
+            }
+        }
+        return;
+    }
+
+    public static void randomlyChooseAndSelectServices(WebDriver driver) {
+        Random random = new Random();
+        int randomSelector = random.nextInt(4) + 1;
+        switch (randomSelector) {
+            case 1:
+                // 1. Click Select All button and continue
+                driver.findElement(By.id("select-all-button")).click();
+                waitForPageToLoad(driver);
+                break;
+            case 2:
+                // 2. Loop through checkboxes and click all, then continue
+                boolean selectAll = true;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 3:
+                // 3. Loop through checkboxes and click random ones, then continue.
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 4:
+                // 4. Click Select All button and then click random checkboxes to deselect, then
+                // continue
+                driver.findElement(By.id("select-all-button")).click();
+                waitForPageToLoad(driver);
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+            case 5:
+                // 5. Loop through checkboxes and click all and then click random checkboxes to
+                // deselect, then continue.
+                selectAll = true;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                selectAll = false;
+                clickSelectedNumberOfCheckboxes(driver, selectAll);
+                break;
+        }
+
+    }
+
+    public static boolean isUuidStringValid(WebDriver driver) {
         waitForElement(driver, "uuid-ref-number");
 
         String rawUuid = driver.findElement(By.id("uuid-ref-number")).getText();
