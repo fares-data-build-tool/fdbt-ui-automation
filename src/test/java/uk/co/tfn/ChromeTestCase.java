@@ -1,6 +1,5 @@
 package uk.co.tfn;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.After;
@@ -12,12 +11,14 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
+import java.awt.AWTException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -48,6 +49,7 @@ import static uk.co.tfn.StepMethods.enterDetailsAndSelectValidityForMultipleProd
 public class ChromeTestCase {
 
     private static RemoteWebDriver driver;
+    private static String browserType;
 
     @BeforeAll
     public static void chromeSetup() throws IOException {
@@ -59,6 +61,7 @@ public class ChromeTestCase {
         fileInput.close();
         String browser = properties.getProperty("browser");
         String host = properties.getProperty("host");
+        browserType = browser;
 
         if (host.equals("local")) {
             DesiredCapabilities caps = setCapabilities();
@@ -66,7 +69,6 @@ public class ChromeTestCase {
                 ChromeDriverService service = setDriverService();
                 ChromeOptions options = setOptions();
                 options.merge(caps);
-
                 driver = new ChromeDriver(service, options);
             } else if (browser.equals("firefox")) {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
@@ -76,7 +78,9 @@ public class ChromeTestCase {
         } else {
             String aws_secret_access_key = System.getenv("AWS_SECRET_ACCESS_KEY");
             String aws_access_key = System.getenv("AWS_ACCESS_KEY");
-            System.setProperty("aws.secretAccessKey", aws_secret_access_key); //if attempting to run on AWS From local machine, comment these two lines out, and assume role using awstfn-mfa script
+            System.setProperty("aws.secretAccessKey", aws_secret_access_key); // if attempting to run on AWS From local
+                                                                              // machine, comment these two lines out,
+                                                                              // and assume role using awstfn-mfa script
             System.setProperty("aws.accessKeyId", aws_access_key);
             String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
             DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) // Device farm is in US_WEST_2
@@ -97,7 +101,7 @@ public class ChromeTestCase {
     }
 
     @Test
-    public void chromeUploadCSVTest() throws IOException {
+    public void chromeUploadCSVTest() throws IOException, AWTException {
 
         getHomePage(driver);
 
@@ -109,7 +113,7 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        uploadFaresTriangleCsvFile(driver); //TODO fixing for firefox
+        uploadFaresTriangleCsvFile(driver, browserType); //TODO fixing for firefox
 
         submitButtonClick(driver);
 
@@ -145,7 +149,7 @@ public class ChromeTestCase {
     }
 
     @Test
-    public void chromePeriodGeoZone() throws IOException {
+    public void chromePeriodGeoZone() throws IOException, AWTException, InterruptedException {
 
         getHomePage(driver);
 
@@ -157,7 +161,7 @@ public class ChromeTestCase {
 
         continueButtonClick(driver);
 
-        uploadFareZoneCsvFile(driver); //TODO needs fixing for firefox
+        uploadFareZoneCsvFile(driver, browserType); //TODO needs fixing for firefox
 
         submitButtonClick(driver);
 

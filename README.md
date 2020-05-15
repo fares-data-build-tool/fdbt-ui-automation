@@ -8,7 +8,8 @@ Selenium automation framework project, to prove key user journeys work.
 
 - Open Chrome (or install it if you dont have it) and check you have the latest version.
 - Go here: https://chromedriver.chromium.org/downloads and download the latest chromedriver.
-- Put the chromedriver you download (and unzip) into your /usr/local directory
+- Go here: https://github.com/mozilla/geckodriver and download the latest geckodriver (for firefox).
+- Put the chromedriver you download (and unzip) into your /usr/local directory, and the geckodriver path needs adding to your PATH also
 
 - On MacOS:
     - When you first run the UI tests on your machine, you might receive an error telling you that '“chromedriver” cannot be opened because the developer cannot be verified'. If you receive this error, open **System Preferences** > **Security & Privacy** > **General** and select 'Allow Anyway' alongside the message about chromedriver.
@@ -38,7 +39,7 @@ To change to hit your local version of the site, change the homepage URL to your
 This will run the tests on your local machine
 
 Change browser by either editing the browser in properties to one of firefox or chrome (<- actual names)
-Or running mvn -P local-firefox or local-chrome
+Or running mvn test -P local-firefox or local-chrome
 
 
 ## Running the tests remotely
@@ -59,7 +60,7 @@ We are proving that the full user journeys, from end to end, work. We are using 
 
 - Selenium test framework
 - Maven dependency orchestration
-- Java 11
+- Java 13
 
 ## Code Standards
 
