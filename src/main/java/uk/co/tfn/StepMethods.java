@@ -21,9 +21,9 @@ public class StepMethods {
 
         continueButtonClick(driver);
 
-        waitForElement(driver, "fareType-single");
+        waitForElement(driver, "fare-type-single");
 
-        driver.findElement(By.id("fareType-single")).click();
+        driver.findElement(By.id("fare-type-single")).click();
 
         continueButtonClick(driver);
 
@@ -54,7 +54,7 @@ public class StepMethods {
 
         continueButtonClick(driver);
 
-        driver.findElement(By.id("fareType-period")).click();
+        driver.findElement(By.id("fare-type-period")).click();
 
         continueButtonClick(driver);
     }

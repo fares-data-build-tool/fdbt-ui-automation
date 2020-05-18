@@ -147,7 +147,7 @@ public class ChromeTestCase {
 
         stepsToPeriodPage(driver);
 
-        driver.findElement(By.id("periodtype-geo-zone")).click();
+        driver.findElement(By.id("period-type-geo-zone")).click();
 
         continueButtonClick(driver);
 
@@ -156,12 +156,12 @@ public class ChromeTestCase {
         submitButtonClick(driver);
 
         driver.findElement(By.id("numberOfProducts")).sendKeys("1");
-        
+
         continueButtonClick(driver);
 
-        driver.findElement(By.id("periodProductName")).sendKeys("Selenium Test Product");
+        driver.findElement(By.id("productDetailsName")).sendKeys("Selenium Test Product");
 
-        driver.findElement(By.id("periodProductPrice")).sendKeys("10.50");
+        driver.findElement(By.id("productDetailsPrice")).sendKeys("10.50");
 
         continueButtonClick(driver);
 
@@ -191,7 +191,7 @@ public class ChromeTestCase {
 
         stepsToPeriodPage(driver);
 
-        driver.findElement(By.id("periodtype-single-set-service")).click();
+        driver.findElement(By.id("period-type-single-set-service")).click();
 
         continueButtonClick(driver);
 
@@ -200,12 +200,12 @@ public class ChromeTestCase {
         continueButtonClick(driver);
 
         driver.findElement(By.id("numberOfProducts")).sendKeys("1");
-        
+
         continueButtonClick(driver);
 
-        driver.findElement(By.id("periodProductName")).sendKeys("Selenium Test Product");
+        driver.findElement(By.id("productDetailsName")).sendKeys("Selenium Test Product");
 
-        driver.findElement(By.id("periodProductPrice")).sendKeys("10.50");
+        driver.findElement(By.id("productDetailsPrice")).sendKeys("10.50");
 
         continueButtonClick(driver);
 
@@ -228,14 +228,14 @@ public class ChromeTestCase {
 
     @Test
     public void chromePeriodMultipleProducts() throws IOException {
-        
+
         getHomePage(driver);
 
         waitForPageToLoad(driver);
 
         stepsToPeriodPage(driver);
 
-        driver.findElement(By.id("periodtype-single-set-service")).click();
+        driver.findElement(By.id("period-type-single-set-service")).click();
 
         continueButtonClick(driver);
 
