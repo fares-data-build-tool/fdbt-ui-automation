@@ -12,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -47,7 +46,7 @@ public class HelperMethods {
         return caps;
     }
 
-    public static ChromeOptions setOptions() {
+    public static ChromeOptions setChromeOptions() {
         ChromeOptions options = new ChromeOptions();
 
         options.setPageLoadStrategy(PageLoadStrategy.NONE);
@@ -57,38 +56,36 @@ public class HelperMethods {
         return options;
     }
 
-    public static ChromeDriverService setDriverService() {
+    public static ChromeDriverService setChromeDriverService() {
         return new ChromeDriverService.Builder().usingDriverExecutable(new File("/usr/local/chromedriver"))
                 .usingAnyFreePort().build();
     }
 
     public static void continueButtonClick(WebDriver driver) {
-        driver.findElement(By.id("continue-button")).click();
+        clickElementById(driver, "continue-button");
         waitForPageToLoad(driver);
     }
 
     public static void submitButtonClick(WebDriver driver) {
-        driver.findElement(By.id("submit-button")).click();
+        clickElementById(driver, "submit-button");
         waitForPageToLoad(driver);
     }
 
     public static void startPageButtonClick(WebDriver driver) {
-        driver.findElement((By.id("start-now-button"))).click();
+        clickElementById(driver, "start-now-button");
         waitForPageToLoad(driver);
     }
 
     public static void waitForElement(WebDriver driver, String elementId) {
-        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(30))
+
+        FluentWait<WebDriver> fluentWait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(200)).ignoring(NoSuchElementException.class);
 
-        fluentWait.until((Function<WebDriver, WebElement>) driver1 -> driver1.findElement(By.id(elementId)));
-    }
-
-    public static void waitForElementToBeClickable(WebDriver driver, String elementId) {
-        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofMillis(200)).ignoring(NoSuchElementException.class);
-
-        fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
+        fluentWait.until(new Function<WebDriver, WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                return driver.findElement(By.id(elementId));
+            }
+        });
     }
 
     public static void fillInFareStageOptions(WebDriver driver, int numberOfFareStages) {
@@ -123,16 +120,16 @@ public class HelperMethods {
 
     }
 
-    public static void uploadFaresTriangleCsvFile(WebDriver driver, String browserType) throws IOException,
-            AWTException {
+    public static void uploadFaresTriangleCsvFile(WebDriver driver, String browserType)
+            throws IOException, AWTException {
         URL url = new URL("https://fdbt-test-upload.s3.eu-west-2.amazonaws.com/Fares-Triangle-Example.csv");
 
-        File a = new File("../Fares-Triangle-Example.csv");
+        File csvFile = new File("../Fares-Triangle-Example.csv");
 
-        FileUtils.copyURLToFile(url, a);
+        FileUtils.copyURLToFile(url, csvFile);
 
-        if (browserType.equals("chrome")){
-            waitForElementToBeClickable(driver, "csv-upload");
+        if (browserType.equals("chrome") || browserType.equals("internet explorer")) {
+            waitForElement(driver, "csv-upload");
 
             WebElement upload = driver.findElement(By.id("csv-upload"));
 
@@ -142,32 +139,34 @@ public class HelperMethods {
 
         } else if (browserType.equals("firefox")) {
 
-            waitForElementToBeClickable(driver, "csv-upload");
+            waitForElement(driver, "csv-upload");
 
-            WebElement upload = driver.findElement(By.name("csv-upload"));
-
-            ((RemoteWebElement) upload).setFileDetector(new LocalFileDetector());
-
-            upload.sendKeys("../Fares-Triangle-Example.csv");
-
-        };
+            driver.findElement(By.xpath("//input[@type='file']")).sendKeys(csvFile.getAbsolutePath());
+        }
 
     }
 
     public static void uploadFareZoneCsvFile(WebDriver driver, String browserType) throws IOException {
         URL url = new URL("https://fdbt-test-upload.s3.eu-west-2.amazonaws.com/Fare-Zone-Example.csv");
 
-        File a = new File("../Fare-Zone-Example.csv");
+        File csvFile = new File("../Fare-Zone-Example.csv");
 
-        FileUtils.copyURLToFile(url, a);
+        FileUtils.copyURLToFile(url, csvFile);
 
-        waitForElementToBeClickable(driver, "csv-upload");
+        if (browserType.equals("chrome") || browserType.equals("internet explorer")) {
+            waitForElement(driver, "csv-upload");
 
-        WebElement upload = driver.findElement(By.id("csv-upload"));
+            WebElement upload = driver.findElement(By.id("csv-upload"));
 
-        ((RemoteWebElement) upload).setFileDetector(new LocalFileDetector());
+            ((RemoteWebElement) upload).setFileDetector(new LocalFileDetector());
 
-        upload.sendKeys("../Fare-Zone-Example.csv");
+            upload.sendKeys("../Fare-Zone-Example.csv");
+
+        } else if (browserType.equals("firefox")) {
+            waitForElement(driver, "csv-upload");
+
+            driver.findElement(By.xpath("//input[@type='file']")).sendKeys(csvFile.getAbsolutePath());
+        }
 
     }
 
@@ -206,7 +205,7 @@ public class HelperMethods {
         switch (randomSelector) {
             case 1:
                 // 1. Click Select All button and continue
-                driver.findElement(By.id("select-all-button")).click();
+                clickElementById(driver, "select-all-button");
                 waitForPageToLoad(driver);
                 break;
             case 2:
@@ -222,7 +221,7 @@ public class HelperMethods {
             case 4:
                 // 4. Click Select All button and then click random checkboxes to deselect, then
                 // continue
-                driver.findElement(By.id("select-all-button")).click();
+                clickElementById(driver, "select-all-button");
                 waitForPageToLoad(driver);
                 selectAll = false;
                 clickSelectedNumberOfCheckboxes(driver, selectAll);
@@ -241,12 +240,22 @@ public class HelperMethods {
 
     public static boolean isUuidStringValid(WebDriver driver) {
         waitForElement(driver, "uuid-ref-number");
-
         String rawUuid = driver.findElement(By.id("uuid-ref-number")).getText();
-
         String uuid = rawUuid.replace("Your reference number\n", "");
-
         return uuid.matches("[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
+    }
 
+    public static void clickElementById(WebDriver driver, String id) {
+        try {
+            waitForElement(driver, id);
+        } catch (NoSuchElementException err){
+            // Refreshing page in case the fluent wait library fails. 
+            // If we fix the waitForElement method properly, we can remove this.
+            System.out.println("----Refresh page method called----");
+            driver.get(driver.getCurrentUrl());
+            waitForPageToLoad(driver);
+        }
+    
+        driver.findElement(By.id(id)).click();
     }
 }

@@ -158,6 +158,9 @@
     <profiles>
         <profile>
             <id>local-chrome</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <browser>chrome</browser>
                 <host>local</host>
@@ -165,9 +168,6 @@
         </profile>
         <profile>
             <id>local-firefox</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <browser>firefox</browser>
                 <host>local</host>

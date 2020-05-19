@@ -6,3 +6,5 @@ target/
 .settings
 
 src/test/properties/env.properties
+Fares-Triangle-Example.csv
+Fare-Zone-Example.csv
