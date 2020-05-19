@@ -11,23 +11,22 @@ import static uk.co.tfn.HelperMethods.continueButtonClick;
 import static uk.co.tfn.HelperMethods.startPageButtonClick;
 import static uk.co.tfn.HelperMethods.waitForElement;
 import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoChoices;
+import static uk.co.tfn.HelperMethods.clickElementById;
 
 public class StepMethods {
 
     public static void stepsToInputMethod(WebDriver driver) {
         startPageButtonClick(driver);
 
-        driver.findElement((By.id("operator-name0"))).click();
+        clickElementById(driver, "operator-name0");
 
         continueButtonClick(driver);
 
-        waitForElement(driver, "fare-type-single");
-
-        driver.findElement(By.id("fare-type-single")).click();
+        clickElementById(driver, "fare-type-single");
 
         continueButtonClick(driver);
 
-        driver.findElement(By.id("service")).click();
+        clickElementById(driver, "service");
 
         waitForElement(driver, "service");
 
@@ -37,7 +36,8 @@ public class StepMethods {
 
         continueButtonClick(driver);
 
-        driver.findElement(By.id("directionJourneyPattern")).click();
+        clickElementById(driver, "directionJourneyPattern");
+
         Select directionDropdown = new Select(driver.findElement(By.id("directionJourneyPattern")));
 
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
@@ -50,11 +50,11 @@ public class StepMethods {
     public static void stepsToPeriodPage(WebDriver driver) {
         startPageButtonClick(driver);
 
-        driver.findElement((By.id("operator-name0"))).click();
+        clickElementById(driver, "operator-name0");
 
         continueButtonClick(driver);
 
-        driver.findElement(By.id("fare-type-period")).click();
+        clickElementById(driver, "fare-type-period");
 
         continueButtonClick(driver);
     }
@@ -96,7 +96,7 @@ public class StepMethods {
             String twentyFourHourId = String.format("twenty-four-hours-row%s", i);
             String calendayDayId = String.format("calendar-day-row%s", i);
             String validitySelectionId = makeRandomDecisionBetweenTwoChoices(twentyFourHourId, calendayDayId);
-            driver.findElement(By.id(validitySelectionId)).click();
+            clickElementById(driver, validitySelectionId);
         }
 
         continueButtonClick(driver);

@@ -167,9 +167,30 @@
             </properties>
         </profile>
         <profile>
+            <id>local-firefox</id>
+            <properties>
+                <browser>firefox</browser>
+                <host>local</host>
+            </properties>
+        </profile>
+        <profile>
             <id>remote-chrome</id>
             <properties>
                 <browser>chrome</browser>
+                <host>remote</host>
+            </properties>
+        </profile>
+        <profile>
+            <id>remote-firefox</id>
+            <properties>
+                <browser>firefox</browser>
+                <host>remote</host>
+            </properties>
+        </profile>
+        <profile>
+            <id>remote-ie</id>
+            <properties>
+                <browser>internet explorer</browser>
                 <host>remote</host>
             </properties>
         </profile>
