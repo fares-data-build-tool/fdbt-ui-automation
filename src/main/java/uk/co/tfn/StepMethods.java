@@ -18,9 +18,7 @@ public class StepMethods {
     public static void stepsToInputMethod(WebDriver driver) {
         startPageButtonClick(driver);
 
-        waitForElement(driver, "operator-name0");
-
-        driver.findElement((By.id("operator-name0"))).click();
+        clickElementById(driver, "operator-name0");
 
         continueButtonClick(driver);
 
