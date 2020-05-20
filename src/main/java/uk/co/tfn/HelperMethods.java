@@ -51,8 +51,7 @@ public class HelperMethods {
     }
 
     public static ChromeDriverService setChromeDriverService() {
-        return new ChromeDriverService.Builder().usingDriverExecutable(new File("/usr/local/chromedriver"))
-                .usingAnyFreePort().build();
+        return new ChromeDriverService.Builder().usingAnyFreePort().build();
     }
 
     public static String makeRandomDecisionBetweenTwoChoices(String firstElementId, String secondElementId) {

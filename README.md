@@ -9,7 +9,7 @@ Selenium automation framework project, to prove key user journeys work.
 - Open Chrome (or install it if you dont have it) and check you have the latest version.
 - Go here: [https://chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads) and download the latest chromedriver.
 - Go here: [https://github.com/mozilla/geckodriver](https://github.com/mozilla/geckodriver) and download the latest geckodriver (for firefox).
-- Put the chromedriver you download (and unzip) into your /usr/local directory, and the geckodriver path needs adding to your PATH also
+- After downloading, make sure the chromedriver and geckodriver executables are in your PATH
 
 - On MacOS:
   - When you first run the UI tests on your machine, you might receive an error telling you that '“chromedriver” cannot be opened because the developer cannot be verified'. If you receive this error, open **System Preferences** > **Security & Privacy** > **General** and select 'Allow Anyway' alongside the message about chromedriver.
