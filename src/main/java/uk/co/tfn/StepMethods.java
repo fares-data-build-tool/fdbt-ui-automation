@@ -7,98 +7,56 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-import static uk.co.tfn.HelperMethods.continueButtonClick;
-import static uk.co.tfn.HelperMethods.startPageButtonClick;
-import static uk.co.tfn.HelperMethods.waitForElement;
-import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoChoices;
-import static uk.co.tfn.HelperMethods.clickElementById;
-
 public class StepMethods {
+    private final HelperMethods helpers;
+    private final WebDriver driver;
 
-    public static void stepsToInputMethod(WebDriver driver) {
-        startPageButtonClick(driver);
+    public StepMethods(HelperMethods helpers, WebDriver driver) {
+        this.helpers = helpers;
+        this.driver = driver;
+    }
 
-        clickElementById(driver, "operator-name0");
+    public void stepsToInputMethod() {
+        this.helpers.startPageButtonClick();
 
-        continueButtonClick(driver);
+        this.helpers.clickElementById("operator-name0");
 
-        clickElementById(driver, "fare-type-single");
+        this.helpers.continueButtonClick();
 
-        continueButtonClick(driver);
+        this.helpers.clickElementById("fare-type-single");
 
-        clickElementById(driver, "service");
+        this.helpers.continueButtonClick();
 
-        waitForElement(driver, "service");
+        this.helpers.clickElementById("service");
 
-        Select serviceDropdown = new Select(driver.findElement(By.id("service")));
+        this.helpers.waitForElement("service");
+
+        Select serviceDropdown = new Select(this.driver.findElement(By.id("service")));
 
         serviceDropdown.selectByVisibleText("11 - Start date 05/04/2020");
 
-        continueButtonClick(driver);
+        this.helpers.continueButtonClick();
 
-        clickElementById(driver, "directionJourneyPattern");
+        this.helpers.clickElementById("directionJourneyPattern");
 
-        Select directionDropdown = new Select(driver.findElement(By.id("directionJourneyPattern")));
+        Select directionDropdown = new Select(this.driver.findElement(By.id("directionJourneyPattern")));
 
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
 
         directionDropdownOptions.get(1).click();
 
-        continueButtonClick(driver);
+        this.helpers.continueButtonClick();
     }
 
-    public static void stepsToPeriodPage(WebDriver driver) {
-        startPageButtonClick(driver);
+    public void stepsToPeriodPage() {
+        this.helpers.startPageButtonClick();
 
-        clickElementById(driver, "operator-name0");
+        this.helpers.clickElementById("operator-name0");
 
-        continueButtonClick(driver);
+        this.helpers.continueButtonClick();
 
-        clickElementById(driver, "fare-type-period");
+        this.helpers.clickElementById("fare-type-period");
 
-        continueButtonClick(driver);
-    }
-
-    public static void fillInManualFareStages(WebDriver driver) {
-        String stageArray[] = new String[] { "1", "2", "3", "4", "5", "6", "7" };
-
-        int i;
-        String x;
-        for (i = 0; i < stageArray.length; i++) {
-            x = stageArray[i];
-            WebElement fareStage = driver.findElement(By.id("fareStageName" + x));
-            fareStage.sendKeys("test" + x);
-        }
-    }
-
-    public static void fillInFareStageTriangle(WebDriver driver) {
-        String columnArray[] = new String[] { "100", "100", "50", "100", "250", "300", "450" };
-
-        for (int row = 1; row < 7; row++) {
-            for (int column = 0; column < row; column++) {
-                WebElement fareStage = driver.findElement(By.id("cell-" + row + "-" + column));
-                fareStage.sendKeys(columnArray[row]);
-            }
-
-        }
-    }
-
-    public static void enterDetailsAndSelectValidityForMultipleProducts(WebDriver driver, int numberOfProducts) {
-        for (int i = 0; i < numberOfProducts; i++) {
-            driver.findElement(By.id(String.format("multipleProductName%s", i)))
-                    .sendKeys(String.format("Product %s", i));
-            driver.findElement(By.id(String.format("multipleProductPrice%s", i))).sendKeys("3.67");
-            driver.findElement(By.id(String.format("multipleProductDuration%s", i))).sendKeys("7");
-        }
-        continueButtonClick(driver);
-
-        for (int i = 0; i < numberOfProducts; i++) {
-            String twentyFourHourId = String.format("twenty-four-hours-row%s", i);
-            String calendayDayId = String.format("calendar-day-row%s", i);
-            String validitySelectionId = makeRandomDecisionBetweenTwoChoices(twentyFourHourId, calendayDayId);
-            clickElementById(driver, validitySelectionId);
-        }
-
-        continueButtonClick(driver);
+        this.helpers.continueButtonClick();
     }
 }

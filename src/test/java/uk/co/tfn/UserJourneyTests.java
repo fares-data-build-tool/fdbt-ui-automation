@@ -1,8 +1,8 @@
 package uk.co.tfn;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.After;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,65 +11,44 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
-import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest;
-import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
 import java.awt.AWTException;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
-import static uk.co.tfn.HelperMethods.continueButtonClick;
-import static uk.co.tfn.HelperMethods.fillInFareStageOptions;
-import static uk.co.tfn.HelperMethods.getHomePage;
-import static uk.co.tfn.HelperMethods.isUuidStringValid;
 import static uk.co.tfn.HelperMethods.setCapabilities;
 import static uk.co.tfn.HelperMethods.setChromeDriverService;
 import static uk.co.tfn.HelperMethods.setChromeOptions;
-import static uk.co.tfn.HelperMethods.submitButtonClick;
-import static uk.co.tfn.HelperMethods.uploadFareZoneCsvFile;
-import static uk.co.tfn.HelperMethods.uploadFaresTriangleCsvFile;
-import static uk.co.tfn.HelperMethods.waitForPageToLoad;
-import static uk.co.tfn.HelperMethods.clickElementById;
-import static uk.co.tfn.StepMethods.fillInFareStageTriangle;
-import static uk.co.tfn.StepMethods.fillInManualFareStages;
-import static uk.co.tfn.StepMethods.stepsToInputMethod;
-import static uk.co.tfn.StepMethods.stepsToPeriodPage;
-import static uk.co.tfn.HelperMethods.waitForElement;
 import static uk.co.tfn.HelperMethods.makeRandomDecisionBetweenTwoChoices;
-import static uk.co.tfn.HelperMethods.randomlyChooseAndSelectServices;
-import static uk.co.tfn.StepMethods.enterDetailsAndSelectValidityForMultipleProducts;
 
 public class UserJourneyTests {
 
     private static RemoteWebDriver driver;
-    private static String browserType;
+    private static String browser;
+    private static String host;
+    private static HelperMethods helpers;
+    private static StepMethods stepMethods;
+
+    private static final String USERNAME = System.getenv("BROWSERSTACK_USERNAME");
+    private static final String AUTOMATE_KEY = System.getenv("BROWSERSTACK_KEY");
+    private static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
     @BeforeAll
     public static void setup() throws IOException {
-
-        File file = new File("src/test/properties/env.properties");
-        FileInputStream fileInput = new FileInputStream(file);
-        Properties properties = new Properties();
-        properties.load(fileInput);
-        fileInput.close();
-        String browser = properties.getProperty("browser");
-        String host = properties.getProperty("host");
-        browserType = browser;
+        browser = System.getProperty("browser");
+        host = System.getProperty("host");
 
         if (host.equals("local")) {
             DesiredCapabilities caps = setCapabilities();
+
             if (browser.equals("chrome")) {
                 ChromeDriverService service = setChromeDriverService();
                 ChromeOptions options = setChromeOptions();
-                options.merge(caps);
-                driver = new ChromeDriver(service, options);
+                ChromeOptions merged = options.merge(caps);
+                driver = new ChromeDriver(service, merged);
             } else if (browser.equals("firefox")) {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setCapability("marionette", true);
@@ -77,86 +56,94 @@ public class UserJourneyTests {
                 driver = new FirefoxDriver(firefoxOptions);
             }
         } else {
-            String aws_secret_access_key = System.getenv("AWS_SECRET_ACCESS_KEY");
-            String aws_access_key = System.getenv("AWS_ACCESS_KEY");
-            System.setProperty("aws.secretAccessKey", aws_secret_access_key); // if attempting to run on AWS From local
-                                                                              // machine, comment these two lines out,
-                                                                              // and assume role using awstfn-mfa script
-            System.setProperty("aws.accessKeyId", aws_access_key);
-            String myProjectARN = "arn:aws:devicefarm:us-west-2:442445088537:testgrid-project:eaf5a5fe-6e13-493e-8d07-c083c0ee65ee";
-            DeviceFarmClient client = DeviceFarmClient.builder().region(Region.US_WEST_2) // Device farm is in US_WEST_2
-                    .build();
-            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder().expiresInSeconds(900) // 15 minutes
-                    .projectArn(myProjectARN).build();
-            URL testGridUrl = null;
-            try {
-                CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                testGridUrl = new URL(response.url());
-            } catch (Exception e) {
-                e.printStackTrace();
+            DesiredCapabilities caps = new DesiredCapabilities();
+
+            caps.setCapability("os", "Windows");
+            caps.setCapability("os_version", "10");
+            caps.setCapability("browserstack.local", "true");
+
+            if (browser.equals("firefox")) {
+                caps.setCapability("browserName", "Firefox");
+
+                driver = new RemoteWebDriver(new URL(URL), caps);
+            } else if (browser.equals("chrome")) {
+                caps.setCapability("browserName", "Chrome");
+
+                ChromeOptions options = setChromeOptions();
+                ChromeOptions merged = options.merge(caps);
+
+                driver = new RemoteWebDriver(new URL(URL), merged);
+            } else if (browser.equals("ie")) {
+                caps.setCapability("browserName", "IE");
+
+                caps.setCapability("ignoreProtectedModeSettings", true);
+                caps.setCapability("disable-popup-blocking", true);
+                caps.setCapability("enablePersistentHover", true);
+                caps.setCapability("ignoreZoomSetting", true);
+
+                driver = new RemoteWebDriver(new URL(URL), caps);
             }
-            DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setBrowserName(browser);
-            driver = new RemoteWebDriver(testGridUrl, capabilities);
+
+            driver.setFileDetector(new LocalFileDetector());
         }
+
+        helpers = new HelperMethods(driver, browser, host);
+        stepMethods = new StepMethods(helpers, driver);
     }
 
     @Test
     public void singleTicketCsvTest() throws IOException, AWTException {
-
-        getHomePage(driver);
-        waitForPageToLoad(driver);
-        stepsToInputMethod(driver);
-        clickElementById(driver, "csv-upload");
-        continueButtonClick(driver);
-        uploadFaresTriangleCsvFile(driver, browserType);
-        submitButtonClick(driver);
-        fillInFareStageOptions(driver, 8);
-        submitButtonClick(driver);
-        assertTrue(isUuidStringValid(driver));
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToInputMethod();
+        helpers.clickElementById("csv-upload");
+        helpers.continueButtonClick();
+        helpers.uploadFaresTriangleCsvFile();
+        helpers.submitButtonClick();
+        helpers.fillInFareStageOptions(8);
+        helpers.submitButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void singleTicketManualTriangleTest() {
-
-        getHomePage(driver);
-        waitForPageToLoad(driver);
-        stepsToInputMethod(driver);
-        clickElementById(driver, "manual-entry");
-        continueButtonClick(driver);
-        clickElementById(driver, "lessThan20FareStages");
-        continueButtonClick(driver);
-        waitForElement(driver, "fareStages");
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToInputMethod();
+        helpers.clickElementById("manual-entry");
+        helpers.continueButtonClick();
+        helpers.clickElementById("lessThan20FareStages");
+        helpers.continueButtonClick();
+        helpers.waitForElement("fareStages");
         WebElement fareStages = driver.findElement(By.id("fareStages"));
         fareStages.sendKeys("7");
-        continueButtonClick(driver);
-        fillInManualFareStages(driver);
-        continueButtonClick(driver);
-        fillInFareStageTriangle(driver);
-        continueButtonClick(driver);
-        fillInFareStageOptions(driver, 7);
-        submitButtonClick(driver);
-        assertTrue(isUuidStringValid(driver));
+        helpers.continueButtonClick();
+        helpers.fillInManualFareStages();
+        helpers.continueButtonClick();
+        helpers.fillInFareStageTriangle();
+        helpers.continueButtonClick();
+        helpers.fillInFareStageOptions(7);
+        helpers.submitButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void periodGeoZoneSingleProductTest() throws IOException, AWTException, InterruptedException {
-
-        getHomePage(driver);
-        waitForPageToLoad(driver);
-        stepsToPeriodPage(driver);
-        clickElementById(driver, "period-type-geo-zone");
-        continueButtonClick(driver);
-        uploadFareZoneCsvFile(driver, browserType);
-        submitButtonClick(driver);
-        waitForElement(driver, "numberOfProducts");
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-geo-zone");
+        helpers.continueButtonClick();
+        helpers.uploadFareZoneCsvFile();
+        helpers.submitButtonClick();
+        helpers.waitForElement("numberOfProducts");
         driver.findElement(By.id("numberOfProducts")).sendKeys("1");
-        continueButtonClick(driver);
+        helpers.continueButtonClick();
         driver.findElement(By.id("productDetailsName")).sendKeys("Selenium Test Product");
         driver.findElement(By.id("productDetailsPrice")).sendKeys("10.50");
-        continueButtonClick(driver);
+        helpers.continueButtonClick();
         driver.findElement(By.id(("validity"))).sendKeys("1");
-        continueButtonClick(driver);
+        helpers.continueButtonClick();
 
         String endOfCalendarOption = "period-end-calendar";
         String endOfTwentyFourHoursOption = "period-twenty-four-hours";
@@ -164,28 +151,27 @@ public class UserJourneyTests {
         String chosenSelector;
         chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-        clickElementById(driver, chosenSelector);
-        continueButtonClick(driver);
-        assertTrue(isUuidStringValid(driver));
+        helpers.clickElementById(chosenSelector);
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void periodMultipleServicesSingleProductTest() throws IOException {
-
-        getHomePage(driver);
-        waitForPageToLoad(driver);
-        stepsToPeriodPage(driver);
-        clickElementById(driver, "period-type-single-set-service");
-        continueButtonClick(driver);
-        randomlyChooseAndSelectServices(driver);
-        continueButtonClick(driver);
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-single-set-service");
+        helpers.continueButtonClick();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
         driver.findElement(By.id("numberOfProducts")).sendKeys("1");
-        continueButtonClick(driver);
+        helpers.continueButtonClick();
         driver.findElement(By.id("productDetailsName")).sendKeys("Selenium Test Product");
         driver.findElement(By.id("productDetailsPrice")).sendKeys("10.50");
-        continueButtonClick(driver);
+        helpers.continueButtonClick();
         driver.findElement(By.id(("validity"))).sendKeys("1");
-        continueButtonClick(driver);
+        helpers.continueButtonClick();
 
         String endOfCalendarOption = "period-end-calendar";
         String endOfTwentyFourHoursOption = "period-twenty-four-hours";
@@ -193,31 +179,30 @@ public class UserJourneyTests {
         String chosenSelector;
         chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-        clickElementById(driver, chosenSelector);
-        continueButtonClick(driver);
-        assertTrue(isUuidStringValid(driver));
+        helpers.clickElementById(chosenSelector);
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void periodMultipleServicesMultipleProducts() throws IOException {
-
-        getHomePage(driver);
-        waitForPageToLoad(driver);
-        stepsToPeriodPage(driver);
-        clickElementById(driver, "period-type-single-set-service");
-        continueButtonClick(driver);
-        randomlyChooseAndSelectServices(driver);
-        continueButtonClick(driver);
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-single-set-service");
+        helpers.continueButtonClick();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
 
         driver.findElement(By.id("numberOfProducts")).sendKeys("4");
 
-        continueButtonClick(driver);
-        enterDetailsAndSelectValidityForMultipleProducts(driver, 4);
-        assertTrue(isUuidStringValid(driver));
+        helpers.continueButtonClick();
+        helpers.enterDetailsAndSelectValidityForMultipleProducts(4);
+        assertTrue(helpers.isUuidStringValid());
     }
 
-    @After
-    public void tearDown() {
+    @AfterAll
+    public static void tearDown() {
         driver.quit();
     }
 
