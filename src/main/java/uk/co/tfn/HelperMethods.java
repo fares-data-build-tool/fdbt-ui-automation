@@ -330,6 +330,34 @@ public class HelperMethods {
             System.out.println("----Refresh page method called----");
             this.driver.get(this.driver.getCurrentUrl());
             this.waitForPageToLoad();
+
+            WebElement element = this.waitForElement(id);
+
+            if (this.browser.equals("ie")) {
+                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+                executor.executeScript("arguments[0].click();", element);
+            } else {
+                element.click();
+            }
+        }
+    }
+
+    public void sendKeysById(String id, String input) {
+        try {
+            WebElement element = this.waitForElement(id);
+
+            element.sendKeys(input);
+
+        } catch (NoSuchElementException err) {
+            // Refreshing page in case the fluent wait library fails.
+            // If we fix the waitForElement method properly, we can remove this.
+            System.out.println("----Refresh page method called----");
+            this.driver.get(this.driver.getCurrentUrl());
+            this.waitForPageToLoad();
+
+            WebElement element = this.waitForElement(id);
+
+            element.sendKeys(input);
         }
     }
 }

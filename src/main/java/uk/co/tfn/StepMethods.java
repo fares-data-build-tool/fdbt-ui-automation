@@ -27,6 +27,10 @@ public class StepMethods {
 
         this.helpers.continueButtonClick();
 
+        this.helpers.clickElementById("passenger-type0");
+
+        this.helpers.continueButtonClick();
+
         this.helpers.clickElementById("service");
 
         this.helpers.waitForElement("service");
@@ -56,6 +60,10 @@ public class StepMethods {
         this.helpers.continueButtonClick();
 
         this.helpers.clickElementById("fare-type-period");
+
+        this.helpers.continueButtonClick();
+
+        this.helpers.clickElementById("passenger-type0");
 
         this.helpers.continueButtonClick();
     }

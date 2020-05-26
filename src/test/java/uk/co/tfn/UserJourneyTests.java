@@ -115,8 +115,7 @@ public class UserJourneyTests {
         helpers.clickElementById("lessThan20FareStages");
         helpers.continueButtonClick();
         helpers.waitForElement("fareStages");
-        WebElement fareStages = driver.findElement(By.id("fareStages"));
-        fareStages.sendKeys("7");
+        helpers.sendKeysById("fareStages", "7");
         helpers.continueButtonClick();
         helpers.fillInManualFareStages();
         helpers.continueButtonClick();
@@ -137,12 +136,12 @@ public class UserJourneyTests {
         helpers.uploadFareZoneCsvFile();
         helpers.submitButtonClick();
         helpers.waitForElement("numberOfProducts");
-        driver.findElement(By.id("numberOfProducts")).sendKeys("1");
+        helpers.sendKeysById("numberOfProducts", "1");
         helpers.continueButtonClick();
-        driver.findElement(By.id("productDetailsName")).sendKeys("Selenium Test Product");
-        driver.findElement(By.id("productDetailsPrice")).sendKeys("10.50");
+        helpers.sendKeysById("productDetailsName", "Selenium Test Product");
+        helpers.sendKeysById("productDetailsPrice", "10.50");
         helpers.continueButtonClick();
-        driver.findElement(By.id(("validity"))).sendKeys("1");
+        helpers.sendKeysById("validity", "1");
         helpers.continueButtonClick();
 
         String endOfCalendarOption = "period-end-calendar";
@@ -165,12 +164,12 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
-        driver.findElement(By.id("numberOfProducts")).sendKeys("1");
+        helpers.sendKeysById("numberOfProducts", "1");
         helpers.continueButtonClick();
-        driver.findElement(By.id("productDetailsName")).sendKeys("Selenium Test Product");
-        driver.findElement(By.id("productDetailsPrice")).sendKeys("10.50");
+        helpers.sendKeysById("productDetailsName", "Selenium Test Product");
+        helpers.sendKeysById("productDetailsPrice", "10.50");
         helpers.continueButtonClick();
-        driver.findElement(By.id(("validity"))).sendKeys("1");
+        helpers.sendKeysById("validity", "1");
         helpers.continueButtonClick();
 
         String endOfCalendarOption = "period-end-calendar";
@@ -193,9 +192,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
-
-        driver.findElement(By.id("numberOfProducts")).sendKeys("4");
-
+        helpers.sendKeysById("numberOfProducts", "4");
         helpers.continueButtonClick();
         helpers.enterDetailsAndSelectValidityForMultipleProducts(4);
         assertTrue(helpers.isUuidStringValid());
