@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.co.tfn</groupId>
@@ -54,22 +53,6 @@
                         <goals>
                             <goal>active-profiles</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>write-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <outputFile>src/test/properties/env.properties</outputFile>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -155,45 +138,4 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>local-chrome</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <browser>chrome</browser>
-                <host>local</host>
-            </properties>
-        </profile>
-        <profile>
-            <id>local-firefox</id>
-            <properties>
-                <browser>firefox</browser>
-                <host>local</host>
-            </properties>
-        </profile>
-        <profile>
-            <id>remote-chrome</id>
-            <properties>
-                <browser>chrome</browser>
-                <host>remote</host>
-            </properties>
-        </profile>
-        <profile>
-            <id>remote-firefox</id>
-            <properties>
-                <browser>firefox</browser>
-                <host>remote</host>
-            </properties>
-        </profile>
-        <profile>
-            <id>remote-ie</id>
-            <properties>
-                <browser>internet explorer</browser>
-                <host>remote</host>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>
