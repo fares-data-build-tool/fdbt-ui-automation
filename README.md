@@ -56,7 +56,7 @@ The tests can then be run remotely using the remote make commands eg. `make test
 
 ### Aim
 
-We are proving that the full user journeys, from end to end, work. We are using Chrome as the chosen browser, but this might change in the future to accommodate other browsers or versions.
+We are proving that the full user journeys, from end to end, work.
 
 ## Built With
 
