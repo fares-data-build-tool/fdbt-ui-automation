@@ -17,7 +17,7 @@ update_ip_set() {
 }
 
 run_ui_tests() {
-    mvn -Dhost=remote -Dbrowser=$1
+    mvn -Dhost=remote -Dbrowser=$1 test
 }
 
 cleanup_ip_set() {
