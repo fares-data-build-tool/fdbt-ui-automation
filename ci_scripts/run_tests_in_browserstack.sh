@@ -5,8 +5,6 @@ set -e
 # This script will update the WAF with the IP of the CI box before installing the BrowserStack Local CLI
 # to setup a tunnel and then run the tests on the required browser
 
-BROWSER=$1
-
 update_ip_set() {
     IP=$(wget -qO- http://checkip.amazonaws.com)
     LOCK_TOKEN=$(aws wafv2 get-ip-set --scope REGIONAL --region $AWS_REGION --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
@@ -15,6 +13,15 @@ update_ip_set() {
     if [ -z "$NEXT_LOCK_TOKEN" ]; then
         return 1
     fi
+}
+
+run_ui_tests() {
+    mvn -Dhost=remote -Dbrowser=$1 test
+}
+
+cleanup_ip_set() {
+    LOCK_TOKEN=$(aws wafv2 get-ip-set --scope REGIONAL --region $AWS_REGION --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
+    aws wafv2 update-ip-set --scope REGIONAL --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses --lock-token $LOCK_TOKEN --region $AWS_REGION
 }
 
 sudo apt update
@@ -33,4 +40,6 @@ unzip BrowserStackLocal-linux-x64.zip
 
 ./BrowserStackLocal --key $BROWSERSTACK_KEY --daemon start --force-local
 
-mvn -Dhost=remote -Dbrowser=$BROWSER test
+run_ui_tests chrome & run_ui_tests firefox & run_ui_tests ie
+
+cleanup_ip_set
