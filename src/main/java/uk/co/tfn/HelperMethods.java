@@ -65,6 +65,12 @@ public class HelperMethods {
         return chosenSelector;
     }
 
+    public static int randomNumberBetweenOneAnd(int x) {
+        Random random = new Random();
+        int result = random.nextInt(x) + 1;
+        return result;
+    }
+
     public HelperMethods(WebDriver driver, String browser, String host) {
         this.driver = driver;
         this.browser = browser;
@@ -452,11 +458,5 @@ public class HelperMethods {
                 this.completeUserDetailsPage();
                 break;
         }
-    }
-
-    public static int randomNumberBetweenOneAnd(int x) {
-        Random random = new Random();
-        int result = random.nextInt(x) + 1;
-        return result;
     }
 }
