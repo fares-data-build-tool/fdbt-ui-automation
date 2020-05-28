@@ -16,7 +16,7 @@ public class StepMethods {
         this.driver = driver;
     }
 
-    public void stepsToInputMethod() {
+    public void stepsToSingleTicketInputMethod() {
         this.helpers.startPageButtonClick();
 
         this.helpers.clickElementById("operator-name0");
@@ -27,9 +27,7 @@ public class StepMethods {
 
         this.helpers.continueButtonClick();
 
-        this.helpers.clickElementById("passenger-type0");
-
-        this.helpers.continueButtonClick();
+        this.helpers.randomlyDetermineUserType();
 
         this.helpers.clickElementById("service");
 
@@ -63,8 +61,20 @@ public class StepMethods {
 
         this.helpers.continueButtonClick();
 
-        this.helpers.clickElementById("passenger-type0");
+        this.helpers.randomlyDetermineUserType();
+    }
+
+    public void stepsToSelectFlatFareServiceSelection() {
+        this.helpers.startPageButtonClick();
+
+        this.helpers.clickElementById("operator-name0");
 
         this.helpers.continueButtonClick();
+
+        this.helpers.clickElementById("fare-type-flatFare");
+
+        this.helpers.continueButtonClick();
+
+        this.helpers.randomlyDetermineUserType();
     }
 }

@@ -47,12 +47,16 @@ To run the tests on BrowserStack you must first install the BrowserStack local C
 You can then start a local tunnel to BrowserStack by running:
 
 ```bash
-BrowserStackLocal --key ${BROWSERSTACK_KEY} --force-local
+BrowserStackLocal --key ${YOUR_BROWSERSTACK_KEY} --force-local
 ```
 
-The BROWSERSTACK_KEY can be found by logging into BrowserStack and finding it in your account details.
+YOUR_BROWSERSTACK_KEY can be found by logging into BrowserStack and finding it in your account details.
 
-The tests can then be run remotely using the remote make commands eg. `make test-windows-chrome-remote`
+The tests can then be run remotely using the remote make commands eg. 
+
+```bash
+BROWSERSTACK_USERNAME=${YOUR_USERNAME} BROWSERSTACK_KEY=${YOUR_BROWSERSTACK_KEY} make test-windows-chrome-remote
+```
 
 ### Aim
 

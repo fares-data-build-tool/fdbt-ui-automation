@@ -3,8 +3,6 @@ package uk.co.tfn;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -95,7 +93,7 @@ public class UserJourneyTests {
     public void singleTicketCsvTest() throws IOException, AWTException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
-        stepMethods.stepsToInputMethod();
+        stepMethods.stepsToSingleTicketInputMethod();
         helpers.clickElementById("csv-upload");
         helpers.continueButtonClick();
         helpers.uploadFaresTriangleCsvFile();
@@ -109,7 +107,7 @@ public class UserJourneyTests {
     public void singleTicketManualTriangleTest() {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
-        stepMethods.stepsToInputMethod();
+        stepMethods.stepsToSingleTicketInputMethod();
         helpers.clickElementById("manual-entry");
         helpers.continueButtonClick();
         helpers.clickElementById("lessThan20FareStages");
@@ -195,6 +193,19 @@ public class UserJourneyTests {
         helpers.sendKeysById("numberOfProducts", "4");
         helpers.continueButtonClick();
         helpers.enterDetailsAndSelectValidityForMultipleProducts(4);
+        assertTrue(helpers.isUuidStringValid());
+    }
+
+    @Test
+    public void flatFareMultipleServicesSingleProduct() throws IOException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSelectFlatFareServiceSelection();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        helpers.sendKeysById("productDetailsName", "Flat Fare Test Product");
+        helpers.sendKeysById("productDetailsPrice", "50.50");
+        helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
 

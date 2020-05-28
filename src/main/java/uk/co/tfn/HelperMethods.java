@@ -55,9 +55,8 @@ public class HelperMethods {
     }
 
     public static String makeRandomDecisionBetweenTwoChoices(String firstElementId, String secondElementId) {
-        Random random = new Random();
         String chosenSelector;
-        int number = random.nextInt(2) + 1;
+        int number = randomNumberBetweenOneAnd(2);
         if (number == 2) {
             chosenSelector = secondElementId;
         } else {
@@ -217,8 +216,7 @@ public class HelperMethods {
             }
 
             if (selectAll == false) {
-                Random random = new Random();
-                int iterator = random.nextInt((numberOfCheckboxes - i)) + 1;
+                int iterator = randomNumberBetweenOneAnd(numberOfCheckboxes);
                 i += iterator;
             }
         }
@@ -359,5 +357,106 @@ public class HelperMethods {
 
             element.sendKeys(input);
         }
+    }
+
+    public void randomlyChooseAProof() {
+        int randomSelector = randomNumberBetweenOneAnd(3);
+        switch (randomSelector) {
+            case 1:
+                // 1. Membership card
+                this.clickElementById("membership-card");
+                break;
+            case 2:
+                // 2. Student card
+                this.clickElementById("student-card");
+                break;
+            case 3:
+                // 3. Identity Document
+                this.clickElementById("identity-document");
+                break;
+        }
+    }
+
+    public void randomlyChooseAgeLimits() {
+        int randomSelector = randomNumberBetweenOneAnd(4);
+        switch (randomSelector) {
+            case 1:
+                // 1. Max age, no min age
+                this.sendKeysById("age-range-max", "30");
+                break;
+            case 2:
+                // 2. Min age, no max age
+                this.sendKeysById("age-range-min", "12");
+                break;
+            case 3:
+                // 3. Max and min age, diff values
+                this.sendKeysById("age-range-min", "13");
+                this.sendKeysById("age-range-max", "18");
+                break;
+            case 4:
+                // 4. Max and min age, same values
+                this.sendKeysById("age-range-min", "50");
+                this.sendKeysById("age-range-max", "50");
+                break;
+        }
+    }
+
+    public void completeUserDetailsPage() {
+        int randomSelector = randomNumberBetweenOneAnd(4);
+        switch (randomSelector) {
+            case 1:
+                // 1. No to both questions
+                this.clickElementById("age-range-not-required");
+                this.clickElementById("proof-not-required");
+                this.continueButtonClick();
+                break;
+            case 2:
+                // 2. No to age limit, Yes to Proof
+                this.clickElementById("age-range-not-required");
+                this.clickElementById("proof-required");
+                this.randomlyChooseAProof();
+                this.continueButtonClick();
+                break;
+            case 3:
+                // 3. Yes to age limit, Yes to Proof
+                this.clickElementById("age-range-required");
+                this.randomlyChooseAgeLimits();
+                this.clickElementById("proof-required");
+                this.randomlyChooseAProof();
+                this.continueButtonClick();
+                break;
+            case 4:
+                // 4. Yes to age limit, No to Proof
+                this.clickElementById("age-range-required");
+                this.randomlyChooseAgeLimits();
+                this.clickElementById("proof-not-required");
+                this.continueButtonClick();
+        }
+    }
+
+    public void randomlyDetermineUserType() {
+        int randomSelector = randomNumberBetweenOneAnd(2);
+        switch (randomSelector) {
+            case 1:
+                // 1. Click Any and continue
+                this.clickElementById("passenger-type0");
+                this.continueButtonClick();
+                this.waitForPageToLoad();
+                break;
+            case 2:
+                // 2. Click a non-Any, complete the next page, and continue
+                int randomUserType = randomNumberBetweenOneAnd(6);
+                this.clickElementById(String.format("passenger-type%s", String.valueOf(randomUserType)));
+                this.continueButtonClick();
+                this.waitForPageToLoad();
+                this.completeUserDetailsPage();
+                break;
+        }
+    }
+
+    public static int randomNumberBetweenOneAnd(int x) {
+        Random random = new Random();
+        int result = random.nextInt(x) + 1;
+        return result;
     }
 }
