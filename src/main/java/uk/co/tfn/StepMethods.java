@@ -16,65 +16,57 @@ public class StepMethods {
         this.driver = driver;
     }
 
-    public void stepsToSingleTicketInputMethod() {
+    public void stepsToSingleTicketInputMethod() throws InterruptedException {
+
         this.helpers.startPageButtonClick();
-
         this.helpers.clickElementById("operator-name0");
-
         this.helpers.continueButtonClick();
-
         this.helpers.clickElementById("fare-type-single");
-
         this.helpers.continueButtonClick();
-
         this.helpers.randomlyDetermineUserType();
-
-        this.helpers.clickElementById("service");
-
-        this.helpers.waitForElement("service");
-
-        Select serviceDropdown = new Select(this.driver.findElement(By.id("service")));
-
-        serviceDropdown.selectByVisibleText("11 - Start date 05/04/2020");
-
+        this.helpers.selectRandomOptionFromDropdownById("service");
         this.helpers.continueButtonClick();
-
         this.helpers.clickElementById("directionJourneyPattern");
-
         Select directionDropdown = new Select(this.driver.findElement(By.id("directionJourneyPattern")));
-
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
-
         directionDropdownOptions.get(1).click();
-
         this.helpers.continueButtonClick();
+
     }
 
     public void stepsToPeriodPage() {
+
         this.helpers.startPageButtonClick();
-
         this.helpers.clickElementById("operator-name0");
-
         this.helpers.continueButtonClick();
-
         this.helpers.clickElementById("fare-type-period");
-
         this.helpers.continueButtonClick();
-
         this.helpers.randomlyDetermineUserType();
+
     }
 
     public void stepsToSelectFlatFareServiceSelection() {
+
         this.helpers.startPageButtonClick();
-
         this.helpers.clickElementById("operator-name0");
-
         this.helpers.continueButtonClick();
-
         this.helpers.clickElementById("fare-type-flatFare");
-
         this.helpers.continueButtonClick();
-
         this.helpers.randomlyDetermineUserType();
+
+    }
+
+    public void stepsToReturnTicketInputMethod() throws InterruptedException {
+
+        this.helpers.startPageButtonClick();
+        this.helpers.clickElementById("operator-name0");
+        this.helpers.continueButtonClick();
+        this.helpers.clickElementById("fare-type-return");
+        this.helpers.continueButtonClick();
+        this.helpers.randomlyDetermineUserType();
+        this.helpers.selectRandomOptionFromDropdownById("service");
+        this.helpers.continueButtonClick();
+        this.helpers.selectInboundAndOutboundDirections();
+        this.helpers.continueButtonClick();
     }
 }
