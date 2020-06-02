@@ -3,7 +3,6 @@ package uk.co.tfn;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +11,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.AWTException;
@@ -21,10 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 public class HelperMethods {
     private final WebDriver driver;
@@ -84,6 +84,7 @@ public class HelperMethods {
 
     public void getHomePage() {
         this.driver.get("https://tfn-test.infinityworks.com/");
+        this.driver.manage().deleteAllCookies();
     }
 
     public void continueButtonClick() {
@@ -102,15 +103,8 @@ public class HelperMethods {
     }
 
     public WebElement waitForElement(String elementId) {
-
-        FluentWait<WebDriver> fluentWait = new FluentWait<WebDriver>(this.driver).withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofMillis(200)).ignoring(NoSuchElementException.class);
-
-        return fluentWait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.id(elementId));
-            }
-        });
+        WebDriverWait wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
+        return wait.until(ExpectedConditions.presenceOfElementLocated(By.id(elementId)));
     }
 
     public void fillInFareStageOptions(int numberOfFareStages) {
@@ -275,25 +269,42 @@ public class HelperMethods {
         return uuid.matches("[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
     }
 
-    public void fillInManualFareStages() {
-        String stageArray[] = new String[] { "1", "2", "3", "4", "5", "6", "7" };
+    public void fillInManualFareStagesNames(int numberOfFareStages) {
+        ArrayList<String> stageArray = new ArrayList<String>();
 
-        int i;
-        String x;
-        for (i = 0; i < stageArray.length; i++) {
-            x = stageArray[i];
+        for (int i = 1; i <= numberOfFareStages; i++) {
+            stageArray.add(String.valueOf(i));
+        }
+
+        for (int i = 0; i < stageArray.size(); i++) {
+            String x = stageArray.get(i);
             WebElement fareStage = this.driver.findElement(By.id("fareStageName" + x));
             fareStage.sendKeys("test" + x);
         }
     }
 
-    public void fillInFareStageTriangle() {
-        String columnArray[] = new String[] { "100", "100", "50", "100", "250", "300", "450" };
+    public void fillInFareStageTriangle(int numberOfFareStages) {
+        WebDriverWait wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
+        wait.until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                WebElement firstCell = driver.findElement(By.id("cell-1-0"));
+                if (firstCell.isDisplayed() && firstCell.isEnabled()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        ArrayList<String> columnArray = new ArrayList<String>();
 
-        for (int row = 1; row < 7; row++) {
+        for (int i = 1; i <= numberOfFareStages; i++) {
+            columnArray.add(String.valueOf(i * 100));
+        }
+
+        for (int row = 1; row < numberOfFareStages; row++) {
             for (int column = 0; column < row; column++) {
                 WebElement fareStage = this.driver.findElement(By.id("cell-" + row + "-" + column));
-                fareStage.sendKeys(columnArray[row]);
+                fareStage.sendKeys(columnArray.get(row));
             }
 
         }
@@ -319,48 +330,25 @@ public class HelperMethods {
     }
 
     public void clickElementById(String id) {
-        try {
-            WebElement element = this.waitForElement(id);
 
-            if (this.browser.equals("ie")) {
-                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-                executor.executeScript("arguments[0].click();", element);
-            } else {
-                element.click();
-            }
-        } catch (NoSuchElementException err) {
-            // Refreshing page in case the fluent wait library fails.
-            // If we fix the waitForElement method properly, we can remove this.
-            System.out.println("----Refresh page method called----");
-            this.driver.get(this.driver.getCurrentUrl());
-            this.waitForPageToLoad();
+        WebElement element = this.waitForElement(id);
 
-            WebElement element = this.waitForElement(id);
-
-            if (this.browser.equals("ie")) {
-                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-                executor.executeScript("arguments[0].click();", element);
-            } else {
-                element.click();
-            }
+        if (this.browser.equals("ie")) {
+            JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+            executor.executeScript("arguments[0].click();", element);
+        } else {
+            element.click();
         }
+
     }
 
     public void sendKeysById(String id, String input) {
-        try {
-            WebElement element = this.waitForElement(id);
+        WebElement element = this.waitForElement(id);
 
-            element.sendKeys(input);
-
-        } catch (NoSuchElementException err) {
-            // Refreshing page in case the fluent wait library fails.
-            // If we fix the waitForElement method properly, we can remove this.
-            System.out.println("----Refresh page method called----");
-            this.driver.get(this.driver.getCurrentUrl());
-            this.waitForPageToLoad();
-
-            WebElement element = this.waitForElement(id);
-
+        if (this.browser.equals("ie")) {
+            JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+            executor.executeScript("arguments[0].setAttribute('value', arguments[1])", element, input);
+        } else {
             element.sendKeys(input);
         }
     }
@@ -452,11 +440,64 @@ public class HelperMethods {
             case 2:
                 // 2. Click a non-Any, complete the next page, and continue
                 int randomUserType = randomNumberBetweenOneAnd(6);
-                this.clickElementById(String.format("passenger-type%s", String.valueOf(randomUserType)));
+
+                WebElement element = this
+                        .waitForElement(String.format("passenger-type%s", String.valueOf(randomUserType)));
+
+                if (this.browser.equals("ie")) {
+                    JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+                    executor.executeScript("arguments[0].click();", element);
+                } else {
+                    element.click();
+                }
+
                 this.continueButtonClick();
                 this.waitForPageToLoad();
                 this.completeUserDetailsPage();
                 break;
         }
+    }
+
+    public void selectRandomOptionFromDropdownById(String id) throws InterruptedException {
+        WebElement chosenDropdown = driver.findElement(By.id(id));
+        chosenDropdown.click();
+        Select serviceDropdown = new Select(chosenDropdown);
+        List<WebElement> serviceElements = serviceDropdown.getOptions();
+        int randomSelector = HelperMethods.randomNumberBetweenOneAnd(serviceElements.size()) - 1;
+        serviceElements.get(randomSelector).click();
+    }
+
+    public void selectInboundAndOutboundDirections() throws InterruptedException {
+        List<WebElement> dropdowns = this.driver.findElements(By.className("govuk-select"));
+
+        final AtomicInteger dropdownCounter = new AtomicInteger(0);
+
+        dropdowns.forEach(dropdown -> {
+
+            String id = "";
+            if (dropdownCounter.get() == 0) {
+                id = "outboundJourney";
+            } else {
+                id = "inboundJourney";
+            }
+            WebElement chosenDropdown = this.driver.findElement(By.id(id));
+
+            chosenDropdown.click();
+
+            Select select = new Select(chosenDropdown);
+
+            List<WebElement> dropdownOptions = select.getOptions();
+
+            int separatorNumber;
+
+            separatorNumber = dropdownOptions.size() - 1;
+
+            // this cannot be zero, as Select One is the disabled 0th option
+            int chosenOption = dropdownOptions.size() - randomNumberBetweenOneAnd(separatorNumber);
+
+            dropdownOptions.get(chosenOption).click();
+
+            dropdownCounter.incrementAndGet();
+        });
     }
 }
