@@ -490,11 +490,7 @@ public class HelperMethods {
 
             int separatorNumber;
 
-            if (dropdownOptions.size() == 2 || dropdownOptions.size() == 1) {
-                separatorNumber = 2;
-            } else {
-                separatorNumber = dropdownOptions.size() - 1;
-            }
+            separatorNumber = dropdownOptions.size() - 1;
 
             // this cannot be zero, as Select One is the disabled 0th option
             int chosenOption = dropdownOptions.size() - randomNumberBetweenOneAnd(separatorNumber);
