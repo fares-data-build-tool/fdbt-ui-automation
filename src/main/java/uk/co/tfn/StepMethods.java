@@ -19,8 +19,6 @@ public class StepMethods {
     public void stepsToSingleTicketInputMethod() throws InterruptedException {
 
         this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("operator-name0");
-        this.helpers.continueButtonClick();
         this.helpers.clickElementById("fare-type-single");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
@@ -37,8 +35,6 @@ public class StepMethods {
     public void stepsToPeriodPage() {
 
         this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("operator-name0");
-        this.helpers.continueButtonClick();
         this.helpers.clickElementById("fare-type-period");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
@@ -48,8 +44,6 @@ public class StepMethods {
     public void stepsToSelectFlatFareServiceSelection() {
 
         this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("operator-name0");
-        this.helpers.continueButtonClick();
         this.helpers.clickElementById("fare-type-flatFare");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
@@ -59,8 +53,6 @@ public class StepMethods {
     public void stepsToReturnTicketInputMethod() throws InterruptedException {
 
         this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("operator-name0");
-        this.helpers.continueButtonClick();
         this.helpers.clickElementById("fare-type-return");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();

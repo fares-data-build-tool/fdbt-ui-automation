@@ -83,8 +83,8 @@ public class HelperMethods {
     }
 
     public void getHomePage() {
-        this.driver.get("https://tfn-test.infinityworks.com/");
         this.driver.manage().deleteAllCookies();
+        this.driver.get("https://tfn-test.infinityworks.com/?disableAuth=true");
     }
 
     public void continueButtonClick() {
