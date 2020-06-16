@@ -358,15 +358,15 @@ public class HelperMethods {
         switch (randomSelector) {
             case 1:
                 // 1. Membership card
-                this.clickElementById("membership-card");
+                this.clickElementById("membershipCard");
                 break;
             case 2:
                 // 2. Student card
-                this.clickElementById("student-card");
+                this.clickElementById("studentCard");
                 break;
             case 3:
                 // 3. Identity Document
-                this.clickElementById("identity-document");
+                this.clickElementById("identityDocument");
                 break;
         }
     }
