@@ -32,6 +32,9 @@ public class UserJourneyTests {
 
     private static final String USERNAME = System.getenv("BROWSERSTACK_USERNAME");
     private static final String AUTOMATE_KEY = System.getenv("BROWSERSTACK_KEY");
+    private static final String BUILD_NAME = System.getenv("CIRCLE_BUILD_NUM") != null
+            ? System.getenv("CIRCLE_BUILD_NUM")
+            : "Local Build";
     private static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
     @BeforeAll
@@ -59,6 +62,8 @@ public class UserJourneyTests {
             caps.setCapability("os", "Windows");
             caps.setCapability("os_version", "10");
             caps.setCapability("browserstack.local", "true");
+            caps.setCapability("project", "FDBT Site");
+            caps.setCapability("build", BUILD_NAME);
 
             if (browser.equals("firefox")) {
                 caps.setCapability("browserName", "Firefox");
@@ -91,127 +96,124 @@ public class UserJourneyTests {
 
     @Test
     public void singleTicketCsvTest() throws IOException, AWTException, InterruptedException {
-    helpers.getHomePage();
-    helpers.waitForPageToLoad();
-    stepMethods.stepsToSingleTicketInputMethod();
-    helpers.clickElementById("csv-upload");
-    helpers.continueButtonClick();
-    helpers.uploadFaresTriangleCsvFile();
-    helpers.submitButtonClick();
-    helpers.fillInFareStageOptions(8);
-    helpers.submitButtonClick();
-    assertTrue(helpers.isUuidStringValid());
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSingleTicketInputMethod();
+        helpers.clickElementById("csv-upload");
+        helpers.continueButtonClick();
+        helpers.uploadFaresTriangleCsvFile();
+        helpers.submitButtonClick();
+        helpers.fillInFareStageOptions(8);
+        helpers.submitButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void singleTicketManualTriangleTest() throws InterruptedException {
-    helpers.getHomePage();
-    helpers.waitForPageToLoad();
-    stepMethods.stepsToSingleTicketInputMethod();
-    helpers.clickElementById("manual-entry");
-    helpers.continueButtonClick();
-    helpers.clickElementById("lessThan20FareStages");
-    helpers.continueButtonClick();
-    helpers.waitForElement("fareStages");
-    int numberOfFareStages = 5;
-    helpers.sendKeysById("fareStages", String.valueOf(numberOfFareStages));
-    helpers.continueButtonClick();
-    helpers.fillInManualFareStagesNames(numberOfFareStages);
-    helpers.continueButtonClick();
-    helpers.fillInFareStageTriangle(numberOfFareStages);
-    helpers.continueButtonClick();
-    helpers.fillInFareStageOptions(numberOfFareStages);
-    helpers.submitButtonClick();
-    assertTrue(helpers.isUuidStringValid());
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSingleTicketInputMethod();
+        helpers.clickElementById("manual-entry");
+        helpers.continueButtonClick();
+        helpers.clickElementById("less-than-20-fare-stages");
+        helpers.continueButtonClick();
+        helpers.waitForElement("fare-stages");
+        int numberOfFareStages = 5;
+        helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
+        helpers.continueButtonClick();
+        helpers.fillInManualFareStagesNames(numberOfFareStages);
+        helpers.continueButtonClick();
+        helpers.fillInFareStageTriangle(numberOfFareStages);
+        helpers.continueButtonClick();
+        helpers.fillInFareStageOptions(numberOfFareStages);
+        helpers.submitButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
-    public void periodGeoZoneSingleProductTest() throws IOException,
-    InterruptedException {
-    helpers.getHomePage();
-    helpers.waitForPageToLoad();
-    stepMethods.stepsToPeriodPage();
-    helpers.clickElementById("period-type-geo-zone");
-    helpers.continueButtonClick();
-    helpers.uploadFareZoneCsvFile();
-    helpers.submitButtonClick();
-    helpers.waitForElement("numberOfProducts");
-    helpers.sendKeysById("numberOfProducts", "1");
-    helpers.continueButtonClick();
-    helpers.sendKeysById("productDetailsName", "Selenium Test Product");
-    helpers.sendKeysById("productDetailsPrice", "10.50");
-    helpers.continueButtonClick();
-    helpers.sendKeysById("validity", "1");
-    helpers.continueButtonClick();
+    public void periodGeoZoneSingleProductTest() throws IOException, InterruptedException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-geo-zone");
+        helpers.continueButtonClick();
+        helpers.uploadFareZoneCsvFile();
+        helpers.submitButtonClick();
+        helpers.waitForElement("number-of-products");
+        helpers.sendKeysById("number-of-products", "1");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("product-details-name", "Selenium Test Product");
+        helpers.sendKeysById("product-details-price", "10.50");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("validity", "1");
+        helpers.continueButtonClick();
 
-    String endOfCalendarOption = "period-end-calendar";
-    String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
-    String chosenSelector;
-    chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption,
-    endOfTwentyFourHoursOption);
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-    helpers.clickElementById(chosenSelector);
-    helpers.continueButtonClick();
-    assertTrue(helpers.isUuidStringValid());
+        helpers.clickElementById(chosenSelector);
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void periodMultipleServicesSingleProductTest() throws IOException {
-    helpers.getHomePage();
-    helpers.waitForPageToLoad();
-    stepMethods.stepsToPeriodPage();
-    helpers.clickElementById("period-type-single-set-service");
-    helpers.continueButtonClick();
-    helpers.randomlyChooseAndSelectServices();
-    helpers.continueButtonClick();
-    helpers.sendKeysById("numberOfProducts", "1");
-    helpers.continueButtonClick();
-    helpers.sendKeysById("productDetailsName", "Selenium Test Product");
-    helpers.sendKeysById("productDetailsPrice", "10.50");
-    helpers.continueButtonClick();
-    helpers.sendKeysById("validity", "1");
-    helpers.continueButtonClick();
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-single-set-service");
+        helpers.continueButtonClick();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        helpers.sendKeysById("number-of-products", "1");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("product-details-name", "Selenium Test Product");
+        helpers.sendKeysById("product-details-price", "10.50");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("validity", "1");
+        helpers.continueButtonClick();
 
-    String endOfCalendarOption = "period-end-calendar";
-    String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
-    String chosenSelector;
-    chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption,
-    endOfTwentyFourHoursOption);
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-    helpers.clickElementById(chosenSelector);
-    helpers.continueButtonClick();
-    assertTrue(helpers.isUuidStringValid());
+        helpers.clickElementById(chosenSelector);
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void periodMultipleServicesMultipleProducts() throws IOException {
-    helpers.getHomePage();
-    helpers.waitForPageToLoad();
-    stepMethods.stepsToPeriodPage();
-    helpers.clickElementById("period-type-single-set-service");
-    helpers.continueButtonClick();
-    helpers.randomlyChooseAndSelectServices();
-    helpers.continueButtonClick();
-    int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(8) + 2;
-    helpers.sendKeysById("numberOfProducts", String.valueOf(numberOfProducts));
-    helpers.continueButtonClick();
-    helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
-    assertTrue(helpers.isUuidStringValid());
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-single-set-service");
+        helpers.continueButtonClick();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(8) + 2;
+        helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
+        helpers.continueButtonClick();
+        helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
     public void flatFareMultipleServicesSingleProduct() throws IOException {
-    helpers.getHomePage();
-    helpers.waitForPageToLoad();
-    stepMethods.stepsToSelectFlatFareServiceSelection();
-    helpers.randomlyChooseAndSelectServices();
-    helpers.continueButtonClick();
-    helpers.sendKeysById("productDetailsName", "Flat Fare Test Product");
-    helpers.sendKeysById("productDetailsPrice", "50.50");
-    helpers.continueButtonClick();
-    assertTrue(helpers.isUuidStringValid());
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSelectFlatFareServiceSelection();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        helpers.sendKeysById("product-details-name", "Flat Fare Test Product");
+        helpers.sendKeysById("product-details-price", "50.50");
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
     }
 
     @Test
@@ -232,18 +234,18 @@ public class UserJourneyTests {
     }
 
     @Test
-    public void returnTicketCircularAndNonCircularManualUpload() throws IOException, AWTException,
-            InterruptedException {
+    public void returnTicketCircularAndNonCircularManualUpload()
+            throws IOException, AWTException, InterruptedException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToReturnTicketInputMethod();
         helpers.clickElementById("manual-entry");
         helpers.continueButtonClick();
-        helpers.clickElementById("lessThan20FareStages");
+        helpers.clickElementById("less-than-20-fare-stages");
         helpers.continueButtonClick();
-        helpers.waitForElement("fareStages");
+        helpers.waitForElement("fare-stages");
         int numberOfFareStages = HelperMethods.randomNumberBetweenOneAnd(4) + 3;
-        helpers.sendKeysById("fareStages", String.valueOf(numberOfFareStages));
+        helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
         helpers.continueButtonClick();
         helpers.fillInManualFareStagesNames(numberOfFareStages);
         helpers.continueButtonClick();
