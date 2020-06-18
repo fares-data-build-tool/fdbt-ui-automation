@@ -278,7 +278,7 @@ public class HelperMethods {
 
         for (int i = 0; i < stageArray.size(); i++) {
             String x = stageArray.get(i);
-            WebElement fareStage = this.driver.findElement(By.id("fare-stage-name" + x));
+            WebElement fareStage = this.driver.findElement(By.id("fare-stage-name-" + x));
             fareStage.sendKeys("test" + x);
         }
     }
