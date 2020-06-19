@@ -266,8 +266,7 @@ public class HelperMethods {
         this.waitForElement("uuid-ref-number");
         String rawUuid = this.driver.findElement(By.id("uuid-ref-number")).getText();
         String uuid = rawUuid.replace("Your reference number\n", "");
-        if(uuid.substring(0, 3) == "BLAC" && uuid.length() == 11 
-        && uuid.matches("[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}")){
+        if (uuid.substring(0, 4).equals("BLAC") && uuid.length() == 12) {
             return true;
         }
         return false;
