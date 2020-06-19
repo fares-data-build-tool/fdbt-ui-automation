@@ -24,8 +24,8 @@ public class StepMethods {
         this.helpers.randomlyDetermineUserType();
         this.helpers.selectRandomOptionFromDropdownById("service");
         this.helpers.continueButtonClick();
-        this.helpers.clickElementById("directionJourneyPattern");
-        Select directionDropdown = new Select(this.driver.findElement(By.id("directionJourneyPattern")));
+        this.helpers.clickElementById("direction-journey-pattern");
+        Select directionDropdown = new Select(this.driver.findElement(By.id("direction-journey-pattern")));
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
         directionDropdownOptions.get(1).click();
         this.helpers.continueButtonClick();
@@ -44,7 +44,7 @@ public class StepMethods {
     public void stepsToSelectFlatFareServiceSelection() {
 
         this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("fare-type-flatFare");
+        this.helpers.clickElementById("fare-type-flat-fare");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
 

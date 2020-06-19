@@ -116,7 +116,7 @@ public class HelperMethods {
 
         dropdowns.forEach(dropdown -> {
             WebElement chosenDropdown = this.driver
-                    .findElement(By.id(String.format("option%s", dropdownCounter.getAndIncrement())));
+                    .findElement(By.id(String.format("option-%s", dropdownCounter.getAndIncrement())));
 
             if (dropdownCounter.get() > (numberOfFareStages + 1)) {
                 return;
@@ -282,7 +282,7 @@ public class HelperMethods {
 
         for (int i = 0; i < stageArray.size(); i++) {
             String x = stageArray.get(i);
-            WebElement fareStage = this.driver.findElement(By.id("fareStageName" + x));
+            WebElement fareStage = this.driver.findElement(By.id("fare-stage-name-" + x));
             fareStage.sendKeys("test" + x);
         }
     }
@@ -316,16 +316,16 @@ public class HelperMethods {
 
     public void enterDetailsAndSelectValidityForMultipleProducts(int numberOfProducts) {
         for (int i = 0; i < numberOfProducts; i++) {
-            this.driver.findElement(By.id(String.format("multipleProductName%s", i)))
+            this.driver.findElement(By.id(String.format("multiple-product-name-%s", i)))
                     .sendKeys(String.format("Product %s", i));
-            this.driver.findElement(By.id(String.format("multipleProductPrice%s", i))).sendKeys("3.67");
-            this.driver.findElement(By.id(String.format("multipleProductDuration%s", i))).sendKeys("7");
+            this.driver.findElement(By.id(String.format("multiple-product-price-%s", i))).sendKeys("3.67");
+            this.driver.findElement(By.id(String.format("multiple-product-duration-%s", i))).sendKeys("7");
         }
         this.continueButtonClick();
 
         for (int i = 0; i < numberOfProducts; i++) {
-            String twentyFourHourId = String.format("twenty-four-hours-row%s", i);
-            String calendayDayId = String.format("calendar-day-row%s", i);
+            String twentyFourHourId = String.format("twenty-four-hours-row-%s", i);
+            String calendayDayId = String.format("calendar-day-row-%s", i);
             String validitySelectionId = makeRandomDecisionBetweenTwoChoices(twentyFourHourId, calendayDayId);
             this.clickElementById(validitySelectionId);
         }
@@ -437,7 +437,7 @@ public class HelperMethods {
         switch (randomSelector) {
             case 1:
                 // 1. Click Any and continue
-                this.clickElementById("passenger-type0");
+                this.clickElementById("passenger-type-0");
                 this.continueButtonClick();
                 this.waitForPageToLoad();
                 break;
@@ -446,7 +446,7 @@ public class HelperMethods {
                 int randomUserType = randomNumberBetweenOneAnd(6);
 
                 WebElement element = this
-                        .waitForElement(String.format("passenger-type%s", String.valueOf(randomUserType)));
+                        .waitForElement(String.format("passenger-type-%s", String.valueOf(randomUserType)));
 
                 if (this.browser.equals("ie")) {
                     JavascriptExecutor executor = (JavascriptExecutor) this.driver;
@@ -480,9 +480,9 @@ public class HelperMethods {
 
             String id = "";
             if (dropdownCounter.get() == 0) {
-                id = "outboundJourney";
+                id = "outbound-journey";
             } else {
-                id = "inboundJourney";
+                id = "inbound-journey";
             }
             WebElement chosenDropdown = this.driver.findElement(By.id(id));
 
