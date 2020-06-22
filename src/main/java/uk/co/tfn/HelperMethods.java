@@ -266,7 +266,10 @@ public class HelperMethods {
         this.waitForElement("uuid-ref-number");
         String rawUuid = this.driver.findElement(By.id("uuid-ref-number")).getText();
         String uuid = rawUuid.replace("Your reference number\n", "");
-        return uuid.matches("[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}");
+        if (uuid.substring(0, 4).equals("BLAC") && uuid.length() == 12) {
+            return true;
+        }
+        return false;
     }
 
     public void fillInManualFareStagesNames(int numberOfFareStages) {
