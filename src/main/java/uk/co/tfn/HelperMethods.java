@@ -116,7 +116,7 @@ public class HelperMethods {
 
         dropdowns.forEach(dropdown -> {
             WebElement chosenDropdown = this.driver
-                    .findElement(By.id(String.format("option-%s", dropdownCounter.getAndIncrement())));
+                    .findElement(By.id(String.format("option%s", dropdownCounter.getAndIncrement())));
 
             if (dropdownCounter.get() > (numberOfFareStages + 1)) {
                 return;
