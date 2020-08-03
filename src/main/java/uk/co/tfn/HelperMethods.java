@@ -507,18 +507,19 @@ public class HelperMethods {
     }
 
     public void clickRandomSalesOfferPackages(List<WebElement> salesOfferPackages, int randomNumber) {
+        JavascriptExecutor executor = (JavascriptExecutor) this.driver;
         switch (randomNumber) {
             case 1:
             if (this.browser.equals("ie")) {
-                salesOfferPackages.get(0).sendKeys(Keys.SPACE);
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
             } else {
                 salesOfferPackages.get(0).click();
             }
                 break;
             case 2:
             if (this.browser.equals("ie")) {
-                salesOfferPackages.get(0).sendKeys(Keys.SPACE);
-                salesOfferPackages.get(1).sendKeys(Keys.SPACE);
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(1));
             } else {
                 salesOfferPackages.get(0).click();
                 salesOfferPackages.get(1).click();
@@ -526,9 +527,9 @@ public class HelperMethods {
             break;
             case 3:
             if (this.browser.equals("ie")) {
-                salesOfferPackages.get(0).sendKeys(Keys.SPACE);
-                salesOfferPackages.get(1).sendKeys(Keys.SPACE);
-                salesOfferPackages.get(2).sendKeys(Keys.SPACE);
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(1));
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(2));
             } else {
                 salesOfferPackages.get(0).click();
                 salesOfferPackages.get(1).click();
@@ -537,10 +538,10 @@ public class HelperMethods {
             break;
             case 4:
             if (this.browser.equals("ie")) {
-                salesOfferPackages.get(0).sendKeys(Keys.SPACE);
-                salesOfferPackages.get(1).sendKeys(Keys.SPACE);
-                salesOfferPackages.get(2).sendKeys(Keys.SPACE);
-                salesOfferPackages.get(3).sendKeys(Keys.SPACE);
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(1));
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(2));
+                executor.executeScript("arguments[0].click();", salesOfferPackages.get(3));
             } else {
                 salesOfferPackages.get(0).click();
                 salesOfferPackages.get(1).click();
