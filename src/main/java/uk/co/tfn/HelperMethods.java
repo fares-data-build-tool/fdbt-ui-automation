@@ -398,8 +398,13 @@ public class HelperMethods {
         }
     }
 
-    public void completeUserDetailsPage() {
+    public void completeUserDetailsPage(boolean group, int maxNumber) {
         int randomSelector = randomNumberBetweenOneAnd(4);
+        if(group){
+            this.driver.findElement(By.id("min-number-of-passengers")).sendKeys("1");
+            this.driver.findElement(By.id("max-number-of-passengers")).sendKeys(String.valueOf(maxNumber));
+        }
+
         switch (randomSelector) {
             case 1:
                 // 1. No to both questions
@@ -433,33 +438,97 @@ public class HelperMethods {
     }
 
     public void randomlyDetermineUserType() {
-        int randomSelector = randomNumberBetweenOneAnd(2);
-        switch (randomSelector) {
-            case 1:
-                // 1. Click Any and continue
-                this.clickElementById("passenger-type-0");
-                this.continueButtonClick();
-                this.waitForPageToLoad();
-                break;
-            case 2:
-                // 2. Click a non-Any, complete the next page, and continue
-                int randomUserType = randomNumberBetweenOneAnd(6);
+        waitForPageToLoad();
+        int randomSelector = randomNumberBetweenOneAnd(3);
 
-                WebElement element = this
-                        .waitForElement(String.format("passenger-type-%s", String.valueOf(randomUserType)));
+        if(randomSelector == 1){
+            // Click Any and continue
+            WebElement element = this.waitForElement("passenger-type-anyone");
+            if (this.browser.equals("ie")) {
+                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+                executor.executeScript("arguments[0].click();", element);
+            } else {
+                element.click();
+            }
+            this.continueButtonClick();
+            this.waitForPageToLoad();
+        } else if (randomSelector == 2){
+            // Click Group, complete following pages, and continue
+            WebElement element = this.waitForElement("passenger-type-group");
+            if (this.browser.equals("ie")) {
+                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+                executor.executeScript("arguments[0].click();", element);
+            } else {
+                element.click();
+            }
+            this.continueButtonClick();
+            this.waitForPageToLoad();
+            this.completeGroupPassengerDetailsPages();
+        } else {
+            // Click a non-Any non-Group, complete the next page, and continue
+            List<WebElement> otherPassengerTypes = new ArrayList<WebElement>();
 
-                if (this.browser.equals("ie")) {
-                    JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-                    executor.executeScript("arguments[0].click();", element);
-                } else {
-                    element.click();
-                }
+            otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-adult")));
+            otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-child")));
+            otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-infant")));
+            otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-senior")));
+            otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-student")));
+            otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-youngPerson")));
 
-                this.continueButtonClick();
-                this.waitForPageToLoad();
-                this.completeUserDetailsPage();
-                break;
+            WebElement chosenPassenger = otherPassengerTypes.get(randomNumberBetweenOneAnd(6)-1);
+
+            if (this.browser.equals("ie")) {
+                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+                executor.executeScript("arguments[0].click();", chosenPassenger);
+            } else {
+                chosenPassenger.click();
+            }
+            this.continueButtonClick();
+            this.waitForPageToLoad();
+            this.completeUserDetailsPage(false, 0);
         }
+    }
+
+    public void completeGroupPassengerDetailsPages() {
+        int groupSize = completeGroupSizePage();
+        completeDefineGroupPassengersPage();
+        this.completeUserDetailsPage(true, groupSize);
+        waitForPageToLoad();
+        this.completeUserDetailsPage(true, groupSize);
+    }
+
+    public int completeGroupSizePage() {
+        int groupSize = randomNumberBetweenOneAnd(29) + 1;
+        this.driver.findElement(By.id("max-group-size")).sendKeys(String.valueOf(groupSize));
+        this.continueButtonClick();
+        this.waitForPageToLoad();
+        return groupSize;
+    }
+
+    public void completeDefineGroupPassengersPage() {
+        JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+
+        int firstRandomNumber = randomNumberBetweenOneAnd(7) - 1;
+        WebElement firstPassengerType = this.driver.findElement(By.id(String.format("passenger-type-%s", String.valueOf(firstRandomNumber))));
+        if (this.browser.equals("ie")) {
+            executor.executeScript("arguments[0].click();", firstPassengerType);
+        } else {
+            firstPassengerType.click();
+        }
+
+        int secondRandomNumber = randomNumberBetweenOneAnd(7) - 1;
+        while(firstRandomNumber == secondRandomNumber) {
+            secondRandomNumber = randomNumberBetweenOneAnd(7) - 1;
+        }
+        WebElement secondPassengerType = this.driver.findElement(By.id(String.format("passenger-type-%s", String.valueOf(secondRandomNumber))));
+        if (this.browser.equals("ie")) {
+            executor.executeScript("arguments[0].click();", secondPassengerType);
+        } else {
+            secondPassengerType.click();
+        }
+
+        this.continueButtonClick();
+        this.waitForPageToLoad();
     }
 
     public void selectRandomOptionFromDropdownById(String id) throws InterruptedException {

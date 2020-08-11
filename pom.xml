@@ -24,6 +24,9 @@
                         <version>5.2.0-M1</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <rerunFailingTestsCount>3</rerunFailingTestsCount>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -271,7 +271,6 @@ public class UserJourneyTests {
         helpers.selectSalesOfferPackages();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
-
     }
 
     @AfterAll
