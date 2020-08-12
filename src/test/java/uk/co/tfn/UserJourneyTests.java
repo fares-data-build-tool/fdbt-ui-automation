@@ -1,8 +1,9 @@
 package uk.co.tfn;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -29,6 +30,7 @@ public class UserJourneyTests {
     private static String host;
     private static HelperMethods helpers;
     private static StepMethods stepMethods;
+    private static JavascriptExecutor executor;
 
     private static final String USERNAME = System.getenv("BROWSERSTACK_USERNAME");
     private static final String AUTOMATE_KEY = System.getenv("BROWSERSTACK_KEY");
@@ -37,7 +39,7 @@ public class UserJourneyTests {
             : "Local Build";
     private static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
-    @BeforeAll
+    @BeforeClass
     public static void setup() throws IOException {
         browser = System.getProperty("browser");
         host = System.getProperty("host");
@@ -90,7 +92,7 @@ public class UserJourneyTests {
             driver.setFileDetector(new LocalFileDetector());
         }
 
-        helpers = new HelperMethods(driver, browser, host);
+        helpers = new HelperMethods(driver, browser, host, executor);
         stepMethods = new StepMethods(helpers, driver);
     }
 
@@ -271,10 +273,9 @@ public class UserJourneyTests {
         helpers.selectSalesOfferPackages();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
-
     }
 
-    @AfterAll
+    @AfterClass
     public static void tearDown() {
         driver.quit();
     }
