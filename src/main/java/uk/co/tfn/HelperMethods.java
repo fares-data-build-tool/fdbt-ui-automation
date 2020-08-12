@@ -20,7 +20,6 @@ import java.awt.AWTException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,6 +29,7 @@ public class HelperMethods {
     private final WebDriver driver;
     private final String browser;
     private final String host;
+    private final JavascriptExecutor executor;
 
     public static DesiredCapabilities setCapabilities() {
 
@@ -71,15 +71,21 @@ public class HelperMethods {
         return result;
     }
 
-    public HelperMethods(WebDriver driver, String browser, String host) {
+    public HelperMethods(WebDriver driver, String browser, String host, JavascriptExecutor executor) {
         this.driver = driver;
         this.browser = browser;
         this.host = host;
+        this.executor = executor;
     }
 
     public void waitForPageToLoad() {
-        new WebDriverWait(this.driver, Duration.ofSeconds(10)).until(webDriver -> ((JavascriptExecutor) webDriver)
+        new WebDriverWait(this.driver, 10).until(webDriver -> ((JavascriptExecutor) webDriver)
                 .executeScript("return document.readyState").equals("complete"));
+
+    }
+
+    public void javascriptClick(WebElement element) {
+        executor.executeScript("arguments[0].click();", element);
     }
 
     public void getHomePage() {
@@ -103,7 +109,7 @@ public class HelperMethods {
     }
 
     public WebElement waitForElement(String elementId) {
-        WebDriverWait wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(this.driver, 10);
         return wait.until(ExpectedConditions.presenceOfElementLocated(By.id(elementId)));
     }
 
@@ -209,8 +215,7 @@ public class HelperMethods {
             WebElement chosenCheckbox = this.driver.findElement(By.id(String.format("checkbox-%s", i)));
 
             if (this.browser.equals("ie")) {
-                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-                executor.executeScript("arguments[0].click();", chosenCheckbox);
+                javascriptClick(chosenCheckbox);
             } else {
                 chosenCheckbox.click();
             }
@@ -287,7 +292,7 @@ public class HelperMethods {
     }
 
     public void fillInFareStageTriangle(int numberOfFareStages) {
-        WebDriverWait wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(this.driver, 10);
         wait.until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                 WebElement firstCell = driver.findElement(By.id("cell-1-0"));
@@ -337,8 +342,7 @@ public class HelperMethods {
         WebElement element = this.waitForElement(id);
 
         if (this.browser.equals("ie")) {
-            JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-            executor.executeScript("arguments[0].click();", element);
+            javascriptClick(element);
         } else {
             element.click();
         }
@@ -349,7 +353,6 @@ public class HelperMethods {
         WebElement element = this.waitForElement(id);
 
         if (this.browser.equals("ie")) {
-            JavascriptExecutor executor = (JavascriptExecutor) this.driver;
             executor.executeScript("arguments[0].setAttribute('value', arguments[1])", element, input);
         } else {
             element.sendKeys(input);
@@ -445,8 +448,7 @@ public class HelperMethods {
             // Click Any and continue
             WebElement element = this.waitForElement("passenger-type-anyone");
             if (this.browser.equals("ie")) {
-                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-                executor.executeScript("arguments[0].click();", element);
+                javascriptClick(element);
             } else {
                 element.click();
             }
@@ -456,8 +458,7 @@ public class HelperMethods {
             // Click Group, complete following pages, and continue
             WebElement element = this.waitForElement("passenger-type-group");
             if (this.browser.equals("ie")) {
-                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-                executor.executeScript("arguments[0].click();", element);
+                javascriptClick(element);
             } else {
                 element.click();
             }
@@ -478,8 +479,7 @@ public class HelperMethods {
             WebElement chosenPassenger = otherPassengerTypes.get(randomNumberBetweenOneAnd(6)-1);
 
             if (this.browser.equals("ie")) {
-                JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-                executor.executeScript("arguments[0].click();", chosenPassenger);
+                javascriptClick(chosenPassenger);
             } else {
                 chosenPassenger.click();
             }
@@ -506,12 +506,10 @@ public class HelperMethods {
     }
 
     public void completeDefineGroupPassengersPage() {
-        JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-
         int firstRandomNumber = randomNumberBetweenOneAnd(7) - 1;
         WebElement firstPassengerType = this.driver.findElement(By.id(String.format("passenger-type-%s", String.valueOf(firstRandomNumber))));
         if (this.browser.equals("ie")) {
-            executor.executeScript("arguments[0].click();", firstPassengerType);
+            javascriptClick(firstPassengerType);
         } else {
             firstPassengerType.click();
         }
@@ -522,7 +520,7 @@ public class HelperMethods {
         }
         WebElement secondPassengerType = this.driver.findElement(By.id(String.format("passenger-type-%s", String.valueOf(secondRandomNumber))));
         if (this.browser.equals("ie")) {
-            executor.executeScript("arguments[0].click();", secondPassengerType);
+            javascriptClick(secondPassengerType);
         } else {
             secondPassengerType.click();
         }
@@ -575,19 +573,18 @@ public class HelperMethods {
     }
 
     public void clickRandomSalesOfferPackages(List<WebElement> salesOfferPackages, int randomNumber) {
-        JavascriptExecutor executor = (JavascriptExecutor) this.driver;
         switch (randomNumber) {
             case 1:
             if (this.browser.equals("ie")) {
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
+                javascriptClick(salesOfferPackages.get(0));
             } else {
                 salesOfferPackages.get(0).click();
             }
                 break;
             case 2:
             if (this.browser.equals("ie")) {
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(1));
+                javascriptClick(salesOfferPackages.get(0));
+                javascriptClick(salesOfferPackages.get(1));
             } else {
                 salesOfferPackages.get(0).click();
                 salesOfferPackages.get(1).click();
@@ -595,9 +592,9 @@ public class HelperMethods {
             break;
             case 3:
             if (this.browser.equals("ie")) {
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(1));
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(2));
+                javascriptClick(salesOfferPackages.get(0));
+                javascriptClick(salesOfferPackages.get(1));
+                javascriptClick(salesOfferPackages.get(2));
             } else {
                 salesOfferPackages.get(0).click();
                 salesOfferPackages.get(1).click();
@@ -606,10 +603,10 @@ public class HelperMethods {
             break;
             case 4:
             if (this.browser.equals("ie")) {
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(0));
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(1));
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(2));
-                executor.executeScript("arguments[0].click();", salesOfferPackages.get(3));
+                javascriptClick(salesOfferPackages.get(0));
+                javascriptClick(salesOfferPackages.get(1));
+                javascriptClick(salesOfferPackages.get(2));
+                javascriptClick(salesOfferPackages.get(3));
             } else {
                 salesOfferPackages.get(0).click();
                 salesOfferPackages.get(1).click();
