@@ -3,7 +3,6 @@ package uk.co.tfn;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -30,7 +29,6 @@ public class UserJourneyTests {
     private static String host;
     private static HelperMethods helpers;
     private static StepMethods stepMethods;
-    private static JavascriptExecutor executor;
 
     private static final String USERNAME = System.getenv("BROWSERSTACK_USERNAME");
     private static final String AUTOMATE_KEY = System.getenv("BROWSERSTACK_KEY");
@@ -92,7 +90,7 @@ public class UserJourneyTests {
             driver.setFileDetector(new LocalFileDetector());
         }
 
-        helpers = new HelperMethods(driver, browser, host, executor);
+        helpers = new HelperMethods(driver, browser, host);
         stepMethods = new StepMethods(helpers, driver);
     }
 
