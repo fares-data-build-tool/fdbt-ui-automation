@@ -71,11 +71,11 @@ public class HelperMethods {
         return result;
     }
 
-    public HelperMethods(WebDriver driver, String browser, String host, JavascriptExecutor executor) {
+    public HelperMethods(WebDriver driver, String browser, String host) {
         this.driver = driver;
         this.browser = browser;
         this.host = host;
-        this.executor = executor;
+        this.executor = (JavascriptExecutor) driver;
     }
 
     public void waitForPageToLoad() {
