@@ -17,11 +17,11 @@ public class StepMethods {
     }
 
     public void stepsToSingleTicketInputMethod() throws InterruptedException {
-
         this.helpers.startPageButtonClick();
         this.helpers.clickElementById("fare-type-single");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
+        this.helpers.selectNoToTimeRestrictions();
         this.helpers.selectRandomOptionFromDropdownById("service");
         this.helpers.continueButtonClick();
         this.helpers.clickElementById("direction-journey-pattern");
@@ -29,33 +29,30 @@ public class StepMethods {
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
         directionDropdownOptions.get(1).click();
         this.helpers.continueButtonClick();
-
     }
 
     public void stepsToPeriodPage() {
-
         this.helpers.startPageButtonClick();
         this.helpers.clickElementById("fare-type-period");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
-
+        this.helpers.selectNoToTimeRestrictions();
     }
 
     public void stepsToSelectFlatFareServiceSelection() {
-
         this.helpers.startPageButtonClick();
         this.helpers.clickElementById("fare-type-flat-fare");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
-
+        this.helpers.selectNoToTimeRestrictions();
     }
 
     public void stepsToReturnTicketInputMethod() throws InterruptedException {
-
         this.helpers.startPageButtonClick();
         this.helpers.clickElementById("fare-type-return");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
+        this.helpers.selectNoToTimeRestrictions();
         this.helpers.selectRandomOptionFromDropdownById("service");
         this.helpers.continueButtonClick();
         this.helpers.selectInboundAndOutboundDirections();

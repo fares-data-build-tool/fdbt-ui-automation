@@ -638,4 +638,9 @@ public class HelperMethods {
             clickRandomSalesOfferPackages(productSalesOfferPackages, randomNumber);
         }
     }
+
+    public void selectNoToTimeRestrictions() {
+        this.clickElementById("time-restrictions-no");
+        this.continueButtonClick();
+    }
 }
