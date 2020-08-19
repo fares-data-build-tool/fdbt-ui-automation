@@ -110,168 +110,168 @@ public class UserJourneyTests {
         assertTrue(helpers.isUuidStringValid());
     }
 
-    // @Test
-    // public void singleTicketManualTriangleTest() throws InterruptedException {
-    //     helpers.getHomePage();
-    //     helpers.waitForPageToLoad();
-    //     stepMethods.stepsToSingleTicketInputMethod();
-    //     helpers.clickElementById("manual-entry");
-    //     helpers.continueButtonClick();
-    //     helpers.clickElementById("less-than-20-fare-stages");
-    //     helpers.continueButtonClick();
-    //     helpers.waitForElement("fare-stages");
-    //     int numberOfFareStages = 5;
-    //     helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
-    //     helpers.continueButtonClick();
-    //     helpers.fillInManualFareStagesNames(numberOfFareStages);
-    //     helpers.continueButtonClick();
-    //     helpers.fillInFareStageTriangle(numberOfFareStages);
-    //     helpers.continueButtonClick();
-    //     helpers.fillInFareStageOptions(numberOfFareStages);
-    //     helpers.submitButtonClick();
-    //     helpers.selectSalesOfferPackages();
-    //     helpers.continueButtonClick();
-    //     assertTrue(helpers.isUuidStringValid());
-    // }
+    @Test
+    public void singleTicketManualTriangleTest() throws InterruptedException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSingleTicketInputMethod();
+        helpers.clickElementById("manual-entry");
+        helpers.continueButtonClick();
+        helpers.clickElementById("less-than-20-fare-stages");
+        helpers.continueButtonClick();
+        helpers.waitForElement("fare-stages");
+        int numberOfFareStages = 5;
+        helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
+        helpers.continueButtonClick();
+        helpers.fillInManualFareStagesNames(numberOfFareStages);
+        helpers.continueButtonClick();
+        helpers.fillInFareStageTriangle(numberOfFareStages);
+        helpers.continueButtonClick();
+        helpers.fillInFareStageOptions(numberOfFareStages);
+        helpers.submitButtonClick();
+        helpers.selectSalesOfferPackages();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
 
-    // @Test
-    // public void periodGeoZoneSingleProductTest() throws IOException, InterruptedException {
-    //     helpers.getHomePage();
-    //     helpers.waitForPageToLoad();
-    //     stepMethods.stepsToPeriodPage();
-    //     helpers.clickElementById("period-type-geo-zone");
-    //     helpers.continueButtonClick();
-    //     helpers.uploadFareZoneCsvFile();
-    //     helpers.submitButtonClick();
-    //     helpers.waitForElement("number-of-products");
-    //     helpers.sendKeysById("number-of-products", "1");
-    //     helpers.continueButtonClick();
-    //     helpers.sendKeysById("product-details-name", "Selenium Test Product");
-    //     helpers.sendKeysById("product-details-price", "10.50");
-    //     helpers.continueButtonClick();
-    //     helpers.sendKeysById("validity", "1");
-    //     helpers.continueButtonClick();
+    @Test
+    public void periodGeoZoneSingleProductTest() throws IOException, InterruptedException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-geo-zone");
+        helpers.continueButtonClick();
+        helpers.uploadFareZoneCsvFile();
+        helpers.submitButtonClick();
+        helpers.waitForElement("number-of-products");
+        helpers.sendKeysById("number-of-products", "1");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("product-details-name", "Selenium Test Product");
+        helpers.sendKeysById("product-details-price", "10.50");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("validity", "1");
+        helpers.continueButtonClick();
 
-    //     String endOfCalendarOption = "period-end-calendar";
-    //     String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
-    //     String chosenSelector;
-    //     chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-    //     helpers.clickElementById(chosenSelector);
-    //     helpers.continueButtonClick();
-    //     helpers.selectSalesOfferPackages();
-    //     helpers.continueButtonClick();
-    //     assertTrue(helpers.isUuidStringValid());
-    // }
+        helpers.clickElementById(chosenSelector);
+        helpers.continueButtonClick();
+        helpers.selectSalesOfferPackages();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
 
-    // @Test
-    // public void periodMultipleServicesSingleProductTest() throws IOException {
-    //     helpers.getHomePage();
-    //     helpers.waitForPageToLoad();
-    //     stepMethods.stepsToPeriodPage();
-    //     helpers.clickElementById("period-type-single-set-service");
-    //     helpers.continueButtonClick();
-    //     helpers.randomlyChooseAndSelectServices();
-    //     helpers.continueButtonClick();
-    //     helpers.sendKeysById("number-of-products", "1");
-    //     helpers.continueButtonClick();
-    //     helpers.sendKeysById("product-details-name", "Selenium Test Product");
-    //     helpers.sendKeysById("product-details-price", "10.50");
-    //     helpers.continueButtonClick();
-    //     helpers.sendKeysById("validity", "1");
-    //     helpers.continueButtonClick();
+    @Test
+    public void periodMultipleServicesSingleProductTest() throws IOException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-single-set-service");
+        helpers.continueButtonClick();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        helpers.sendKeysById("number-of-products", "1");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("product-details-name", "Selenium Test Product");
+        helpers.sendKeysById("product-details-price", "10.50");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("validity", "1");
+        helpers.continueButtonClick();
 
-    //     String endOfCalendarOption = "period-end-calendar";
-    //     String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
 
-    //     String chosenSelector;
-    //     chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
 
-    //     helpers.clickElementById(chosenSelector);
-    //     helpers.continueButtonClick();
-    //     helpers.selectSalesOfferPackages();
-    //     helpers.continueButtonClick();
-    //     assertTrue(helpers.isUuidStringValid());
-    // }
+        helpers.clickElementById(chosenSelector);
+        helpers.continueButtonClick();
+        helpers.selectSalesOfferPackages();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
 
-    // @Test
-    // public void periodMultipleServicesMultipleProducts() throws IOException {
-    //     helpers.getHomePage();
-    //     helpers.waitForPageToLoad();
-    //     stepMethods.stepsToPeriodPage();
-    //     helpers.clickElementById("period-type-single-set-service");
-    //     helpers.continueButtonClick();
-    //     helpers.randomlyChooseAndSelectServices();
-    //     helpers.continueButtonClick();
-    //     int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(8) + 2;
-    //     helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
-    //     helpers.continueButtonClick();
-    //     helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
-    //     helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
-    //     helpers.continueButtonClick();
-    //     assertTrue(helpers.isUuidStringValid());
-    // }
+    @Test
+    public void periodMultipleServicesMultipleProducts() throws IOException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToPeriodPage();
+        helpers.clickElementById("period-type-single-set-service");
+        helpers.continueButtonClick();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(8) + 2;
+        helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
+        helpers.continueButtonClick();
+        helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
+        helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
 
-    // @Test
-    // public void flatFareMultipleServicesSingleProduct() throws IOException {
-    //     helpers.getHomePage();
-    //     helpers.waitForPageToLoad();
-    //     stepMethods.stepsToSelectFlatFareServiceSelection();
-    //     helpers.randomlyChooseAndSelectServices();
-    //     helpers.continueButtonClick();
-    //     helpers.sendKeysById("product-details-name", "Flat Fare Test Product");
-    //     helpers.sendKeysById("product-details-price", "50.50");
-    //     helpers.continueButtonClick();
-    //     helpers.selectSalesOfferPackages();
-    //     helpers.continueButtonClick();
-    //     assertTrue(helpers.isUuidStringValid());
-    // }
+    @Test
+    public void flatFareMultipleServicesSingleProduct() throws IOException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSelectFlatFareServiceSelection();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        helpers.sendKeysById("product-details-name", "Flat Fare Test Product");
+        helpers.sendKeysById("product-details-price", "50.50");
+        helpers.continueButtonClick();
+        helpers.selectSalesOfferPackages();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
 
-    // @Test
-    // public void returnTicketCircularAndNonCircularCsvUpload() throws IOException, AWTException, InterruptedException {
-    //     helpers.getHomePage();
-    //     helpers.waitForPageToLoad();
-    //     stepMethods.stepsToReturnTicketInputMethod();
-    //     helpers.clickElementById("csv-upload");
-    //     helpers.continueButtonClick();
-    //     helpers.uploadFaresTriangleCsvFile();
-    //     helpers.submitButtonClick();
-    //     helpers.fillInFareStageOptions(8);
-    //     helpers.submitButtonClick();
-    //     helpers.fillInFareStageOptions(8);
-    //     helpers.submitButtonClick();
-    //     helpers.selectSalesOfferPackages();
-    //     helpers.continueButtonClick();
-    //     assertTrue(helpers.isUuidStringValid());
-    // }
+    @Test
+    public void returnTicketCircularAndNonCircularCsvUpload() throws IOException, AWTException, InterruptedException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToReturnTicketInputMethod();
+        helpers.clickElementById("csv-upload");
+        helpers.continueButtonClick();
+        helpers.uploadFaresTriangleCsvFile();
+        helpers.submitButtonClick();
+        helpers.fillInFareStageOptions(8);
+        helpers.submitButtonClick();
+        helpers.fillInFareStageOptions(8);
+        helpers.submitButtonClick();
+        helpers.selectSalesOfferPackages();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
 
-    // @Test
-    // public void returnTicketCircularAndNonCircularManualUpload()
-    //         throws IOException, AWTException, InterruptedException {
-    //     helpers.getHomePage();
-    //     helpers.waitForPageToLoad();
-    //     stepMethods.stepsToReturnTicketInputMethod();
-    //     helpers.clickElementById("manual-entry");
-    //     helpers.continueButtonClick();
-    //     helpers.clickElementById("less-than-20-fare-stages");
-    //     helpers.continueButtonClick();
-    //     helpers.waitForElement("fare-stages");
-    //     int numberOfFareStages = HelperMethods.randomNumberBetweenOneAnd(4) + 3;
-    //     helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
-    //     helpers.continueButtonClick();
-    //     helpers.fillInManualFareStagesNames(numberOfFareStages);
-    //     helpers.continueButtonClick();
-    //     helpers.fillInFareStageTriangle(numberOfFareStages);
-    //     helpers.continueButtonClick();
-    //     helpers.fillInFareStageOptions(numberOfFareStages);
-    //     helpers.submitButtonClick();
-    //     helpers.fillInFareStageOptions(numberOfFareStages);
-    //     helpers.submitButtonClick();
-    //     helpers.selectSalesOfferPackages();
-    //     helpers.continueButtonClick();
-    //     assertTrue(helpers.isUuidStringValid());
-    // }
+    @Test
+    public void returnTicketCircularAndNonCircularManualUpload()
+            throws IOException, AWTException, InterruptedException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToReturnTicketInputMethod();
+        helpers.clickElementById("manual-entry");
+        helpers.continueButtonClick();
+        helpers.clickElementById("less-than-20-fare-stages");
+        helpers.continueButtonClick();
+        helpers.waitForElement("fare-stages");
+        int numberOfFareStages = HelperMethods.randomNumberBetweenOneAnd(4) + 3;
+        helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
+        helpers.continueButtonClick();
+        helpers.fillInManualFareStagesNames(numberOfFareStages);
+        helpers.continueButtonClick();
+        helpers.fillInFareStageTriangle(numberOfFareStages);
+        helpers.continueButtonClick();
+        helpers.fillInFareStageOptions(numberOfFareStages);
+        helpers.submitButtonClick();
+        helpers.fillInFareStageOptions(numberOfFareStages);
+        helpers.submitButtonClick();
+        helpers.selectSalesOfferPackages();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
 
     @AfterClass
     public static void tearDown() {
