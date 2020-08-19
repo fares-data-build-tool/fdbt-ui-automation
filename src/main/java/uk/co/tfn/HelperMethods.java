@@ -401,43 +401,59 @@ public class HelperMethods {
         }
     }
 
-    public void completeUserDetailsPage(boolean group, int maxNumber) {
+    public void completeUserDetailsPage(boolean group, int maxNumber, boolean adult) {
         int randomSelector = randomNumberBetweenOneAnd(4);
+        int secondRandomSelector = randomNumberBetweenOneAnd(2);
         if(group){
             this.driver.findElement(By.id("min-number-of-passengers")).sendKeys("1");
             this.driver.findElement(By.id("max-number-of-passengers")).sendKeys(String.valueOf(maxNumber));
         }
-
-        switch (randomSelector) {
-            case 1:
-                // 1. No to both questions
-                this.clickElementById("age-range-not-required");
-                this.clickElementById("proof-not-required");
-                this.continueButtonClick();
-                break;
-            case 2:
-                // 2. No to age limit, Yes to Proof
-                this.clickElementById("age-range-not-required");
-                this.clickElementById("proof-required");
-                this.randomlyChooseAProof();
-                this.continueButtonClick();
-                break;
-            case 3:
-                // 3. Yes to age limit, Yes to Proof
-                this.clickElementById("age-range-required");
-                this.randomlyChooseAgeLimits();
-                this.clickElementById("proof-required");
-                this.randomlyChooseAProof();
-                this.continueButtonClick();
-                break;
-            case 4:
-                // 4. Yes to age limit, No to Proof
-                this.clickElementById("age-range-required");
-                this.randomlyChooseAgeLimits();
-                this.clickElementById("proof-not-required");
-                this.continueButtonClick();
-                break;
+        if(!adult) {
+            switch (randomSelector) {
+                case 1:
+                    // 1. No to both questions
+                    this.clickElementById("age-range-not-required");
+                    this.clickElementById("proof-not-required");
+                    this.continueButtonClick();
+                    break;
+                case 2:
+                    // 2. No to age limit, Yes to Proof
+                    this.clickElementById("age-range-not-required");
+                    this.clickElementById("proof-required");
+                    this.randomlyChooseAProof();
+                    this.continueButtonClick();
+                    break;
+                case 3:
+                    // 3. Yes to age limit, Yes to Proof
+                    this.clickElementById("age-range-required");
+                    this.randomlyChooseAgeLimits();
+                    this.clickElementById("proof-required");
+                    this.randomlyChooseAProof();
+                    this.continueButtonClick();
+                    break;
+                case 4:
+                    // 4. Yes to age limit, No to Proof
+                    this.clickElementById("age-range-required");
+                    this.randomlyChooseAgeLimits();
+                    this.clickElementById("proof-not-required");
+                    this.continueButtonClick();
+                    break;
+            }
+        } else {
+            switch (secondRandomSelector) {
+                case 1:
+                    // 1. No to age range
+                    this.clickElementById("age-range-not-required");
+                    this.continueButtonClick();
+                    break;
+                case 2:
+                    // 2. Yes to age range
+                    this.clickElementById("age-range-required");
+                    this.randomlyChooseAgeLimits();
+                    this.continueButtonClick();
+                    break;
         }
+    }
     }
 
     public void randomlyDetermineUserType() {
@@ -477,6 +493,7 @@ public class HelperMethods {
             otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-youngPerson")));
 
             WebElement chosenPassenger = otherPassengerTypes.get(randomNumberBetweenOneAnd(6)-1);
+            boolean adult = false;
 
             if (this.browser.equals("ie")) {
                 javascriptClick(chosenPassenger);
@@ -485,16 +502,35 @@ public class HelperMethods {
             }
             this.continueButtonClick();
             this.waitForPageToLoad();
-            this.completeUserDetailsPage(false, 0);
+            if(this.driver.findElement(By.id("define-passenger-age-range")).getText().contains("adult")){
+                adult = true;
+            }
+            if(adult){
+                this.completeUserDetailsPage(false, 0, true);
+            } else {
+                this.completeUserDetailsPage(false, 0, false);
+            }
+            
         }
     }
 
     public void completeGroupPassengerDetailsPages() {
         int groupSize = completeGroupSizePage();
         completeDefineGroupPassengersPage();
-        this.completeUserDetailsPage(true, groupSize);
+
+        String header = this.driver.findElement(By.id("number-of-passenger-type-heading")).getText();
+        if (header.contains("adult")) {
+            this.completeUserDetailsPage(true, groupSize, true);
+        } else {
+            this.completeUserDetailsPage(true, groupSize, false);
+        }
         waitForPageToLoad();
-        this.completeUserDetailsPage(true, groupSize);
+        String secondHeader = this.driver.findElement(By.id("number-of-passenger-type-heading")).getText();
+        if(secondHeader.contains("adult")){
+            this.completeUserDetailsPage(true, groupSize, true);
+        } else {
+            this.completeUserDetailsPage(true, groupSize, false);
+        }
     }
 
     public int completeGroupSizePage() {
