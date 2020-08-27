@@ -91,7 +91,7 @@ public class HelperMethods {
 
     public void getHomePage() {
         this.driver.manage().deleteAllCookies();
-        this.driver.get("https://tfn-test.infinityworks.com/?disableAuth=true");
+        this.driver.get("http://localhost:5555/?disableAuth=true");
     }
 
     public void continueButtonClick() {
@@ -714,8 +714,8 @@ public class HelperMethods {
                 days.add("sunday");
                 Collections.shuffle(days);
                 int numberOfDays = randomNumberBetweenOneAnd(7);
-                for(int i = 1; i <= numberOfDays; i++){
-                    this.clickElementById(days.get(i-1));
+                for(int i = 0; i < numberOfDays; i++){
+                    this.clickElementById(days.get(i));
                 }
             }
 
