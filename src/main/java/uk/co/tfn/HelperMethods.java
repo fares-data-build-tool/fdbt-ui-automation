@@ -91,7 +91,7 @@ public class HelperMethods {
 
     public void getHomePage() {
         this.driver.manage().deleteAllCookies();
-        this.driver.get("http://localhost:5555/?disableAuth=true");
+        this.driver.get("https://tfn-test.infinityworks.com/?disableAuth=true");
     }
 
     public void continueButtonClick() {
