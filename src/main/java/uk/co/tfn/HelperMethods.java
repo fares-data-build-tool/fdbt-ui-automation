@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -678,5 +679,48 @@ public class HelperMethods {
     public void selectNoToTimeRestrictions() {
         this.clickElementById("time-restrictions-no");
         this.continueButtonClick();
+    }
+
+    public void selectYesToTimeRestrictions() {
+        this.clickElementById("time-restrictions-yes");
+        this.continueButtonClick();
+    }
+
+    public void randomlyDecideTimeRestrictions() {
+        if (randomNumberBetweenOneAnd(2) == 1) {
+            selectNoToTimeRestrictions();
+        } else {
+            selectYesToTimeRestrictions();
+
+            if(randomNumberBetweenOneAnd(2) == 1) {
+                this.clickElementById("time-restriction-not-required");
+            } else {
+                this.clickElementById("time-restriction-required");
+                this.sendKeysById("start-time", "0600");
+                this.sendKeysById("end-time", "2200");
+            }
+
+            if(randomNumberBetweenOneAnd(2) == 1) {
+                this.clickElementById("valid-days-not-required");
+            } else {
+                this.clickElementById("valid-days-required");
+                ArrayList<String> days = new ArrayList<String>();
+                days.add("monday");
+                days.add("tuesday");
+                days.add("wednesday");
+                days.add("thursday");
+                days.add("friday");
+                days.add("saturday");
+                days.add("sunday");
+                Collections.shuffle(days);
+                int numberOfDays = randomNumberBetweenOneAnd(7);
+                for(int i = 1; i <= numberOfDays; i++){
+                    this.clickElementById(days.get(i-1));
+                }
+            }
+
+            this.continueButtonClick();
+            
+        }
     }
 }
