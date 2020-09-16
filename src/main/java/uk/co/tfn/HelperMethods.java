@@ -116,7 +116,7 @@ public class HelperMethods {
 
     public void fillInFareStageOptions(int numberOfFareStages) {
 
-        List<WebElement> dropdowns = this.driver.findElements(By.className("farestage-select-wrapper"));
+        List<WebElement> dropdowns = this.driver.findElements(By.className("farestage-select"));
 
         final AtomicInteger dropdownCounter = new AtomicInteger(0);
         final AtomicInteger fareStageCounter = new AtomicInteger(0);
@@ -296,7 +296,7 @@ public class HelperMethods {
         WebDriverWait wait = new WebDriverWait(this.driver, 10);
         wait.until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                WebElement firstCell = driver.findElement(By.id("cell-1-0"));
+                WebElement firstCell = driver.findElement(By.className("govuk-input"));
                 if (firstCell.isDisplayed() && firstCell.isEnabled()) {
                     return true;
                 } else {
@@ -304,19 +304,8 @@ public class HelperMethods {
                 }
             }
         });
-        ArrayList<String> columnArray = new ArrayList<String>();
-
-        for (int i = 1; i <= numberOfFareStages; i++) {
-            columnArray.add(String.valueOf(i * 100));
-        }
-
-        for (int row = 1; row < numberOfFareStages; row++) {
-            for (int column = 0; column < row; column++) {
-                WebElement fareStage = this.driver.findElement(By.id("cell-" + row + "-" + column));
-                fareStage.sendKeys(columnArray.get(row));
-            }
-
-        }
+        List<WebElement> fareTriangleCells = driver.findElements(By.className("govuk-input"));
+        fareTriangleCells.forEach((cell) -> cell.sendKeys(String.valueOf(randomNumberBetweenOneAnd(10)*100)));
     }
 
     public void enterDetailsAndSelectValidityForMultipleProducts(int numberOfProducts) {
