@@ -228,7 +228,7 @@ public class UserJourneyTests {
         stepMethods.stepsToSelectFlatFareServiceSelection();
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
-        helpers.sendKeysById("product-details-name", "Flat Fare Test Product");
+        helpers.sendKeysById("product-details-name", productName);
         helpers.sendKeysById("product-details-price", "50.50");
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
