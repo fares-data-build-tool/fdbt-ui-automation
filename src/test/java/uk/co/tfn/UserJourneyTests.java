@@ -105,7 +105,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(8);
         helpers.submitButtonClick();
-        helpers.selectSalesOfferPackages();
+        helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
@@ -130,7 +130,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.fillInFareStageOptions(numberOfFareStages);
         helpers.submitButtonClick();
-        helpers.selectSalesOfferPackages();
+        helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
@@ -138,6 +138,7 @@ public class UserJourneyTests {
 
     @Test
     public void periodGeoZoneSingleProductTest() throws IOException, InterruptedException {
+        String productName = "Selenium Test Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
@@ -148,7 +149,7 @@ public class UserJourneyTests {
         helpers.waitForElement("number-of-products");
         helpers.sendKeysById("number-of-products", "1");
         helpers.continueButtonClick();
-        helpers.sendKeysById("product-details-name", "Selenium Test Product");
+        helpers.sendKeysById("product-details-name", productName);
         helpers.sendKeysById("product-details-price", "10.50");
         helpers.continueButtonClick();
         helpers.sendKeysById("validity", "1");
@@ -162,7 +163,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
-        helpers.selectSalesOfferPackages();
+        helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
@@ -170,6 +171,7 @@ public class UserJourneyTests {
 
     @Test
     public void periodMultipleServicesSingleProductTest() throws IOException {
+        String productName = "Selenium Test Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
@@ -179,7 +181,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.sendKeysById("number-of-products", "1");
         helpers.continueButtonClick();
-        helpers.sendKeysById("product-details-name", "Selenium Test Product");
+        helpers.sendKeysById("product-details-name", productName);
         helpers.sendKeysById("product-details-price", "10.50");
         helpers.continueButtonClick();
         helpers.sendKeysById("validity", "1");
@@ -193,7 +195,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
-        helpers.selectSalesOfferPackages();
+        helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
@@ -220,15 +222,16 @@ public class UserJourneyTests {
 
     @Test
     public void flatFareMultipleServicesSingleProduct() throws IOException {
+        String productName = "Flat Fare Test Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToSelectFlatFareServiceSelection();
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
-        helpers.sendKeysById("product-details-name", "Flat Fare Test Product");
+        helpers.sendKeysById("product-details-name", productName);
         helpers.sendKeysById("product-details-price", "50.50");
         helpers.continueButtonClick();
-        helpers.selectSalesOfferPackages();
+        helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
@@ -247,7 +250,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(8);
         helpers.submitButtonClick();
-        helpers.selectSalesOfferPackages();
+        helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
@@ -275,7 +278,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(numberOfFareStages);
         helpers.submitButtonClick();
-        helpers.selectSalesOfferPackages();
+        helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
