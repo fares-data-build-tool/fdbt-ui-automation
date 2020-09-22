@@ -712,4 +712,25 @@ public class HelperMethods {
             
         }
     }
+
+    public void enterReturnTicketValidity() {
+        if (randomNumberBetweenOneAnd(2) == 1) {
+            this.clickElementById("return-validity-not-defined");
+        } else {
+            this.clickElementById("return-validity-defined");
+            this.sendKeysById("return-validity-amount", "5");
+
+            WebElement dropdown = this.driver.findElement(By.id("return-validity-units"));
+            dropdown.click();
+
+            Select select = new Select(dropdown);
+            List<WebElement> dropdownOptions = select.getOptions();
+
+            int separatorNumber;
+            separatorNumber = dropdownOptions.size() - 1;
+            // this cannot be zero, as Select One is the disabled 0th option
+            int chosenOption = dropdownOptions.size() - randomNumberBetweenOneAnd(separatorNumber);
+            dropdownOptions.get(chosenOption).click();
+        }
+    }
 }
