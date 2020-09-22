@@ -16,7 +16,7 @@
                         <host>local</host>
                         <browser>chrome</browser>
                     </systemProperties>
-                    <rerunFailingTestsCount>3</rerunFailingTestsCount>
+                    <rerunFailingTestsCount>2</rerunFailingTestsCount>
                 </configuration>
             </plugin>
             <plugin>

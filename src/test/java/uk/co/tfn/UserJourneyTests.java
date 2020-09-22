@@ -250,6 +250,8 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(8);
         helpers.submitButtonClick();
+        helpers.enterReturnTicketValidity();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.continueButtonClick();
@@ -278,6 +280,8 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(numberOfFareStages);
         helpers.submitButtonClick();
+        helpers.enterReturnTicketValidity();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.continueButtonClick();
