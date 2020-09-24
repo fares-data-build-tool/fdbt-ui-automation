@@ -107,6 +107,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
@@ -132,6 +133,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
@@ -165,6 +167,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
@@ -197,6 +200,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
@@ -216,6 +220,7 @@ public class UserJourneyTests {
         helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
         helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
@@ -233,6 +238,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
@@ -254,6 +260,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }
@@ -284,6 +291,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();
         assertTrue(helpers.isUuidStringValid());
     }

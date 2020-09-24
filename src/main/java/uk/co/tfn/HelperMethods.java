@@ -733,4 +733,30 @@ public class HelperMethods {
             dropdownOptions.get(chosenOption).click();
         }
     }
+    
+    public void completeProductDateInformationPage() {
+        if (randomNumberBetweenOneAnd(2) == 1) {
+            this.clickElementById("product-dates-information-not-required");
+        } else {
+            this.clickElementById("product-dates-required");
+            int randomiser = randomNumberBetweenOneAnd(3);
+            if (randomiser == 1) {
+                sendKeysById("start-date-day", "13");
+                sendKeysById("start-date-month", "10");
+                sendKeysById("start-date-year", "2010");
+            } else if (randomiser == 2) {
+                sendKeysById("start-date-day", "13");
+                sendKeysById("start-date-month", "10");
+                sendKeysById("start-date-year", "2010");
+                sendKeysById("end-date-day", "7");
+                sendKeysById("end-date-month", "12");
+                sendKeysById("end-date-year", "2025");
+            } else {
+                sendKeysById("end-date-day", "4");
+                sendKeysById("end-date-month", "4");
+                sendKeysById("end-date-year", "2030");
+            }
+        }
+        this.continueButtonClick();
+    }
 }
