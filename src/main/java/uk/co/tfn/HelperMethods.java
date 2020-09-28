@@ -305,7 +305,7 @@ public class HelperMethods {
             }
         });
         List<WebElement> fareTriangleCells = driver.findElements(By.className("govuk-input"));
-        fareTriangleCells.forEach((cell) -> cell.sendKeys(String.valueOf(randomNumberBetweenOneAnd(10)*100)));
+        fareTriangleCells.forEach((cell) -> cell.sendKeys(String.valueOf(randomNumberBetweenOneAnd(10) * 100)));
     }
 
     public void enterDetailsAndSelectValidityForMultipleProducts(int numberOfProducts) {
@@ -394,11 +394,11 @@ public class HelperMethods {
     public void completeUserDetailsPage(boolean group, int maxNumber, boolean adult) {
         int randomSelector = randomNumberBetweenOneAnd(4);
         int secondRandomSelector = randomNumberBetweenOneAnd(2);
-        if(group){
+        if (group) {
             this.driver.findElement(By.id("min-number-of-passengers")).sendKeys("1");
             this.driver.findElement(By.id("max-number-of-passengers")).sendKeys(String.valueOf(maxNumber));
         }
-        if(!adult) {
+        if (!adult) {
             switch (randomSelector) {
                 case 1:
                     // 1. No to both questions
@@ -442,15 +442,15 @@ public class HelperMethods {
                     this.randomlyChooseAgeLimits();
                     this.continueButtonClick();
                     break;
+            }
         }
-    }
     }
 
     public void randomlyDetermineUserType() {
         waitForPageToLoad();
         int randomSelector = randomNumberBetweenOneAnd(3);
 
-        if(randomSelector == 1){
+        if (randomSelector == 1) {
             // Click Any and continue
             WebElement element = this.waitForElement("passenger-type-anyone");
             if (this.browser.equals("ie")) {
@@ -460,7 +460,7 @@ public class HelperMethods {
             }
             this.continueButtonClick();
             this.waitForPageToLoad();
-        } else if (randomSelector == 2){
+        } else if (randomSelector == 2) {
             // Click Group, complete following pages, and continue
             WebElement element = this.waitForElement("passenger-type-group");
             if (this.browser.equals("ie")) {
@@ -482,7 +482,7 @@ public class HelperMethods {
             otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-student")));
             otherPassengerTypes.add(this.driver.findElement(By.id("passenger-type-youngPerson")));
 
-            WebElement chosenPassenger = otherPassengerTypes.get(randomNumberBetweenOneAnd(6)-1);
+            WebElement chosenPassenger = otherPassengerTypes.get(randomNumberBetweenOneAnd(6) - 1);
             boolean adult = false;
 
             if (this.browser.equals("ie")) {
@@ -492,15 +492,15 @@ public class HelperMethods {
             }
             this.continueButtonClick();
             this.waitForPageToLoad();
-            if(this.driver.findElement(By.id("define-passenger-age-range")).getText().contains("adult")){
+            if (this.driver.findElement(By.id("define-passenger-age-range")).getText().contains("adult")) {
                 adult = true;
             }
-            if(adult){
+            if (adult) {
                 this.completeUserDetailsPage(false, 0, true);
             } else {
                 this.completeUserDetailsPage(false, 0, false);
             }
-            
+
         }
     }
 
@@ -516,7 +516,7 @@ public class HelperMethods {
         }
         waitForPageToLoad();
         String secondHeader = this.driver.findElement(By.id("number-of-passenger-type-heading")).getText();
-        if(secondHeader.contains("adult")){
+        if (secondHeader.contains("adult")) {
             this.completeUserDetailsPage(true, groupSize, true);
         } else {
             this.completeUserDetailsPage(true, groupSize, false);
@@ -533,7 +533,8 @@ public class HelperMethods {
 
     public void completeDefineGroupPassengersPage() {
         int firstRandomNumber = randomNumberBetweenOneAnd(7) - 1;
-        WebElement firstPassengerType = this.driver.findElement(By.id(String.format("passenger-type-%s", String.valueOf(firstRandomNumber))));
+        WebElement firstPassengerType = this.driver
+                .findElement(By.id(String.format("passenger-type-%s", String.valueOf(firstRandomNumber))));
         if (this.browser.equals("ie")) {
             javascriptClick(firstPassengerType);
         } else {
@@ -541,10 +542,11 @@ public class HelperMethods {
         }
 
         int secondRandomNumber = randomNumberBetweenOneAnd(7) - 1;
-        while(firstRandomNumber == secondRandomNumber) {
+        while (firstRandomNumber == secondRandomNumber) {
             secondRandomNumber = randomNumberBetweenOneAnd(7) - 1;
         }
-        WebElement secondPassengerType = this.driver.findElement(By.id(String.format("passenger-type-%s", String.valueOf(secondRandomNumber))));
+        WebElement secondPassengerType = this.driver
+                .findElement(By.id(String.format("passenger-type-%s", String.valueOf(secondRandomNumber))));
         if (this.browser.equals("ie")) {
             javascriptClick(secondPassengerType);
         } else {
@@ -601,45 +603,45 @@ public class HelperMethods {
     public void clickRandomSalesOfferPackages(List<WebElement> salesOfferPackages, int randomNumber) {
         switch (randomNumber) {
             case 1:
-            if (this.browser.equals("ie")) {
-                javascriptClick(salesOfferPackages.get(0));
-            } else {
-                salesOfferPackages.get(0).click();
-            }
+                if (this.browser.equals("ie")) {
+                    javascriptClick(salesOfferPackages.get(0));
+                } else {
+                    salesOfferPackages.get(0).click();
+                }
                 break;
             case 2:
-            if (this.browser.equals("ie")) {
-                javascriptClick(salesOfferPackages.get(0));
-                javascriptClick(salesOfferPackages.get(1));
-            } else {
-                salesOfferPackages.get(0).click();
-                salesOfferPackages.get(1).click();
-            }
-            break;
+                if (this.browser.equals("ie")) {
+                    javascriptClick(salesOfferPackages.get(0));
+                    javascriptClick(salesOfferPackages.get(1));
+                } else {
+                    salesOfferPackages.get(0).click();
+                    salesOfferPackages.get(1).click();
+                }
+                break;
             case 3:
-            if (this.browser.equals("ie")) {
-                javascriptClick(salesOfferPackages.get(0));
-                javascriptClick(salesOfferPackages.get(1));
-                javascriptClick(salesOfferPackages.get(2));
-            } else {
-                salesOfferPackages.get(0).click();
-                salesOfferPackages.get(1).click();
-                salesOfferPackages.get(2).click();
-            }
-            break;
+                if (this.browser.equals("ie")) {
+                    javascriptClick(salesOfferPackages.get(0));
+                    javascriptClick(salesOfferPackages.get(1));
+                    javascriptClick(salesOfferPackages.get(2));
+                } else {
+                    salesOfferPackages.get(0).click();
+                    salesOfferPackages.get(1).click();
+                    salesOfferPackages.get(2).click();
+                }
+                break;
             case 4:
-            if (this.browser.equals("ie")) {
-                javascriptClick(salesOfferPackages.get(0));
-                javascriptClick(salesOfferPackages.get(1));
-                javascriptClick(salesOfferPackages.get(2));
-                javascriptClick(salesOfferPackages.get(3));
-            } else {
-                salesOfferPackages.get(0).click();
-                salesOfferPackages.get(1).click();
-                salesOfferPackages.get(2).click();
-                salesOfferPackages.get(3).click();
-            }
-            break;
+                if (this.browser.equals("ie")) {
+                    javascriptClick(salesOfferPackages.get(0));
+                    javascriptClick(salesOfferPackages.get(1));
+                    javascriptClick(salesOfferPackages.get(2));
+                    javascriptClick(salesOfferPackages.get(3));
+                } else {
+                    salesOfferPackages.get(0).click();
+                    salesOfferPackages.get(1).click();
+                    salesOfferPackages.get(2).click();
+                    salesOfferPackages.get(3).click();
+                }
+                break;
         }
     }
 
@@ -654,7 +656,7 @@ public class HelperMethods {
     }
 
     public void selectSalesOfferPackagesForMultipleProducts(int numberOfProducts) {
-        for(int i = 0; i < numberOfProducts; i++){
+        for (int i = 0; i < numberOfProducts; i++) {
             List<WebElement> productSalesOfferPackages = new ArrayList<WebElement>();
             productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product %s-checkbox-0", i))));
             productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product %s-checkbox-1", i))));
@@ -681,7 +683,7 @@ public class HelperMethods {
         } else {
             selectYesToTimeRestrictions();
 
-            if(randomNumberBetweenOneAnd(2) == 1) {
+            if (randomNumberBetweenOneAnd(2) == 1) {
                 this.clickElementById("time-restriction-not-required");
             } else {
                 this.clickElementById("time-restriction-required");
@@ -689,7 +691,7 @@ public class HelperMethods {
                 this.sendKeysById("end-time", "2200");
             }
 
-            if(randomNumberBetweenOneAnd(2) == 1) {
+            if (randomNumberBetweenOneAnd(2) == 1) {
                 this.clickElementById("valid-days-not-required");
             } else {
                 this.clickElementById("valid-days-required");
@@ -703,13 +705,13 @@ public class HelperMethods {
                 days.add("sunday");
                 Collections.shuffle(days);
                 int numberOfDays = randomNumberBetweenOneAnd(7);
-                for(int i = 0; i < numberOfDays; i++){
+                for (int i = 0; i < numberOfDays; i++) {
                     this.clickElementById(days.get(i));
                 }
             }
 
             this.continueButtonClick();
-            
+
         }
     }
 
@@ -733,7 +735,7 @@ public class HelperMethods {
             dropdownOptions.get(chosenOption).click();
         }
     }
-    
+
     public void completeProductDateInformationPage() {
         if (randomNumberBetweenOneAnd(2) == 1) {
             this.clickElementById("product-dates-information-not-required");
