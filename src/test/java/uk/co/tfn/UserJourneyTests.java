@@ -105,6 +105,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(8);
         helpers.submitButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -125,12 +126,14 @@ public class UserJourneyTests {
         int numberOfFareStages = 5;
         helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.fillInManualFareStagesNames(numberOfFareStages);
         helpers.continueButtonClick();
         helpers.fillInFareStageTriangle(numberOfFareStages);
         helpers.continueButtonClick();
         helpers.fillInFareStageOptions(numberOfFareStages);
         helpers.submitButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -165,6 +168,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -198,6 +202,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -218,6 +223,7 @@ public class UserJourneyTests {
         helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
         helpers.continueButtonClick();
         helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -235,6 +241,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.sendKeysById("product-details-name", productName);
         helpers.sendKeysById("product-details-price", "50.50");
+        helpers.continueButtonClick();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
@@ -258,6 +265,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.enterReturnTicketValidity();
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -279,6 +287,7 @@ public class UserJourneyTests {
         int numberOfFareStages = HelperMethods.randomNumberBetweenOneAnd(4) + 3;
         helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.fillInManualFareStagesNames(numberOfFareStages);
         helpers.continueButtonClick();
         helpers.fillInFareStageTriangle(numberOfFareStages);
@@ -288,6 +297,7 @@ public class UserJourneyTests {
         helpers.fillInFareStageOptions(numberOfFareStages);
         helpers.submitButtonClick();
         helpers.enterReturnTicketValidity();
+        helpers.continueButtonClick();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
