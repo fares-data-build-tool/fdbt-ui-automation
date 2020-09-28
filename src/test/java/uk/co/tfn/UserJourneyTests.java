@@ -105,6 +105,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(8);
         helpers.submitButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -127,10 +128,12 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.fillInManualFareStagesNames(numberOfFareStages);
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.fillInFareStageTriangle(numberOfFareStages);
         helpers.continueButtonClick();
         helpers.fillInFareStageOptions(numberOfFareStages);
         helpers.submitButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -198,6 +201,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -258,6 +262,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.enterReturnTicketValidity();
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -281,6 +286,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.fillInManualFareStagesNames(numberOfFareStages);
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.fillInFareStageTriangle(numberOfFareStages);
         helpers.continueButtonClick();
         helpers.fillInFareStageOptions(numberOfFareStages);
@@ -288,6 +294,7 @@ public class UserJourneyTests {
         helpers.fillInFareStageOptions(numberOfFareStages);
         helpers.submitButtonClick();
         helpers.enterReturnTicketValidity();
+        helpers.continueButtonClick();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();

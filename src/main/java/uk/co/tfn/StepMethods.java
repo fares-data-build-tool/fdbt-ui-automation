@@ -22,6 +22,7 @@ public class StepMethods {
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
         this.helpers.randomlyDecideTimeRestrictions();
+        helpers.continueButtonClick();
         this.helpers.selectRandomOptionFromDropdownById("service");
         this.helpers.continueButtonClick();
         this.helpers.clickElementById("direction-journey-pattern");
@@ -37,6 +38,7 @@ public class StepMethods {
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
         this.helpers.randomlyDecideTimeRestrictions();
+        helpers.continueButtonClick();
     }
 
     public void stepsToSelectFlatFareServiceSelection() {
@@ -45,6 +47,7 @@ public class StepMethods {
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
         this.helpers.randomlyDecideTimeRestrictions();
+        this.helpers.continueButtonClick();
     }
 
     public void stepsToReturnTicketInputMethod() throws InterruptedException {
@@ -53,6 +56,7 @@ public class StepMethods {
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
         this.helpers.randomlyDecideTimeRestrictions();
+        this.helpers.continueButtonClick();
         this.helpers.selectRandomOptionFromDropdownById("service");
         this.helpers.continueButtonClick();
         this.helpers.selectInboundAndOutboundDirections();
