@@ -240,6 +240,7 @@ public class UserJourneyTests {
         helpers.sendKeysById("product-details-name", productName);
         helpers.sendKeysById("product-details-price", "50.50");
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
