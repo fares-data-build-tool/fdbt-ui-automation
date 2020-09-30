@@ -147,7 +147,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
-        helpers.clickElementById("period-type-geo-zone");
+        helpers.clickElementById("geo-zone");
         helpers.continueButtonClick();
         helpers.uploadFareZoneCsvFile();
         helpers.submitButtonClick();
@@ -181,7 +181,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
-        helpers.clickElementById("period-type-single-set-service");
+        helpers.clickElementById("set-of-services");
         helpers.continueButtonClick();
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
@@ -214,7 +214,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
-        helpers.clickElementById("period-type-single-set-service");
+        helpers.clickElementById("set-of-services");
         helpers.continueButtonClick();
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
