@@ -218,7 +218,7 @@ public class UserJourneyTests {
         helpers.continueButtonClick();
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
-        int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(8) + 2;
+        int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(3) + 2;
         helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
         helpers.continueButtonClick();
         helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
