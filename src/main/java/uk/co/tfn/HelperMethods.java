@@ -20,6 +20,7 @@ import java.awt.AWTException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,7 @@ public class HelperMethods {
     private final String browser;
     private final String host;
     private final JavascriptExecutor executor;
+    private final Axe axe;
 
     public static DesiredCapabilities setCapabilities() {
 
@@ -72,17 +74,18 @@ public class HelperMethods {
         return result;
     }
 
-    public HelperMethods(WebDriver driver, String browser, String host) {
+    public HelperMethods(WebDriver driver, String browser, String host, Axe axe) {
         this.driver = driver;
         this.browser = browser;
         this.host = host;
         this.executor = (JavascriptExecutor) driver;
+        this.axe = axe;
     }
 
     public void waitForPageToLoad() {
         new WebDriverWait(this.driver, 10).until(webDriver -> ((JavascriptExecutor) webDriver)
                 .executeScript("return document.readyState").equals("complete"));
-
+        axe.runCheck();
     }
 
     public void javascriptClick(WebElement element) {
@@ -91,7 +94,7 @@ public class HelperMethods {
 
     public void getHomePage() {
         this.driver.manage().deleteAllCookies();
-        this.driver.get("https://tfn-test.infinityworks.com/?disableAuth=true");
+        this.driver.get("http://localhost:5555/?disableAuth=true");
     }
 
     public void continueButtonClick() {
@@ -447,7 +450,6 @@ public class HelperMethods {
     }
 
     public void randomlyDetermineUserType() {
-        waitForPageToLoad();
         int randomSelector = randomNumberBetweenOneAnd(3);
 
         if (randomSelector == 1) {
@@ -459,7 +461,6 @@ public class HelperMethods {
                 element.click();
             }
             this.continueButtonClick();
-            this.waitForPageToLoad();
         } else if (randomSelector == 2) {
             // Click Group, complete following pages, and continue
             WebElement element = this.waitForElement("passenger-type-group");
@@ -469,7 +470,6 @@ public class HelperMethods {
                 element.click();
             }
             this.continueButtonClick();
-            this.waitForPageToLoad();
             this.completeGroupPassengerDetailsPages();
         } else {
             // Click a non-Any non-Group, complete the next page, and continue
@@ -491,7 +491,6 @@ public class HelperMethods {
                 chosenPassenger.click();
             }
             this.continueButtonClick();
-            this.waitForPageToLoad();
             if (this.driver.findElement(By.id("define-passenger-age-range")).getText().contains("adult")) {
                 adult = true;
             }
@@ -514,7 +513,6 @@ public class HelperMethods {
         } else {
             this.completeUserDetailsPage(true, groupSize, false);
         }
-        waitForPageToLoad();
         String secondHeader = this.driver.findElement(By.id("number-of-passenger-type-heading")).getText();
         if (secondHeader.contains("adult")) {
             this.completeUserDetailsPage(true, groupSize, true);
@@ -527,7 +525,6 @@ public class HelperMethods {
         int groupSize = randomNumberBetweenOneAnd(29) + 1;
         this.driver.findElement(By.id("max-group-size")).sendKeys(String.valueOf(groupSize));
         this.continueButtonClick();
-        this.waitForPageToLoad();
         return groupSize;
     }
 
@@ -554,7 +551,6 @@ public class HelperMethods {
         }
 
         this.continueButtonClick();
-        this.waitForPageToLoad();
     }
 
     public void selectRandomOptionFromDropdownById(String id) throws InterruptedException {

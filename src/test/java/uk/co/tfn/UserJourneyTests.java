@@ -29,6 +29,7 @@ public class UserJourneyTests {
     private static String host;
     private static HelperMethods helpers;
     private static StepMethods stepMethods;
+    private static Axe axe;
 
     private static final String USERNAME = System.getenv("BROWSERSTACK_USERNAME");
     private static final String AUTOMATE_KEY = System.getenv("BROWSERSTACK_KEY");
@@ -90,7 +91,8 @@ public class UserJourneyTests {
             driver.setFileDetector(new LocalFileDetector());
         }
 
-        helpers = new HelperMethods(driver, browser, host);
+        axe = new Axe(driver, host);
+        helpers = new HelperMethods(driver, browser, host, axe);
         stepMethods = new StepMethods(helpers, driver);
     }
 
