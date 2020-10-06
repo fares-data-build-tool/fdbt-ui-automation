@@ -222,6 +222,7 @@ public class UserJourneyTests {
         helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
         helpers.continueButtonClick();
         helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
