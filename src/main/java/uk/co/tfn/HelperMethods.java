@@ -646,11 +646,12 @@ public class HelperMethods {
     }
 
     public void selectSalesOfferPackages(String productName) {
+        String productNameNoSpaces = productName.replaceAll("\\s+", "");
         List<WebElement> salesOfferPackages = new ArrayList<WebElement>();
-        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-0", productName))));
-        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-1", productName))));
-        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-2", productName))));
-        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-3", productName))));
+        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-0", productNameNoSpaces))));
+        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-1", productNameNoSpaces))));
+        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-2", productNameNoSpaces))));
+        salesOfferPackages.add(this.driver.findElement(By.id(String.format("%s-checkbox-3", productNameNoSpaces))));
         int randomNumber = randomNumberBetweenOneAnd(4);
         clickRandomSalesOfferPackages(salesOfferPackages, randomNumber);
     }
@@ -658,10 +659,10 @@ public class HelperMethods {
     public void selectSalesOfferPackagesForMultipleProducts(int numberOfProducts) {
         for (int i = 0; i < numberOfProducts; i++) {
             List<WebElement> productSalesOfferPackages = new ArrayList<WebElement>();
-            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product %s-checkbox-0", i))));
-            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product %s-checkbox-1", i))));
-            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product %s-checkbox-2", i))));
-            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product %s-checkbox-3", i))));
+            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product%s-checkbox-0", i))));
+            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product%s-checkbox-1", i))));
+            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product%s-checkbox-2", i))));
+            productSalesOfferPackages.add(this.driver.findElement(By.id(String.format("Product%s-checkbox-3", i))));
             int randomNumber = randomNumberBetweenOneAnd(4);
             clickRandomSalesOfferPackages(productSalesOfferPackages, randomNumber);
         }
