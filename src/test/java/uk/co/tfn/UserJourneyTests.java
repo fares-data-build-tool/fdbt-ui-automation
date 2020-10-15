@@ -168,6 +168,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
