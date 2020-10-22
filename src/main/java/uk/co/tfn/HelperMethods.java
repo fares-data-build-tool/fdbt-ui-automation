@@ -92,6 +92,7 @@ public class HelperMethods {
     public void getHomePage() {
         this.driver.manage().deleteAllCookies();
         this.driver.get("https://tfn-test.infinityworks.com/?disableAuth=true");
+        this.driver.manage().window().maximize();
     }
 
     public void continueButtonClick() {
@@ -99,7 +100,7 @@ public class HelperMethods {
         this.waitForPageToLoad();
     }
 
-    public void submitButtonClick() {
+    public void submitButtonClick(){
         this.clickElementById("submit-button");
         this.waitForPageToLoad();
     }
@@ -557,7 +558,7 @@ public class HelperMethods {
         this.waitForPageToLoad();
     }
 
-    public void selectRandomOptionFromDropdownById(String id) throws InterruptedException {
+    public void selectRandomOptionFromDropdownById(String id) {
         WebElement chosenDropdown = driver.findElement(By.id(id));
         chosenDropdown.click();
         Select serviceDropdown = new Select(chosenDropdown);
@@ -566,7 +567,7 @@ public class HelperMethods {
         serviceElements.get(randomSelector).click();
     }
 
-    public void selectInboundAndOutboundDirections() throws InterruptedException {
+    public void selectInboundAndOutboundDirections() {
         List<WebElement> dropdowns = this.driver.findElements(By.className("govuk-select"));
 
         final AtomicInteger dropdownCounter = new AtomicInteger(0);
@@ -744,22 +745,44 @@ public class HelperMethods {
             this.clickElementById("product-dates-required");
             int randomiser = randomNumberBetweenOneAnd(3);
             if (randomiser == 1) {
-                sendKeysById("start-date-day", "13");
-                sendKeysById("start-date-month", "10");
-                sendKeysById("start-date-year", "2010");
+                this.sendKeysById("start-date-day", "13");
+                this.sendKeysById("start-date-month", "10");
+                this.sendKeysById("start-date-year", "2010");
             } else if (randomiser == 2) {
-                sendKeysById("start-date-day", "13");
-                sendKeysById("start-date-month", "10");
-                sendKeysById("start-date-year", "2010");
-                sendKeysById("end-date-day", "7");
-                sendKeysById("end-date-month", "12");
-                sendKeysById("end-date-year", "2025");
+                this.sendKeysById("start-date-day", "13");
+                this.sendKeysById("start-date-month", "10");
+                this.sendKeysById("start-date-year", "2010");
+                this.sendKeysById("end-date-day", "7");
+                this.sendKeysById("end-date-month", "12");
+                this.sendKeysById("end-date-year", "2025");
             } else {
-                sendKeysById("end-date-day", "4");
-                sendKeysById("end-date-month", "4");
-                sendKeysById("end-date-year", "2030");
+                this.sendKeysById("end-date-day", "4");
+                this.sendKeysById("end-date-month", "4");
+                this.sendKeysById("end-date-year", "2030");
             }
         }
         this.continueButtonClick();
+    }
+    
+    public int searchForOperators() {
+        this.sendKeysById("search-input", "bus");
+        this.clickElementById("search-button");
+        this.waitForPageToLoad();
+        List<WebElement> operatorCheckboxes = this.driver.findElements(By.className("govuk-checkboxes__input"));
+        int numberOfCheckboxes = operatorCheckboxes.size();
+        int randomNumberOfCheckboxesToClick = randomNumberBetweenOneAnd(numberOfCheckboxes);
+
+        for (int i = 0; i < randomNumberOfCheckboxesToClick; i++) {
+            operatorCheckboxes.get(i).click();
+        }
+        this.clickElementById("add-operator-button");
+        this.waitForPageToLoad();
+        if(randomNumberOfCheckboxesToClick > 1 && randomNumberBetweenOneAnd(2) == 1) {
+            this.clickElementById("remove-operator-checkbox-0");
+            this.clickElementById("remove-operators-button");
+            this.waitForPageToLoad();
+            return randomNumberOfCheckboxesToClick - 1;
+        }
+        return randomNumberOfCheckboxesToClick;
     }
 }

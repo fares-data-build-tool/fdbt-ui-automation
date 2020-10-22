@@ -105,6 +105,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(8);
         helpers.submitButtonClick();
+        helpers.waitForPageToLoad();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
@@ -114,7 +115,7 @@ public class UserJourneyTests {
     }
 
     @Test
-    public void singleTicketManualTriangleTest() throws InterruptedException {
+    public void singleTicketManualTriangleTest() {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToSingleTicketInputMethod();
@@ -143,7 +144,7 @@ public class UserJourneyTests {
 
     @Test
     public void periodGeoZoneSingleProductTest() throws IOException, InterruptedException {
-        String productName = "Selenium Test Product";
+        String productName = "Single Op GeoZone Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
@@ -168,6 +169,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
+        helpers.waitForPageToLoad();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
@@ -177,8 +179,8 @@ public class UserJourneyTests {
     }
 
     @Test
-    public void periodMultipleServicesSingleProductTest() throws IOException {
-        String productName = "Selenium Test Product";
+    public void periodMultipleServicesSingleProductTest() throws IOException, InterruptedException {
+        String productName = "Single Op Multi Serv Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
@@ -202,6 +204,7 @@ public class UserJourneyTests {
 
         helpers.clickElementById(chosenSelector);
         helpers.continueButtonClick();
+        helpers.waitForPageToLoad();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
@@ -211,7 +214,7 @@ public class UserJourneyTests {
     }
 
     @Test
-    public void periodMultipleServicesMultipleProducts() throws IOException {
+    public void periodMultipleServicesMultipleProducts() throws IOException, InterruptedException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
@@ -242,6 +245,7 @@ public class UserJourneyTests {
         helpers.sendKeysById("product-details-name", productName);
         helpers.sendKeysById("product-details-price", "50.50");
         helpers.continueButtonClick();
+        helpers.waitForPageToLoad();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
@@ -265,6 +269,7 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.enterReturnTicketValidity();
         helpers.continueButtonClick();
+        helpers.waitForPageToLoad();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
         helpers.continueButtonClick();
@@ -298,8 +303,74 @@ public class UserJourneyTests {
         helpers.submitButtonClick();
         helpers.enterReturnTicketValidity();
         helpers.continueButtonClick();
+        helpers.waitForPageToLoad();
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackages("product");
+        helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
+
+    @Test
+    public void multiOperatorGeoZoneSingleProduct() throws IOException, InterruptedException {
+        String productName = "Multi Op GeoZone Product";
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToMultiOperatorPage();
+        helpers.clickElementById("geo-zone");
+        helpers.continueButtonClick();
+        helpers.uploadFareZoneCsvFile();
+        helpers.submitButtonClick();
+        helpers.searchForOperators();
+        helpers.continueButtonClick();
+        helpers.waitForElement("number-of-products");
+        helpers.sendKeysById("number-of-products", "1");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("product-details-name", productName);
+        helpers.sendKeysById("product-details-price", "10.50");
+        helpers.continueButtonClick();
+        helpers.sendKeysById("validity", "1");
+        helpers.continueButtonClick();
+
+        String endOfCalendarOption = "period-end-calendar";
+        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
+
+        String chosenSelector;
+        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
+
+        helpers.clickElementById(chosenSelector);
+        helpers.continueButtonClick();
+        helpers.waitForPageToLoad();
+        helpers.continueButtonClick();
+        helpers.selectSalesOfferPackages(productName);
+        helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
+
+    @Test
+    public void multiOperatorMultipleServicesMultiProduct() {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToMultiOperatorPage();
+        helpers.clickElementById("set-of-services");
+        helpers.continueButtonClick();
+        helpers.randomlyChooseAndSelectServices();
+        helpers.continueButtonClick();
+        int numberOfOperators = helpers.searchForOperators();
+        helpers.continueButtonClick();
+        for (int i = 0; i < numberOfOperators; i++) {
+            helpers.randomlyChooseAndSelectServices();
+            helpers.continueButtonClick();
+        }
+        int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(3) + 2;
+        helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
+        helpers.continueButtonClick();
+        helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
+        helpers.continueButtonClick();
+        helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();

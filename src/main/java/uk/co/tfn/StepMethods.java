@@ -16,7 +16,7 @@ public class StepMethods {
         this.driver = driver;
     }
 
-    public void stepsToSingleTicketInputMethod() throws InterruptedException {
+    public void stepsToSingleTicketInputMethod() {
         this.helpers.startPageButtonClick();
         this.helpers.clickElementById("fare-type-single");
         this.helpers.continueButtonClick();
@@ -41,6 +41,15 @@ public class StepMethods {
         helpers.continueButtonClick();
     }
 
+    public void stepsToMultiOperatorPage() {
+        this.helpers.startPageButtonClick();
+        this.helpers.clickElementById("fare-type-multi-operator");
+        this.helpers.continueButtonClick();
+        this.helpers.randomlyDetermineUserType();
+        this.helpers.randomlyDecideTimeRestrictions();
+        helpers.continueButtonClick();
+    }
+
     public void stepsToSelectFlatFareServiceSelection() {
         this.helpers.startPageButtonClick();
         this.helpers.clickElementById("fare-type-flat-fare");
@@ -50,7 +59,7 @@ public class StepMethods {
         this.helpers.continueButtonClick();
     }
 
-    public void stepsToReturnTicketInputMethod() throws InterruptedException {
+    public void stepsToReturnTicketInputMethod() {
         this.helpers.startPageButtonClick();
         this.helpers.clickElementById("fare-type-return");
         this.helpers.continueButtonClick();
