@@ -773,12 +773,20 @@ public class HelperMethods {
         int randomNumberOfCheckboxesToClick = randomNumberBetweenOneAnd(numberOfCheckboxes);
 
         for (int i = 0; i < randomNumberOfCheckboxesToClick; i++) {
-            operatorCheckboxes.get(i).click();
+            if (this.browser.equals("ie")) {
+                javascriptClick(operatorCheckboxes.get(i));
+            } else {
+                operatorCheckboxes.get(i).click();
+            }
         }
         this.clickElementById("add-operator-button");
         this.waitForPageToLoad();
         if(randomNumberOfCheckboxesToClick > 1 && randomNumberBetweenOneAnd(2) == 1) {
-            this.clickElementById("remove-operator-checkbox-0");
+            if (this.browser.equals("ie")) {
+                javascriptClick(driver.findElement(By.id("remove-operator-checkbox-0")));
+            } else {
+                this.clickElementById("remove-operator-checkbox-0");
+            }
             this.clickElementById("remove-operators-button");
             this.waitForPageToLoad();
             return randomNumberOfCheckboxesToClick - 1;
