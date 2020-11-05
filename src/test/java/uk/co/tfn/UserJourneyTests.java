@@ -333,6 +333,7 @@ public class UserJourneyTests {
         helpers.sendKeysById("product-details-price", "10.50");
         helpers.continueButtonClick();
         helpers.sendKeysById("validity", "1");
+        helpers.selectRandomOptionFromDropdownById("validity-units");
         helpers.continueButtonClick();
 
         String endOfCalendarOption = "period-end-calendar";
