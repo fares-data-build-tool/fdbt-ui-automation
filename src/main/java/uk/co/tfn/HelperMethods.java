@@ -564,6 +564,9 @@ public class HelperMethods {
         Select serviceDropdown = new Select(chosenDropdown);
         List<WebElement> serviceElements = serviceDropdown.getOptions();
         int randomSelector = HelperMethods.randomNumberBetweenOneAnd(serviceElements.size()) - 1;
+        if (randomSelector == 0) {
+            randomSelector = randomSelector+=1;
+        }
         serviceElements.get(randomSelector).click();
     }
 
