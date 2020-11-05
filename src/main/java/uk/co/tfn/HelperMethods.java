@@ -315,6 +315,7 @@ public class HelperMethods {
                     .sendKeys(String.format("Product %s", i));
             this.driver.findElement(By.id(String.format("multiple-product-price-%s", i))).sendKeys("3.67");
             this.driver.findElement(By.id(String.format("multiple-product-duration-%s", i))).sendKeys("7");
+            this.selectRandomOptionFromDropdownById(String.format("multiple-product-duration-units-%s", i));
         }
         this.continueButtonClick();
 
