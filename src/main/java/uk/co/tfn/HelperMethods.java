@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -100,7 +100,7 @@ public class HelperMethods {
         this.waitForPageToLoad();
     }
 
-    public void submitButtonClick(){
+    public void submitButtonClick() {
         this.clickElementById("submit-button");
         this.waitForPageToLoad();
     }
@@ -566,7 +566,7 @@ public class HelperMethods {
         List<WebElement> serviceElements = serviceDropdown.getOptions();
         int randomSelector = HelperMethods.randomNumberBetweenOneAnd(serviceElements.size()) - 1;
         if (randomSelector == 0) {
-            randomSelector = randomSelector+=1;
+            randomSelector = randomSelector += 1;
         }
         serviceElements.get(randomSelector).click();
     }
@@ -674,13 +674,27 @@ public class HelperMethods {
     }
 
     public void selectNoToTimeRestrictions() {
-        this.clickElementById("time-restrictions-no");
+        this.clickElementById("valid-days-not-required");
         this.continueButtonClick();
     }
 
     public void selectYesToTimeRestrictions() {
-        this.clickElementById("time-restrictions-yes");
+        this.clickElementById("valid-days-required");
+
+        List<String> checkboxIds = Arrays.asList("monday","tuesday","wednesday","thursday","friday","saturday","sunday","bankHoliday");
+        int randomNumber = randomNumberBetweenOneAnd(8);
+
+        for (int i = 0; i < randomNumber; i++) {
+            WebElement chosenCheckbox = this.driver.findElement(By.id(checkboxIds.get(i)));
+
+            if (this.browser.equals("ie")) {
+                javascriptClick(chosenCheckbox);
+            } else {
+                chosenCheckbox.click();
+            }
+        }
         this.continueButtonClick();
+
     }
 
     public void randomlyDecideTimeRestrictions() {
@@ -689,36 +703,18 @@ public class HelperMethods {
         } else {
             selectYesToTimeRestrictions();
 
-            if (randomNumberBetweenOneAnd(2) == 1) {
-                this.clickElementById("time-restriction-not-required");
-            } else {
-                this.clickElementById("time-restriction-required");
-                this.sendKeysById("start-time", "0600");
-                this.sendKeysById("end-time", "2200");
-            }
-
-            if (randomNumberBetweenOneAnd(2) == 1) {
-                this.clickElementById("valid-days-not-required");
-            } else {
-                this.clickElementById("valid-days-required");
-                ArrayList<String> days = new ArrayList<String>();
-                days.add("monday");
-                days.add("tuesday");
-                days.add("wednesday");
-                days.add("thursday");
-                days.add("friday");
-                days.add("saturday");
-                days.add("sunday");
-                Collections.shuffle(days);
-                int numberOfDays = randomNumberBetweenOneAnd(7);
-                for (int i = 0; i < numberOfDays; i++) {
-                    this.clickElementById(days.get(i));
+            List<WebElement> inputs = this.driver.findElements(By.className("govuk-input"));
+            List<String> timesAsStrings = Arrays.asList("0900", "0000", "2359", "0459", "1750", "1420", "");
+            for (int i = 0; i < inputs.size(); i++) {
+                String keysToSend = timesAsStrings.get(randomNumberBetweenOneAnd(7) - 1);
+                if (this.browser.equals("ie")) {
+                    executor.executeScript("arguments[0].setAttribute('value', arguments[1])", inputs.get(i), keysToSend);
+                } else {
+                    inputs.get(i).sendKeys(keysToSend);
                 }
             }
-
-            this.continueButtonClick();
-
         }
+        this.continueButtonClick();
     }
 
     public void enterReturnTicketValidity() {
@@ -767,7 +763,7 @@ public class HelperMethods {
         }
         this.continueButtonClick();
     }
-    
+
     public int searchForOperators() {
         this.sendKeysById("search-input", "bus");
         this.clickElementById("search-button");
@@ -785,7 +781,7 @@ public class HelperMethods {
         }
         this.clickElementById("add-operator-button");
         this.waitForPageToLoad();
-        if(randomNumberOfCheckboxesToClick > 1 && randomNumberBetweenOneAnd(2) == 1) {
+        if (randomNumberOfCheckboxesToClick > 1 && randomNumberBetweenOneAnd(2) == 1) {
             if (this.browser.equals("ie")) {
                 javascriptClick(driver.findElement(By.id("remove-operator-checkbox-0")));
             } else {
