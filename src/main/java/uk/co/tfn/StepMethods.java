@@ -43,7 +43,7 @@ public class StepMethods {
 
     public void stepsToMultiOperatorPage() {
         this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("fare-type-multi-operator");
+        this.helpers.clickElementById("fare-type-multiOperator");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
         this.helpers.randomlyDecideTimeRestrictions();
@@ -52,7 +52,7 @@ public class StepMethods {
 
     public void stepsToSelectFlatFareServiceSelection() {
         this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("fare-type-flat-fare");
+        this.helpers.clickElementById("fare-type-flatFare");
         this.helpers.continueButtonClick();
         this.helpers.randomlyDetermineUserType();
         this.helpers.randomlyDecideTimeRestrictions();
