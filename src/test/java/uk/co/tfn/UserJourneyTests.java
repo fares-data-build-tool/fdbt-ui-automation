@@ -99,18 +99,8 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToSingleTicketInputMethod();
-        helpers.clickElementById("csv-upload");
-        helpers.continueButtonClick();
-        helpers.uploadFaresTriangleCsvFile();
-        helpers.submitButtonClick();
-        helpers.fillInFareStageOptions(8);
-        helpers.submitButtonClick();
-        helpers.waitForPageToLoad();
-        helpers.continueButtonClick();
-        helpers.selectSalesOfferPackages("product");
-        helpers.continueButtonClick();
-        helpers.completeProductDateInformationPage();
-        helpers.continueButtonClick();
+        stepMethods.completeSingleCsvUpload();
+        stepMethods.completeSingleSalesOfferPackageAndProductDatingPages();
         assertTrue(helpers.isUuidStringValid());
     }
 
@@ -119,26 +109,8 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToSingleTicketInputMethod();
-        helpers.clickElementById("manual-entry");
-        helpers.continueButtonClick();
-        helpers.clickElementById("less-than-20-fare-stages");
-        helpers.continueButtonClick();
-        helpers.waitForElement("fare-stages");
-        int numberOfFareStages = 5;
-        helpers.sendKeysById("fare-stages", String.valueOf(numberOfFareStages));
-        helpers.continueButtonClick();
-        helpers.fillInManualFareStagesNames(numberOfFareStages);
-        helpers.continueButtonClick();
-        helpers.continueButtonClick();
-        helpers.fillInFareStageTriangle(numberOfFareStages);
-        helpers.continueButtonClick();
-        helpers.fillInFareStageOptions(numberOfFareStages);
-        helpers.submitButtonClick();
-        helpers.continueButtonClick();
-        helpers.selectSalesOfferPackages("product");
-        helpers.continueButtonClick();
-        helpers.completeProductDateInformationPage();
-        helpers.continueButtonClick();
+        stepMethods.completeSingleManualTriangle();
+        stepMethods.completeSingleSalesOfferPackageAndProductDatingPages();
         assertTrue(helpers.isUuidStringValid());
     }
 
@@ -185,29 +157,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
-        helpers.clickElementById("set-of-services");
-        helpers.continueButtonClick();
-        helpers.randomlyChooseAndSelectServices();
-        helpers.continueButtonClick();
-        helpers.sendKeysById("number-of-products", "1");
-        helpers.continueButtonClick();
-        helpers.sendKeysById("product-details-name", productName);
-        helpers.sendKeysById("product-details-price", "10.50");
-        helpers.continueButtonClick();
-        helpers.sendKeysById("validity", "1");
-        helpers.selectRandomOptionFromDropdownById("validity-units");
-        helpers.continueButtonClick();
-
-        String endOfCalendarOption = "period-end-calendar";
-        String endOfTwentyFourHoursOption = "period-twenty-four-hours";
-
-        String chosenSelector;
-        chosenSelector = makeRandomDecisionBetweenTwoChoices(endOfCalendarOption, endOfTwentyFourHoursOption);
-
-        helpers.clickElementById(chosenSelector);
-        helpers.continueButtonClick();
-        helpers.waitForPageToLoad();
-        helpers.continueButtonClick();
+        stepMethods.completeMultiServicePeriodPagesWithSingleProduct(productName);
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -220,15 +170,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
-        helpers.clickElementById("set-of-services");
-        helpers.continueButtonClick();
-        helpers.randomlyChooseAndSelectServices();
-        helpers.continueButtonClick();
-        int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(8) + 2;
-        helpers.sendKeysById("number-of-products", String.valueOf(numberOfProducts));
-        helpers.continueButtonClick();
-        helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
-        helpers.continueButtonClick();
+        int numberOfProducts = stepMethods.completeMultiServicePeriodPagesWithMultiProducts();
         helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -242,13 +184,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToSelectFlatFareServiceSelection();
-        helpers.randomlyChooseAndSelectServices();
-        helpers.continueButtonClick();
-        helpers.sendKeysById("product-details-name", productName);
-        helpers.sendKeysById("product-details-price", "50.50");
-        helpers.continueButtonClick();
-        helpers.waitForPageToLoad();
-        helpers.continueButtonClick();
+        stepMethods.completeFlatFarePages(productName);
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -374,6 +310,57 @@ public class UserJourneyTests {
         helpers.enterDetailsAndSelectValidityForMultipleProducts(numberOfProducts);
         helpers.continueButtonClick();
         helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
+        helpers.continueButtonClick();
+        helpers.completeProductDateInformationPage();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
+
+    public void singleSchoolServiceTicket() throws IOException, AWTException {
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSchoolFareTypePage();
+        helpers.clickElementById("fare-type-single");
+        helpers.continueButtonClick();
+        if (HelperMethods.randomNumberBetweenOneAnd(2) == 1) {
+            stepMethods.completeSingleCsvUpload();
+        } else {
+            stepMethods.completeSingleManualTriangle();
+        }
+        stepMethods.completeSingleSalesOfferPackageAndProductDatingPages();
+        assertTrue(helpers.isUuidStringValid());
+    }
+
+    public void multiServiceSchoolServiceTicket() {
+        String productName = "School multi service product";
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSchoolFareTypePage();
+        helpers.clickElementById("fare-type-period");
+        helpers.continueButtonClick();
+        if (HelperMethods.randomNumberBetweenOneAnd(2) == 1) {
+            stepMethods.completeMultiServicePeriodPagesWithSingleProduct(productName);
+            helpers.selectSalesOfferPackages(productName);
+            helpers.continueButtonClick();
+        } else {
+            int numberOfProducts = stepMethods.completeMultiServicePeriodPagesWithMultiProducts();
+            helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
+            helpers.continueButtonClick();
+        }
+        helpers.completeProductDateInformationPage();
+        helpers.continueButtonClick();
+        assertTrue(helpers.isUuidStringValid());
+    }
+
+    public void flatFareSchoolServiceTicket() {
+        String productName = "School flat fare product";
+        helpers.getHomePage();
+        helpers.waitForPageToLoad();
+        stepMethods.stepsToSchoolFareTypePage();
+        helpers.clickElementById("fare-type-flatFare");
+        helpers.continueButtonClick();
+        stepMethods.completeFlatFarePages(productName);
+        helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
         helpers.continueButtonClick();

@@ -320,10 +320,13 @@ public class HelperMethods {
         this.continueButtonClick();
 
         for (int i = 0; i < numberOfProducts; i++) {
-            String twentyFourHourId = String.format("twenty-four-hours-row-%s", i);
-            String calendayDayId = String.format("calendar-day-row-%s", i);
-            String validitySelectionId = makeRandomDecisionBetweenTwoChoices(twentyFourHourId, calendayDayId);
-            this.clickElementById(validitySelectionId);
+            selectRandomOptionFromDropdownById("validity-option-0");
+        }
+
+        List<WebElement> endTimeInputBoxes = driver.findElements(By.className("govuk-input"));
+        
+        for (int i = 0; i < endTimeInputBoxes.size(); i++) {
+            endTimeInputBoxes.get(i).sendKeys("0900");
         }
 
         this.continueButtonClick();
@@ -446,6 +449,51 @@ public class HelperMethods {
                     break;
             }
         }
+    }
+
+    public void completeSchoolPupilDefinePassengerTypePage() {
+        int randomSelector = randomNumberBetweenOneAnd(4);
+        switch (randomSelector) {
+            case 1:
+                // 1. No to both questions
+                this.clickElementById("age-range-not-required");
+                this.clickElementById("proof-not-required");
+                this.continueButtonClick();
+                break;
+            case 2:
+                // 2. No to age limit, Yes to Proof
+                this.clickElementById("age-range-not-required");
+                this.clickElementById("proof-required");
+                this.randomlyChooseAProof();
+                this.continueButtonClick();
+                break;
+            case 3:
+                // 3. Yes to age limit, Yes to Proof
+                this.clickElementById("age-range-required");
+                this.randomlyChooseAgeLimits();
+                this.clickElementById("proof-required");
+                this.randomlyChooseAProof();
+                this.continueButtonClick();
+                break;
+            case 4:
+                // 4. Yes to age limit, No to Proof
+                this.clickElementById("age-range-required");
+                this.randomlyChooseAgeLimits();
+                this.clickElementById("proof-not-required");
+                this.continueButtonClick();
+                break;
+        }
+    }
+
+    public void selectTermTime() {
+        int randomSelector = randomNumberBetweenOneAnd(2);
+
+        if (randomSelector == 1) {
+            this.clickElementById("term-time-yes");
+        } else {
+            this.clickElementById("term-time-no");
+        }
+        this.continueButtonClick();
     }
 
     public void randomlyDetermineUserType() {
