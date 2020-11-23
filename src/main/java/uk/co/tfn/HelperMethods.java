@@ -89,6 +89,10 @@ public class HelperMethods {
         executor.executeScript("arguments[0].click();", element);
     }
 
+    public void javascriptSendKeys (WebElement element, String input) {
+        executor.executeScript("arguments[0].setAttribute('value', arguments[1])", element, input);
+    }
+
     public void getHomePage() {
         this.driver.manage().deleteAllCookies();
         this.driver.get("https://tfn-test.infinityworks.com/?disableAuth=true");
@@ -320,10 +324,13 @@ public class HelperMethods {
         this.continueButtonClick();
 
         for (int i = 0; i < numberOfProducts; i++) {
-            String twentyFourHourId = String.format("twenty-four-hours-row-%s", i);
-            String calendayDayId = String.format("calendar-day-row-%s", i);
-            String validitySelectionId = makeRandomDecisionBetweenTwoChoices(twentyFourHourId, calendayDayId);
-            this.clickElementById(validitySelectionId);
+            selectRandomOptionFromDropdownById(String.format("validity-option-%s", i));
+        }
+
+        List<WebElement> endTimeInputBoxes = driver.findElements(By.className("govuk-input"));
+        
+        for (int i = 0; i < endTimeInputBoxes.size(); i++) {
+            javascriptSendKeys(endTimeInputBoxes.get(i), "0900");
         }
 
         this.continueButtonClick();
@@ -345,7 +352,7 @@ public class HelperMethods {
         WebElement element = this.waitForElement(id);
 
         if (this.browser.equals("ie")) {
-            executor.executeScript("arguments[0].setAttribute('value', arguments[1])", element, input);
+            javascriptSendKeys(element, input);
         } else {
             element.sendKeys(input);
         }
@@ -446,6 +453,51 @@ public class HelperMethods {
                     break;
             }
         }
+    }
+
+    public void completeSchoolPupilDefinePassengerTypePage() {
+        int randomSelector = randomNumberBetweenOneAnd(4);
+        switch (randomSelector) {
+            case 1:
+                // 1. No to both questions
+                this.clickElementById("age-range-not-required");
+                this.clickElementById("proof-not-required");
+                this.continueButtonClick();
+                break;
+            case 2:
+                // 2. No to age limit, Yes to Proof
+                this.clickElementById("age-range-not-required");
+                this.clickElementById("proof-required");
+                this.randomlyChooseAProof();
+                this.continueButtonClick();
+                break;
+            case 3:
+                // 3. Yes to age limit, Yes to Proof
+                this.clickElementById("age-range-required");
+                this.randomlyChooseAgeLimits();
+                this.clickElementById("proof-required");
+                this.randomlyChooseAProof();
+                this.continueButtonClick();
+                break;
+            case 4:
+                // 4. Yes to age limit, No to Proof
+                this.clickElementById("age-range-required");
+                this.randomlyChooseAgeLimits();
+                this.clickElementById("proof-not-required");
+                this.continueButtonClick();
+                break;
+        }
+    }
+
+    public void selectTermTime() {
+        int randomSelector = randomNumberBetweenOneAnd(2);
+
+        if (randomSelector == 1) {
+            this.clickElementById("term-time-yes");
+        } else {
+            this.clickElementById("term-time-no");
+        }
+        this.continueButtonClick();
     }
 
     public void randomlyDetermineUserType() {
@@ -673,11 +725,6 @@ public class HelperMethods {
         }
     }
 
-    public void selectNoToTimeRestrictions() {
-        this.clickElementById("valid-days-not-required");
-        this.continueButtonClick();
-    }
-
     public void selectYesToTimeRestrictions() {
         this.clickElementById("valid-days-required");
 
@@ -699,7 +746,7 @@ public class HelperMethods {
 
     public void randomlyDecideTimeRestrictions() {
         if (randomNumberBetweenOneAnd(2) == 1) {
-            selectNoToTimeRestrictions();
+            this.clickElementById("valid-days-not-required");
         } else {
             selectYesToTimeRestrictions();
 
