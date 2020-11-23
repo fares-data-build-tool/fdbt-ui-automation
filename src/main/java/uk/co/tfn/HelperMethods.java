@@ -89,6 +89,10 @@ public class HelperMethods {
         executor.executeScript("arguments[0].click();", element);
     }
 
+    public void javascriptSendKeys (WebElement element, String input) {
+        executor.executeScript("arguments[0].setAttribute('value', arguments[1])", element, input);
+    }
+
     public void getHomePage() {
         this.driver.manage().deleteAllCookies();
         this.driver.get("https://tfn-test.infinityworks.com/?disableAuth=true");
@@ -320,13 +324,13 @@ public class HelperMethods {
         this.continueButtonClick();
 
         for (int i = 0; i < numberOfProducts; i++) {
-            selectRandomOptionFromDropdownById("validity-option-0");
+            selectRandomOptionFromDropdownById(String.format("validity-option-%s", i));
         }
 
         List<WebElement> endTimeInputBoxes = driver.findElements(By.className("govuk-input"));
         
         for (int i = 0; i < endTimeInputBoxes.size(); i++) {
-            endTimeInputBoxes.get(i).sendKeys("0900");
+            javascriptSendKeys(endTimeInputBoxes.get(i), "0900");
         }
 
         this.continueButtonClick();
@@ -348,7 +352,7 @@ public class HelperMethods {
         WebElement element = this.waitForElement(id);
 
         if (this.browser.equals("ie")) {
-            executor.executeScript("arguments[0].setAttribute('value', arguments[1])", element, input);
+            javascriptSendKeys(element, input);
         } else {
             element.sendKeys(input);
         }
@@ -721,11 +725,6 @@ public class HelperMethods {
         }
     }
 
-    public void selectNoToTimeRestrictions() {
-        this.clickElementById("valid-days-not-required");
-        this.continueButtonClick();
-    }
-
     public void selectYesToTimeRestrictions() {
         this.clickElementById("valid-days-required");
 
@@ -747,7 +746,7 @@ public class HelperMethods {
 
     public void randomlyDecideTimeRestrictions() {
         if (randomNumberBetweenOneAnd(2) == 1) {
-            selectNoToTimeRestrictions();
+            this.clickElementById("valid-days-not-required");
         } else {
             selectYesToTimeRestrictions();
 

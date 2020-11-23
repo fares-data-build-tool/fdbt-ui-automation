@@ -157,7 +157,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
-        stepMethods.completeMultiServicePeriodPagesWithSingleProduct(productName);
+        stepMethods.completeMultiServicePeriodPagesWithSingleProduct(productName, false);
         helpers.selectSalesOfferPackages(productName);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -316,21 +316,27 @@ public class UserJourneyTests {
         assertTrue(helpers.isUuidStringValid());
     }
 
+    @Test
     public void singleSchoolServiceTicket() throws IOException, AWTException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToSchoolFareTypePage();
         helpers.clickElementById("fare-type-single");
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
+        stepMethods.compeleteServiceAndJourneyDirectionPages();
+
         if (HelperMethods.randomNumberBetweenOneAnd(2) == 1) {
             stepMethods.completeSingleCsvUpload();
         } else {
             stepMethods.completeSingleManualTriangle();
         }
+
         stepMethods.completeSingleSalesOfferPackageAndProductDatingPages();
         assertTrue(helpers.isUuidStringValid());
     }
 
+    @Test
     public void multiServiceSchoolServiceTicket() {
         String productName = "School multi service product";
         helpers.getHomePage();
@@ -338,8 +344,9 @@ public class UserJourneyTests {
         stepMethods.stepsToSchoolFareTypePage();
         helpers.clickElementById("fare-type-period");
         helpers.continueButtonClick();
+        helpers.continueButtonClick();
         if (HelperMethods.randomNumberBetweenOneAnd(2) == 1) {
-            stepMethods.completeMultiServicePeriodPagesWithSingleProduct(productName);
+            stepMethods.completeMultiServicePeriodPagesWithSingleProduct(productName, true);
             helpers.selectSalesOfferPackages(productName);
             helpers.continueButtonClick();
         } else {
@@ -352,12 +359,14 @@ public class UserJourneyTests {
         assertTrue(helpers.isUuidStringValid());
     }
 
+    @Test
     public void flatFareSchoolServiceTicket() {
         String productName = "School flat fare product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToSchoolFareTypePage();
         helpers.clickElementById("fare-type-flatFare");
+        helpers.continueButtonClick();
         helpers.continueButtonClick();
         stepMethods.completeFlatFarePages(productName);
         helpers.selectSalesOfferPackages(productName);

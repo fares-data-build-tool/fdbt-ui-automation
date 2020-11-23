@@ -18,13 +18,7 @@ public class StepMethods {
         this.driver = driver;
     }
 
-    public void stepsToSingleTicketInputMethod() {
-        this.helpers.startPageButtonClick();
-        this.helpers.clickElementById("fare-type-single");
-        this.helpers.continueButtonClick();
-        this.helpers.randomlyDetermineUserType();
-        this.helpers.randomlyDecideTimeRestrictions();
-        helpers.continueButtonClick();
+    public void compeleteServiceAndJourneyDirectionPages() {
         this.helpers.selectRandomOptionFromDropdownById("service");
         this.helpers.continueButtonClick();
         this.helpers.clickElementById("direction-journey-pattern");
@@ -32,6 +26,16 @@ public class StepMethods {
         List<WebElement> directionDropdownOptions = directionDropdown.getOptions();
         directionDropdownOptions.get(1).click();
         this.helpers.continueButtonClick();
+    }
+
+    public void stepsToSingleTicketInputMethod() {
+        this.helpers.startPageButtonClick();
+        this.helpers.clickElementById("fare-type-single");
+        this.helpers.continueButtonClick();
+        this.helpers.randomlyDetermineUserType();
+        this.helpers.randomlyDecideTimeRestrictions();
+        helpers.continueButtonClick();
+        compeleteServiceAndJourneyDirectionPages();
     }
 
     public void stepsToPeriodPage() {
@@ -80,7 +84,6 @@ public class StepMethods {
         this.helpers.continueButtonClick();
         this.helpers.completeSchoolPupilDefinePassengerTypePage();
         this.helpers.selectTermTime();
-        helpers.continueButtonClick();
     }
 
     public void completeSingleCsvUpload () throws IOException, AWTException {
@@ -90,7 +93,6 @@ public class StepMethods {
         helpers.submitButtonClick();
         helpers.fillInFareStageOptions(8);
         helpers.submitButtonClick();
-        helpers.waitForPageToLoad();
         helpers.continueButtonClick();
     }
 
@@ -120,9 +122,11 @@ public class StepMethods {
         helpers.continueButtonClick();
     }
 
-    public void completeMultiServicePeriodPagesWithSingleProduct(String productName) {
-        helpers.clickElementById("set-of-services");
-        helpers.continueButtonClick();
+    public void completeMultiServicePeriodPagesWithSingleProduct(String productName, boolean schoolService) {
+        if (!schoolService) {
+            helpers.clickElementById("set-of-services");
+            helpers.continueButtonClick();
+        }
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
         helpers.sendKeysById("number-of-products", "1");
