@@ -150,9 +150,11 @@ public class StepMethods {
         helpers.continueButtonClick();
     }
 
-    public int completeMultiServicePeriodPagesWithMultiProducts() {
-        helpers.clickElementById("set-of-services");
-        helpers.continueButtonClick();
+    public int completeMultiServicePeriodPagesWithMultiProducts(boolean schoolService) {
+        if (!schoolService) {
+            helpers.clickElementById("set-of-services");
+            helpers.continueButtonClick();
+        }
         helpers.randomlyChooseAndSelectServices();
         helpers.continueButtonClick();
         int numberOfProducts = HelperMethods.randomNumberBetweenOneAnd(8) + 2;

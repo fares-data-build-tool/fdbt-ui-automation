@@ -100,7 +100,7 @@ public class HelperMethods {
     }
 
     public void continueButtonClick() {
-        this.clickElementById("continue-button");
+        this.javascriptClick(this.driver.findElement(By.id("continue-button")));
         this.waitForPageToLoad();
     }
 
