@@ -170,7 +170,7 @@ public class UserJourneyTests {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
         stepMethods.stepsToPeriodPage();
-        int numberOfProducts = stepMethods.completeMultiServicePeriodPagesWithMultiProducts();
+        int numberOfProducts = stepMethods.completeMultiServicePeriodPagesWithMultiProducts(false);
         helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
         helpers.continueButtonClick();
         helpers.completeProductDateInformationPage();
@@ -350,7 +350,7 @@ public class UserJourneyTests {
             helpers.selectSalesOfferPackages(productName);
             helpers.continueButtonClick();
         } else {
-            int numberOfProducts = stepMethods.completeMultiServicePeriodPagesWithMultiProducts();
+            int numberOfProducts = stepMethods.completeMultiServicePeriodPagesWithMultiProducts(true);
             helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
             helpers.continueButtonClick();
         }
