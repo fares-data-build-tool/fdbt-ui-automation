@@ -7,8 +7,8 @@ set -e
 
 update_ip_set() {
     IP=$(wget -qO- http://checkip.amazonaws.com)
-    LOCK_TOKEN=$(aws wafv2 get-ip-set --scope REGIONAL --region $AWS_REGION --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
-    NEXT_LOCK_TOKEN=$(aws wafv2 update-ip-set --scope REGIONAL --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses $IP/32 --lock-token $LOCK_TOKEN --region $AWS_REGION 2>/dev/null | jq .NextLockToken | tr -d '"')
+    LOCK_TOKEN=$(aws wafv2 get-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
+    NEXT_LOCK_TOKEN=$(aws wafv2 update-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses $IP/32 --lock-token $LOCK_TOKEN 2>/dev/null | jq .NextLockToken | tr -d '"')
 
     if [ -z "$NEXT_LOCK_TOKEN" ]; then
         return 1
@@ -20,8 +20,8 @@ run_ui_tests() {
 }
 
 cleanup_ip_set() {
-    LOCK_TOKEN=$(aws wafv2 get-ip-set --scope REGIONAL --region $AWS_REGION --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
-    aws wafv2 update-ip-set --scope REGIONAL --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses --lock-token $LOCK_TOKEN --region $AWS_REGION
+    LOCK_TOKEN=$(aws wafv2 get-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
+    aws wafv2 update-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses --lock-token $LOCK_TOKEN
 }
 
 sudo apt update
