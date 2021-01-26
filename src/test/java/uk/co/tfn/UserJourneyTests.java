@@ -98,6 +98,7 @@ public class UserJourneyTests {
     public void singleTicketCsvTest() throws IOException, AWTException, InterruptedException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToSingleTicketInputMethod();
         stepMethods.completeSingleCsvUpload();
         stepMethods.completeSingleSalesOfferPackageAndProductDatingPages();
@@ -108,6 +109,7 @@ public class UserJourneyTests {
     public void singleTicketManualTriangleTest() {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToSingleTicketInputMethod();
         stepMethods.completeSingleManualTriangle();
         stepMethods.completeSingleSalesOfferPackageAndProductDatingPages();
@@ -119,6 +121,7 @@ public class UserJourneyTests {
         String productName = "Single Op GeoZone Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToPeriodPage();
         helpers.clickElementById("geo-zone");
         helpers.continueButtonClick();
@@ -156,6 +159,7 @@ public class UserJourneyTests {
         String productName = "Single Op Multi Serv Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToPeriodPage();
         stepMethods.completeMultiServicePeriodPagesWithSingleProduct(productName, false);
         helpers.selectSalesOfferPackages(productName);
@@ -169,6 +173,7 @@ public class UserJourneyTests {
     public void periodMultipleServicesMultipleProducts() throws IOException, InterruptedException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToPeriodPage();
         int numberOfProducts = stepMethods.completeMultiServicePeriodPagesWithMultiProducts(false);
         helpers.selectSalesOfferPackagesForMultipleProducts(numberOfProducts);
@@ -183,6 +188,7 @@ public class UserJourneyTests {
         String productName = "Flat Fare Test Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToSelectFlatFareServiceSelection();
         stepMethods.completeFlatFarePages(productName);
         helpers.selectSalesOfferPackages(productName);
@@ -196,6 +202,7 @@ public class UserJourneyTests {
     public void returnTicketCircularAndNonCircularCsvUpload() throws IOException, AWTException, InterruptedException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToReturnTicketInputMethod();
         helpers.clickElementById("csv-upload");
         helpers.continueButtonClick();
@@ -221,6 +228,7 @@ public class UserJourneyTests {
             throws IOException, AWTException, InterruptedException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToReturnTicketInputMethod();
         helpers.clickElementById("manual-entry");
         helpers.continueButtonClick();
@@ -255,6 +263,7 @@ public class UserJourneyTests {
         String productName = "Multi Op GeoZone Product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToMultiOperatorPage();
         helpers.clickElementById("geo-zone");
         helpers.continueButtonClick();
@@ -293,6 +302,7 @@ public class UserJourneyTests {
     public void multiOperatorMultipleServicesMultiProduct() {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToMultiOperatorPage();
         helpers.clickElementById("set-of-services");
         helpers.continueButtonClick();
@@ -320,6 +330,7 @@ public class UserJourneyTests {
     public void singleSchoolServiceTicket() throws IOException, AWTException {
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToSchoolFareTypePage();
         helpers.clickElementById("fare-type-single");
         helpers.continueButtonClick();
@@ -341,6 +352,7 @@ public class UserJourneyTests {
         String productName = "School multi service product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToSchoolFareTypePage();
         helpers.clickElementById("fare-type-period");
         helpers.continueButtonClick();
@@ -364,6 +376,7 @@ public class UserJourneyTests {
         String productName = "School flat fare product";
         helpers.getHomePage();
         helpers.waitForPageToLoad();
+        helpers.checkForCookieBanner();
         stepMethods.stepsToSchoolFareTypePage();
         helpers.clickElementById("fare-type-flatFare");
         helpers.continueButtonClick();
