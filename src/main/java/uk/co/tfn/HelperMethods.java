@@ -160,6 +160,8 @@ public class HelperMethods {
             csvFile.createNewFile();
         }
 
+        this.clickElementById("pence");
+
         FileUtils.copyURLToFile(url, csvFile);
 
         if (this.browser.equals("chrome") || this.browser.equals("ie")) {
