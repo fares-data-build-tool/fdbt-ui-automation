@@ -104,6 +104,13 @@ public class HelperMethods {
         this.waitForPageToLoad();
     }
 
+    public void checkForCookieBanner() {
+        List<WebElement> cookieButton = this.driver.findElements(By.id("accept-all-button"));
+        if (cookieButton.size() > 0) {
+            cookieButton.get(0).click();
+        }
+    }
+
     public void submitButtonClick() {
         this.clickElementById("submit-button");
         this.waitForPageToLoad();
