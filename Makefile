@@ -15,5 +15,3 @@ test-windows-chrome-remote:
 test-windows-firefox-remote:
 	mvn -Dhost=remote -Dbrowser=firefox test
 
-test-windows-ie-remote:
-	mvn -Dhost=remote -Dbrowser=ie test
