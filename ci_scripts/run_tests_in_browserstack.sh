@@ -40,6 +40,6 @@ unzip BrowserStackLocal-linux-x64.zip
 
 ./BrowserStackLocal --key $BROWSERSTACK_KEY --daemon start --force-local
 
-run_ui_tests chrome & run_ui_tests firefox & run_ui_tests ie
+run_ui_tests chrome & run_ui_tests firefox
 
 cleanup_ip_set

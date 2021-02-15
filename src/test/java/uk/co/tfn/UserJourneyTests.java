@@ -69,24 +69,14 @@ public class UserJourneyTests {
                 caps.setCapability("browserName", "Firefox");
 
                 driver = new RemoteWebDriver(new URL(URL), caps);
-            } else if (browser.equals("chrome")) {
+            } else {
                 caps.setCapability("browserName", "Chrome");
 
                 ChromeOptions options = setChromeOptions();
                 ChromeOptions merged = options.merge(caps);
 
                 driver = new RemoteWebDriver(new URL(URL), merged);
-            } else if (browser.equals("ie")) {
-                caps.setCapability("browserName", "IE");
-
-                caps.setCapability("ignoreProtectedModeSettings", true);
-                caps.setCapability("disable-popup-blocking", true);
-                caps.setCapability("enablePersistentHover", true);
-                caps.setCapability("ignoreZoomSetting", true);
-
-                driver = new RemoteWebDriver(new URL(URL), caps);
             }
-
             driver.setFileDetector(new LocalFileDetector());
         }
 

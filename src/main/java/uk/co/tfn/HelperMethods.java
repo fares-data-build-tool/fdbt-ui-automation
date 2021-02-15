@@ -171,9 +171,8 @@ public class HelperMethods {
 
         FileUtils.copyURLToFile(url, csvFile);
 
-        if (this.browser.equals("chrome") || this.browser.equals("ie")) {
+        if (this.browser.equals("chrome")) {
             this.waitForElement("csv-upload");
-
             WebElement upload = this.driver.findElement(By.id("csv-upload"));
 
             if (this.host.equals("local")) {
@@ -181,11 +180,8 @@ public class HelperMethods {
             }
 
             upload.sendKeys("Fares-Triangle-Example.csv");
-
-        } else if (this.browser.equals("firefox")) {
-
+        } else {
             this.waitForElement("csv-upload");
-
             this.driver.findElement(By.xpath("//input[@type='file']")).sendKeys(csvFile.getAbsolutePath());
         }
 
@@ -202,9 +198,8 @@ public class HelperMethods {
 
         FileUtils.copyURLToFile(url, csvFile);
 
-        if (this.browser.equals("chrome") || this.browser.equals("ie")) {
+        if (this.browser.equals("chrome")) {
             this.waitForElement("csv-upload");
-
             WebElement upload = this.driver.findElement(By.id("csv-upload"));
 
             if (this.host.equals("local")) {
@@ -212,8 +207,7 @@ public class HelperMethods {
             }
 
             upload.sendKeys("Fare-Zone-Example.csv");
-
-        } else if (this.browser.equals("firefox")) {
+        } else {
             this.waitForElement("csv-upload");
 
             this.driver.findElement(By.xpath("//input[@type='file']")).sendKeys(csvFile.getAbsolutePath());
@@ -228,12 +222,7 @@ public class HelperMethods {
 
         for (int i = 0; i < numberOfCheckboxes; i++) {
             WebElement chosenCheckbox = this.driver.findElement(By.id(String.format("checkbox-%s", i)));
-
-            if (this.browser.equals("ie")) {
-                javascriptClick(chosenCheckbox);
-            } else {
-                chosenCheckbox.click();
-            }
+            chosenCheckbox.click();
 
             if (selectAll == false) {
                 int iterator = randomNumberBetweenOneAnd(numberOfCheckboxes);
@@ -346,25 +335,13 @@ public class HelperMethods {
     }
 
     public void clickElementById(String id) {
-
         WebElement element = this.waitForElement(id);
-
-        if (this.browser.equals("ie")) {
-            javascriptClick(element);
-        } else {
-            element.click();
-        }
-
+        element.click();
     }
 
     public void sendKeysById(String id, String input) {
         WebElement element = this.waitForElement(id);
-
-        if (this.browser.equals("ie")) {
-            javascriptSendKeys(element, input);
-        } else {
-            element.sendKeys(input);
-        }
+        element.sendKeys(input);
     }
 
     public void randomlyChooseAProof() {
@@ -516,21 +493,13 @@ public class HelperMethods {
         if (randomSelector == 1) {
             // Click Any and continue
             WebElement element = this.waitForElement("passenger-type-anyone");
-            if (this.browser.equals("ie")) {
-                javascriptClick(element);
-            } else {
-                element.click();
-            }
+            element.click();
             this.continueButtonClick();
             this.waitForPageToLoad();
         } else if (randomSelector == 2) {
             // Click Group, complete following pages, and continue
             WebElement element = this.waitForElement("passenger-type-group");
-            if (this.browser.equals("ie")) {
-                javascriptClick(element);
-            } else {
-                element.click();
-            }
+            element.click();
             this.continueButtonClick();
             this.waitForPageToLoad();
             this.completeGroupPassengerDetailsPages();
@@ -547,12 +516,7 @@ public class HelperMethods {
 
             WebElement chosenPassenger = otherPassengerTypes.get(randomNumberBetweenOneAnd(6) - 1);
             boolean adult = false;
-
-            if (this.browser.equals("ie")) {
-                javascriptClick(chosenPassenger);
-            } else {
-                chosenPassenger.click();
-            }
+            chosenPassenger.click();
             this.continueButtonClick();
             this.waitForPageToLoad();
             if (this.driver.findElement(By.id("define-passenger-age-range")).getText().contains("adult")) {
@@ -598,11 +562,7 @@ public class HelperMethods {
         int firstRandomNumber = randomNumberBetweenOneAnd(7) - 1;
         WebElement firstPassengerType = this.driver
                 .findElement(By.id(String.format("passenger-type-%s", String.valueOf(firstRandomNumber))));
-        if (this.browser.equals("ie")) {
-            javascriptClick(firstPassengerType);
-        } else {
-            firstPassengerType.click();
-        }
+        firstPassengerType.click();
 
         int secondRandomNumber = randomNumberBetweenOneAnd(7) - 1;
         while (firstRandomNumber == secondRandomNumber) {
@@ -610,12 +570,8 @@ public class HelperMethods {
         }
         WebElement secondPassengerType = this.driver
                 .findElement(By.id(String.format("passenger-type-%s", String.valueOf(secondRandomNumber))));
-        if (this.browser.equals("ie")) {
-            javascriptClick(secondPassengerType);
-        } else {
-            secondPassengerType.click();
-        }
 
+        secondPassengerType.click();
         this.continueButtonClick();
         this.waitForPageToLoad();
     }
@@ -669,44 +625,22 @@ public class HelperMethods {
     public void clickRandomSalesOfferPackages(List<WebElement> salesOfferPackages, int randomNumber) {
         switch (randomNumber) {
             case 1:
-                if (this.browser.equals("ie")) {
-                    javascriptClick(salesOfferPackages.get(0));
-                } else {
-                    salesOfferPackages.get(0).click();
-                }
+                salesOfferPackages.get(0).click();
                 break;
             case 2:
-                if (this.browser.equals("ie")) {
-                    javascriptClick(salesOfferPackages.get(0));
-                    javascriptClick(salesOfferPackages.get(1));
-                } else {
-                    salesOfferPackages.get(0).click();
-                    salesOfferPackages.get(1).click();
-                }
+                salesOfferPackages.get(0).click();
+                salesOfferPackages.get(1).click();
                 break;
             case 3:
-                if (this.browser.equals("ie")) {
-                    javascriptClick(salesOfferPackages.get(0));
-                    javascriptClick(salesOfferPackages.get(1));
-                    javascriptClick(salesOfferPackages.get(2));
-                } else {
-                    salesOfferPackages.get(0).click();
-                    salesOfferPackages.get(1).click();
-                    salesOfferPackages.get(2).click();
-                }
+                salesOfferPackages.get(0).click();
+                salesOfferPackages.get(1).click();
+                salesOfferPackages.get(2).click();
                 break;
             case 4:
-                if (this.browser.equals("ie")) {
-                    javascriptClick(salesOfferPackages.get(0));
-                    javascriptClick(salesOfferPackages.get(1));
-                    javascriptClick(salesOfferPackages.get(2));
-                    javascriptClick(salesOfferPackages.get(3));
-                } else {
-                    salesOfferPackages.get(0).click();
-                    salesOfferPackages.get(1).click();
-                    salesOfferPackages.get(2).click();
-                    salesOfferPackages.get(3).click();
-                }
+                salesOfferPackages.get(0).click();
+                salesOfferPackages.get(1).click();
+                salesOfferPackages.get(2).click();
+                salesOfferPackages.get(3).click();
                 break;
         }
     }
@@ -742,12 +676,7 @@ public class HelperMethods {
 
         for (int i = 0; i < randomNumber; i++) {
             WebElement chosenCheckbox = this.driver.findElement(By.id(checkboxIds.get(i)));
-
-            if (this.browser.equals("ie")) {
-                javascriptClick(chosenCheckbox);
-            } else {
-                chosenCheckbox.click();
-            }
+            chosenCheckbox.click();
         }
         this.continueButtonClick();
 
@@ -763,11 +692,7 @@ public class HelperMethods {
             List<String> timesAsStrings = Arrays.asList("0900", "0000", "2359", "0459", "1750", "1420", "");
             for (int i = 0; i < inputs.size(); i++) {
                 String keysToSend = timesAsStrings.get(randomNumberBetweenOneAnd(7) - 1);
-                if (this.browser.equals("ie")) {
-                    executor.executeScript("arguments[0].setAttribute('value', arguments[1])", inputs.get(i), keysToSend);
-                } else {
-                    inputs.get(i).sendKeys(keysToSend);
-                }
+                inputs.get(i).sendKeys(keysToSend);
             }
         }
         this.continueButtonClick();
@@ -829,20 +754,12 @@ public class HelperMethods {
         int randomNumberOfCheckboxesToClick = randomNumberBetweenOneAnd(numberOfCheckboxes);
 
         for (int i = 0; i < randomNumberOfCheckboxesToClick; i++) {
-            if (this.browser.equals("ie")) {
-                javascriptClick(operatorCheckboxes.get(i));
-            } else {
-                operatorCheckboxes.get(i).click();
-            }
+            operatorCheckboxes.get(i).click();
         }
         this.clickElementById("add-operator-button");
         this.waitForPageToLoad();
         if (randomNumberOfCheckboxesToClick > 1 && randomNumberBetweenOneAnd(2) == 1) {
-            if (this.browser.equals("ie")) {
-                javascriptClick(driver.findElement(By.id("remove-operator-checkbox-0")));
-            } else {
-                this.clickElementById("remove-operator-checkbox-0");
-            }
+            this.clickElementById("remove-operator-checkbox-0");
             this.clickElementById("remove-operators-button");
             this.waitForPageToLoad();
             return randomNumberOfCheckboxesToClick - 1;
